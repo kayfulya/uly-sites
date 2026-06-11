@@ -1,23 +1,145 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Уля — сайты и презентация</title>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Уля — сайты сделанные с Клодом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 60px auto; padding: 0 20px; background: #f3ead3; color: #14213d; line-height: 1.6; }
-h1 { font-weight: 800; }
-a { color: #14213d; font-weight: 600; }
-li { margin: 12px 0; }
-</style></head>
+:root {
+  --paper: #f3ead3;
+  --navy: #14213d;
+  --navy-soft: #25324f;
+  --gold: #c9a35f;
+  --gold-soft: #b89055;
+  --line: rgba(20,33,61,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 32px 32px;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 32px 60px;
+}
+
+h1 {
+  font-weight: 900; font-size: 2.4em;
+  letter-spacing: -0.02em; line-height: 1.08;
+  margin-bottom: 0.2em;
+}
+.subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic; font-size: 1.15em;
+  color: var(--navy-soft); margin-bottom: 48px;
+}
+
+/* Cards grid */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.card {
+  display: block;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(20,33,61,0.14);
+  border-radius: 12px;
+  padding: 28px 24px;
+  text-decoration: none;
+  color: var(--navy);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 8px 24px rgba(20,33,61,0.08);
+}
+
+.card .emoji { font-size: 2em; display: block; margin-bottom: 8px; }
+.card h2 {
+  font-weight: 800; font-size: 1.1em;
+  letter-spacing: -0.01em; margin-bottom: 4px;
+}
+.card .desc {
+  font-size: 0.8em; color: var(--navy-soft);
+  line-height: 1.4;
+}
+
+.footer {
+  margin-top: 48px;
+  text-align: center;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.65em; color: var(--gold-soft);
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+  .cards { grid-template-columns: 1fr; }
+  h1 { font-size: 1.8em; }
+}
+</style>
+</head>
 <body>
-<h1>Уля — сайты и презентация</h1>
-<ul>
-<li>📊 <a href="tracker/index.html">Трекер привычек</a></li>
-<li>👑 <a href="pauk/index.html">Реестр очков уважения</a></li>
-<li>👗 <a href="style/index.html">Стилевой паспорт</a></li>
-<li>👔 <a href="style-lesha/index.html">Стиль Лёши</a></li>
-<li>💌 <a href="lyosha-date/index.html">Приглашение на свидание</a></li>
-<li>🎂 <a href="birthday/index.html">Деньрожденческий сайт</a></li>
-<li>⚖️ <a href="danil/index.html">Сайт Данила</a></li>
-<li>🎬 <a href="ai-reels.html">Презентация «ИИ-инструменты в работе над рилс»</a></li>
-</ul>
+<div class="page">
+
+  <h1>Что я сделала<br>с Клодом</h1>
+  <p class="subtitle">Каждый сайт — результат диалога с ИИ. Без дизайнера, без разработчика.</p>
+
+  <div class="cards">
+    <a class="card" href="pauk/index.html">
+      <span class="emoji">👑</span>
+      <h2>Реестр очков уважения</h2>
+      <span class="desc">Сайт + Telegram-бот голосования. Совет Свидетелей Паука.</span>
+    </a>
+
+    <a class="card" href="style/index.html">
+      <span class="emoji">👗</span>
+      <h2>Стилевой паспорт</h2>
+      <span class="desc">51 предмет гардероба. Палитра Soft Autumn. Типаж Kibbe.</span>
+    </a>
+
+    <a class="card" href="style-lesha/index.html">
+      <span class="emoji">👔</span>
+      <h2>Стиль Лёши</h2>
+      <span class="desc">Гид по гардеробу мужа. Цвета, референсы, образы.</span>
+    </a>
+
+    <a class="card" href="lyosha-date/index.html">
+      <span class="emoji">💌</span>
+      <h2>Приглашение на свидание</h2>
+      <span class="desc">Романтический сайт для Лёши. Бумажная текстура, washi-tape.</span>
+    </a>
+
+    <a class="card" href="birthday/index.html">
+      <span class="emoji">🎂</span>
+      <h2>Деньрожденческий сайт</h2>
+      <span class="desc">Вишлист, скидки, подарки. «Петербург, подвинься».</span>
+    </a>
+
+    <a class="card" href="danil/index.html">
+      <span class="emoji">⚖️</span>
+      <h2>Сайт для Данила</h2>
+      <span class="desc">Сценарии Reels для бизнес-адвоката.</span>
+    </a>
+  </div>
+
+  <div class="footer">Сделано с Клодом · 2026</div>
+
+</div>
 </body>
 </html>
