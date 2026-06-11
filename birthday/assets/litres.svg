@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <rect width="200" height="250" fill="#efe7d4"/>
+  <!-- стопка книг -->
+  <g stroke="#1c1c1c" stroke-width="2.5" stroke-linejoin="round">
+    <!-- нижняя книга — терракотовая -->
+    <rect x="30" y="170" width="140" height="28" fill="#b8431f"/>
+    <line x1="30" y1="186" x2="170" y2="186" stroke="#1c1c1c" stroke-width="1"/>
+    <text x="100" y="190" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="14" fill="#f7eedf">роман</text>
+
+    <!-- средняя книга — кремовая, выступает -->
+    <rect x="42" y="142" width="116" height="28" fill="#f7eedf"/>
+    <text x="100" y="162" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="14" fill="#1c1c1c">мемуар</text>
+
+    <!-- верхняя книга — мшистая -->
+    <rect x="52" y="114" width="96" height="28" fill="#5d6b5b"/>
+    <text x="100" y="134" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="14" fill="#f7eedf">стихи</text>
+
+    <!-- открытая книга сверху -->
+    <path d="M 50 92 Q 100 76 150 92 L 150 110 Q 100 96 50 110 Z" fill="#fbf7ee"/>
+    <path d="M 100 80 L 100 104" fill="none"/>
+    <line x1="62" y1="96" x2="92" y2="92" stroke-width="1"/>
+    <line x1="108" y1="92" x2="138" y2="96" stroke-width="1"/>
+    <line x1="62" y1="102" x2="92" y2="100" stroke-width="1"/>
+    <line x1="108" y1="100" x2="138" y2="102" stroke-width="1"/>
+  </g>
+  <!-- закладка -->
+  <path d="M 140 84 L 140 124 L 134 116 L 128 124 L 128 84 Z" fill="#b8431f" stroke="#1c1c1c" stroke-width="2"/>
+</svg>

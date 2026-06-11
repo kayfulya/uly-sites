@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Данил Левченко — сценарии Reels</title>
+<style>
+  :root {
+    --paper: #f5f1ea;
+    --paper-2: #efe8dc;
+    --ink: #1a1816;
+    --ink-mute: #6b655d;
+    --accent: #c2410c;
+    --line: rgba(26,24,22,0.14);
+    --card: #fffdf9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, "Inter", sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    padding: 60px 40px;
+  }
+
+  .container { max-width: 1080px; margin: 0 auto; }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 24px;
+    margin-bottom: 48px;
+  }
+  .header-left .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+  }
+  .header-left h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 56px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .header-left h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .header-right {
+    text-align: right;
+    font-size: 12px;
+    color: var(--ink-mute);
+    line-height: 1.7;
+  }
+  .header-right strong {
+    display: block;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: -apple-system, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 500;
+  }
+  .btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .btn.accent {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .btn.accent:hover {
+    background: #a0350a;
+  }
+
+  .status {
+    font-size: 11px;
+    color: var(--ink-mute);
+    align-self: center;
+    font-style: italic;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .status.show { opacity: 1; }
+
+  /* ── REFERENCE VIDEO ── */
+  .ref-section {
+    margin-bottom: 48px;
+  }
+  .ref-section h3 {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .ref-video {
+    background: var(--card);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .ref-video video {
+    width: 100%;
+    display: block;
+  }
+  .ref-note {
+    background: var(--paper-2);
+    padding: 24px;
+    font-size: 14px;
+    color: var(--ink-mute);
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .ref-note strong {
+    color: var(--ink);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-family: Georgia, serif;
+    font-style: italic;
+  }
+  .ref-note .author {
+    color: var(--accent);
+  }
+
+  /* ── SCENARIO ── */
+  .scenario {
+    background: var(--card);
+    border: 1px solid var(--line);
+    margin-bottom: 48px;
+  }
+  .scenario-top {
+    padding: 40px 48px 0;
+  }
+  .scenario-num {
+    font-family: Georgia, serif;
+    font-size: 90px;
+    color: var(--line);
+    line-height: 1;
+    margin-bottom: -20px;
+    font-style: italic;
+  }
+  .meta-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    color: var(--ink-mute);
+  }
+  .tag.uk {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(194,65,12,0.06);
+  }
+  .scenario h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1.15;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .scenario h2 em { font-style: italic; color: var(--accent); }
+
+  .scenario-body {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 0;
+  }
+
+  /* ── SCRIPT (EDITABLE) ── */
+  .script-pane {
+    padding: 40px 48px;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .script-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .script-label .hint {
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    font-style: italic;
+  }
+  .script-editable {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 19px;
+    line-height: 1.7;
+    color: var(--ink);
+    outline: none;
+    min-height: 400px;
+    white-space: pre-wrap;
+  }
+  .script-editable b {
+    color: var(--accent);
+    font-weight: 800;
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 2px;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .script-editable b:first-child { margin-top: 0; }
+  .script-editable:focus {
+    /* subtle focus — just a left line */
+  }
+  .script-editable[contenteditable]:hover {
+    background: rgba(194,65,12,0.03);
+    border-radius: 4px;
+  }
+  .script-editable[contenteditable]:focus {
+    background: rgba(194,65,12,0.04);
+    border-left: 2px solid var(--accent);
+    padding-left: 18px;
+    margin-left: -20px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ── SIDE ── */
+  .side {
+    padding: 40px 36px;
+    background: var(--paper-2);
+  }
+  .side h3 {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .side ul {
+    list-style: none;
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .side ul li {
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+  .side ul li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+  .side-note {
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+  .side-note strong {
+    color: var(--ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ── ADD SCENARIO ── */
+  .add-area {
+    text-align: center;
+    padding: 48px;
+    border: 2px dashed var(--line);
+    margin-bottom: 48px;
+  }
+  .add-area p {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    color: var(--ink-mute);
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding-top: 32px;
+    border-top: 1px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .footer strong { color: var(--ink); font-weight: 600; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 800px) {
+    body { padding: 30px 20px; }
+    .header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .header-right { text-align: left; }
+    .header-left h1 { font-size: 36px; }
+    .ref-grid { grid-template-columns: 1fr; }
+    .scenario-body { grid-template-columns: 1fr; }
+    .script-pane { border-right: none; border-bottom: 1px solid var(--line); padding: 28px 24px; }
+    .side { padding: 28px 24px; }
+    .scenario-top { padding: 28px 24px 0; }
+    .scenario-num { font-size: 60px; }
+    .scenario h2 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <div class="eyebrow">Reels · Сценарии · Июнь 2026</div>
+      <h1>Данил Левченко<br><em>сценарии</em></h1>
+    </div>
+    <div class="header-right">
+      <strong>Адвокат для бизнеса</strong>
+      AdvokatLevchenko<br>
+      159 · 172 УК РФ<br>
+      Формат: ролевка, ~60 сек
+    </div>
+  </header>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <button class="btn accent" onclick="saveAll()">💾 Сохранить всё</button>
+    <button class="btn" onclick="addScenario()">+ Новый сценарий</button>
+    <span class="status" id="status">Сохранено ✦</span>
+  </div>
+
+  <!-- REFERENCE VIDEO -->
+  <section class="ref-section">
+    <h3>✦ Реферeнс формата</h3>
+    <div class="ref-grid">
+      <div class="ref-video">
+        <video controls playsinline preload="metadata">
+          <source src="reference_olga.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="ref-note">
+        <strong>Как это выглядит в кадре</strong>
+        <p>Ролевка Ольги Тарасовой-Сурдиной — <span class="author">@tarasova_surdina</span>.</p>
+        <p style="margin-top:12px">Реплика → крупный план → реакция → рубленый монтаж. Такой же формат планируется для Данила: адвокат и доверитель, быстрый диалог, минимум декораций.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENARIO 01 — approved -->
+  <section class="scenario" data-scenario="1">
+    <div class="scenario-top">
+      <div class="scenario-num">01</div>
+      <div class="meta-row">
+        <span class="tag uk">Утиный тест · ст. 159 · 172 УК</span>
+        <span class="tag">~60 сек · ролевка</span>
+      </div>
+      <h2 contenteditable="true" class="scenario-title">Докажите что вы <em>пришли</em></h2>
+    </div>
+
+    <div class="scenario-body">
+      <div class="script-pane">
+        <div class="script-label">
+          Сценарий · озвучка
+          <span class="hint">⌨ редактируемый</span>
+        </div>
+        <div class="script-editable" contenteditable="true" id="script-1">
+
+ДАНИЛ
+Любая очевидность требует доказательств. Если вы этого не понимаете — вы не готовы к российским судам.
+
+КЛИЕНТ
+Да я всё понимаю…
+(Делает глоток)
+Блин. Кофе остыл.
+
+ДАНИЛ
+Докажите.
+
+КЛИЕНТ
+Чего?
+
+ДАНИЛ
+А вы уверены, что он был горячим?
+
+КЛИЕНТ
+В смысле?
+
+ДАНИЛ
+Нужна теплотехническая экспертиза. Предоставьте химический анализ — возможно, он изначально был комнатной температуры, а вы приняли его за остывший. Обеспечьте явку кофе в процесс. Пусть лично подтвердит: «Да, я остыл. Именно в этой кружке. Именно за 12 минут.»
+
+КЛИЕНТ
+Извините. Я устал, сегодня был тяжёлый день...
+
+ДАНИЛ
+Докажите, что устали.
+
+КЛИЕНТ
+В смысле — докажите, что я устал?!
+
+ДАНИЛ
+Покажите табель за сегодня. Уровень кортизола. МРТ шейного отдела — свежее, не старше трёх дней. И справку от руководства: что вы действительно работали, а не сидели в YouTube с лицом уставшего человека. Я же не знаю, может, у вас такое лицо всегда.
+
+КЛИЕНТ
+Ладно. Давайте просто закончим этот диалог.
+
+ДАНИЛ
+А диалог был? У вас есть аудиозапись? Стенограмма у нотариуса имеется? Фоноскопическая экспертиза установила, что это мои слова? Свидетели есть? Хотя бы двое — которые подтвердят, что мы тут вообще разговаривали, а не молча смотрели друг на друга.
+
+КЛИЕНТ
+Вы невыносимы.
+
+ДАНИЛ
+Вот. Теперь есть что предъявить в суде — оскорбление участника процесса!</div>
+      </div>
+
+      <aside class="side">
+        <h3>Голос · приёмы</h3>
+        <ul>
+          <li>Три круга абсурда — кофе → усталость → диалог</li>
+          <li>Прямая речь: кофе в процессе даёт показания</li>
+          <li>Допросный ритм в третьем круге: пять вопросов подряд</li>
+          <li>Самоирония: «может, у вас такое лицо всегда»</li>
+          <li>Финальный переворот: «оскорбление участника процесса»</li>
+          <li>Закрытие: «Такие дела... 🤷‍♂️»</li>
+        </ul>
+        <div class="side-note">
+          <strong>Откуда идея</strong>
+          Утиный тест Юлия Тая — Данил рассказал на созвоне 3 июня 2026.
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- SCENARIO 04 — яблоки / ИИ vs правосудие -->
+  <section class="scenario" data-scenario="2">
+    <div class="scenario-top">
+      <div class="scenario-num">02</div>
+      <div class="meta-row">
+        <span class="tag uk">Верховный суд · диалог</span>
+        <span class="tag">~70 сек · ролевка</span>
+      </div>
+      <h2 contenteditable="true" class="scenario-title">Нейросеть не найдёт закономерность там, <em>где её нет</em></h2>
+    </div>
+
+    <div class="scenario-body">
+      <div class="script-pane">
+        <div class="script-label">
+          Сценарий · диалог
+          <span class="hint">⌨ редактируемый</span>
+        </div>
+        <div class="script-editable" contenteditable="true" id="script-2">
+
+КЛИЕНТ
+Дай нейросети ещё два месяца — и у тебя не будет работы.
+
+ДАНИЛ
+Сразу видно — ты не видел, как работает Верховный суд
+ИИ проиграет российскому правосудию
+Вот смотри.
+(кладёт яблоко на стол)
+Это яблоко?
+
+КЛИЕНТ
+Яблоко.
+
+ДАНИЛ (КЛАДЁТ ВТОРОЕ)
+А это?
+
+КЛИЕНТ
+Тоже яблоко.
+
+ДАНИЛ (КЛАДЁТ ТРЕТЬЕ)
+А вот это яблоко?
+(пауза)
+Нет, не яблоко
+
+КЛИЕНТ
+В смысле — нет?!
+Они же одинаковые
+
+ДАНИЛ
+Ну смотри.
+Вчера на приёмке яблок.
+Заведующий складом, товаровед, начальник приняли две партии.
+Вес, цвет, калибр — всё по ГОСТу.
+Сегодня третья партия.
+Тот же сорт. Тот же поставщик. Та же ветка.
+Комиссия отрицает, что яблоко — это яблоко
+
+КЛИЕНТ
+Ничего не поменялось!
+
+ДАНИЛ
+Ошибаешься
+Начальнику смены позвонили сверху
+Товаровед не хочет спорить с руководством, ей ипотеку закрывать
+А завхозу лень разбираться
+
+КЛИЕНТ
+Абсурд!
+
+ДАНИЛ
+Готовили мы недавно жалобу в Верховный суд.
+Та же история.
+Десять судебных актов.
+Одно и то же нарушение.
+Один и тот же состав судей.
+В восьми случаях — несущественное.
+В двух — то же самое — существенное, приговор отменить
+
+Нейросеть не может найти закономерность там, где ее нет
+Звонок от начальника к материалам дела не приобщают</div>
+      </div>
+
+      <aside class="side">
+        <h3>Голос · приёмы</h3>
+        <ul>
+          <li>Зачин — провокация клиента про ИИ, ответ «Сразу видно — ты не видел, как работает Верховный суд»</li>
+          <li>Метафора: три яблока — три одинаковых решения с разным исходом</li>
+          <li>Бытовые мотивации: звонок сверху, ипотека, лень</li>
+          <li>Связка к кейсу: «Готовили мы недавно жалобу в Верховный суд. Та же история.»</li>
+          <li>Цифра-удар: 8 из 10 — несущественное, 2 из 10 — приговор отменить</li>
+          <li>Финал: «Нейросеть не может найти закономерность там, где её нет. Звонок от начальника к материалам дела не приобщают.»</li>
+        </ul>
+
+        <h3>Что снимать</h3>
+        <ul>
+          <li>Данил за столом, три яблока</li>
+          <li>Кладёт яблоки по одному — крупно</li>
+          <li>На «нет, не яблоко» — Клиент в недоумении</li>
+          <li>На «позвонили сверху» — жестом показывает трубку</li>
+          <li>Убирает яблоки → переход к Верховному суду</li>
+          <li>Финал — крупно Данил, сухо: «Звонок от начальника к материалам дела не приобщают»</li>
+        </ul>
+
+        <div class="side-note">
+          <strong>Откуда</strong>
+          Идея и финальный текст Ули — 08.06.2026.</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- SCENARIO 05 — русский оправдательный -->
+  <section class="scenario" data-scenario="3">
+    <div class="scenario-top">
+      <div class="scenario-num">03</div>
+      <div class="meta-row">
+        <span class="tag uk">Оправдательный приговор · ст. 237 УПК</span>
+        <span class="tag">~85 сек · скетч / ролевка</span>
+      </div>
+      <h2 contenteditable="true" class="scenario-title">Слово, <em>которого нет</em></h2>
+    </div>
+
+    <div class="scenario-body">
+      <div class="script-pane">
+        <div class="script-label">
+          Сценарий · озвучка
+          <span class="hint">⌨ редактируемый</span>
+        </div>
+        <div class="script-editable" contenteditable="true" id="script-3">
+
+УЧИТЕЛЬ
+Дети, назовите слово из трёх букв.
+
+РЕБЁНОК
+Х**.
+
+УЧИТЕЛЬ
+Нет такого слова. Вон из класса.
+
+РЕБЁНОК
+Папа его говорит..
+
+УЧИТЕЛЬ
+В словаре его нет. В учебнике — нет. Значит слова не существует!
+
+РЕБЁНОК
+А ещё есть такие слова? Ну... которые все говорят, а их как бы нет?
+
+УЧИТЕЛЬ
+Есть
+Вот смотри.
+Дяденьку обвиняют — украл слона из зоопарка. А слон на месте. Стоит. Ест бананы. Кто-то отправил жалобу. Дело идёт в суд.
+Судья хочет сказать «невиновен» и пишет….
+
+РЕБЁНОК
+.. оправдательный приговор?
+
+УЧИТЕЛЬ
+Нельзя это произносить!!!! Нет такого слова!!!!!
+
+РЕБЕНОК
+а какое есть?
+
+УЧИТЕЛЬ
+Статья 237 УПК. Возврат дела прокурору. Или «прекращено за отсутствием состава».
+
+РЕБЁНОК
+Но почему?
+
+УЧИТЕЛЬ
+Чтобы написать «оправдательный приговор» — надо сесть и перелопатить всё дело. Каждую бумажку. Каждую экспертизу. Каждый допрос. Доказать что слон — на месте. Что бананы настоящие. Что дяденька не телепортёр. Построить цепочку: почему доказательств нет. Почему свидетель врёт. Почему экспертиза — фуфло.
+Неделя. Минимум
+
+РЕБЁНОК
+...
+
+УЧИТЕЛЬ
+А потом — Антикоррупционная проверка. Служебки. Объяснительные. Вызов к председателю. Взыскание, испорченная статистика и И никакой премии!
+
+Поэтому вместо оправдательного приговора судья возвращает дело прокурору. Прокурор — следователю. Следователь прекращает. Два листочка. И человек чист.
+
+У меня За пятнадцать лет практики 0 оправдательных, но реальные сроки получили двое. А полтора десятка человек вышли чистыми. Дела прекращены. Состава нет.</div>
+      </div>
+
+      <aside class="side">
+        <h3>Голос · приёмы</h3>
+        <ul>
+          <li>Зачин — игра с тремя буквами как метафора запретного слова</li>
+          <li>Сквозная метафора: слон на месте ест бананы — абсурд видимый всем, но требующий доказательств</li>
+          <li>Прямая речь: диалог Учителя и Ребёнка</li>
+          <li>Сарказм: ребёнок пытается назвать то, чего «нет»</li>
+          <li>Финал — цифра-удар: 0 оправдательных за 15 лет</li>
+          <li>Маркеры Данила: «дело прекращено. состава нет.»</li>
+        </ul>
+
+        <h3>Что снимать</h3>
+        <ul>
+          <li>Два актёра: Учитель (Данил) и Ребёнок</li>
+          <li>Парта, доска, словарь</li>
+          <li>На фразе про слона — картинка слона с бананами</li>
+          <li>Крупно — пачка бумаг, экспертизы</li>
+          <li>Финал — Данил лицом в камеру: «0 оправдательных за 15 лет»</li>
+        </ul>
+
+        <div class="side-note">
+          <strong>Откуда</strong>
+          Созвон с Данилом 3 июня 2026. Он сам рассказывал: «почему судья не пишут оправдательные — это антикоррупционная проверка». Статистика: 0.4% оправдательных по данным Судебного департамента при ВС РФ.</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ADD SCENARIO -->
+  <div class="add-area">
+    <p>Следующий сценарий — здесь</p>
+    <button class="btn accent" onclick="addScenario()">+ Новый сценарий</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>Подготовила <strong>Уля</strong> · контент-продюсер</div>
+    <div>2026 · Июнь · 08 · v3 — +«Слово, которого нет» (оправдательный)</div>
+  </footer>
+
+</div>
+
+<script>
+// ── AUTO-SAVE to localStorage ──
+function saveAll() {
+  const edits = {};
+  document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+    const id = el.id || el.className;
+    if (id) edits[id] = el.innerHTML;
+  });
+  localStorage.setItem('danil-scripts', JSON.stringify(edits));
+  showStatus('Сохранено ✦');
+}
+
+function loadAll() {
+  // Версия данных — если менялась структура, сбрасываем старый кеш
+  const DATA_VERSION = 11;
+  const storedVersion = localStorage.getItem('danil-scripts-version');
+  if (storedVersion && parseInt(storedVersion) < DATA_VERSION) {
+    localStorage.removeItem('danil-scripts');
+  }
+  localStorage.setItem('danil-scripts-version', DATA_VERSION);
+
+  try {
+    const saved = JSON.parse(localStorage.getItem('danil-scripts'));
+    if (!saved) return;
+    document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+      const id = el.id || el.className;
+      if (id && saved[id]) el.innerHTML = saved[id];
+    });
+  } catch(e) {}
+}
+
+function showStatus(msg) {
+  const s = document.getElementById('status');
+  s.textContent = msg;
+  s.classList.add('show');
+  setTimeout(() => s.classList.remove('show'), 2000);
+}
+
+// Auto-save on blur
+document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+  el.addEventListener('blur', saveAll);
+});
+
+// Cmd+S / Ctrl+S shortcut
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+    e.preventDefault();
+    saveAll();
+  }
+});
+
+// Load saved state
+loadAll();
+
+// ── ADD SCENARIO ──
+function addScenario() {
+  const num = document.querySelectorAll('[data-scenario]').length + 1;
+  const template = `
+<section class="scenario" data-scenario="${num}">
+  <div class="scenario-top">
+    <div class="scenario-num">${String(num).padStart(2,'0')}</div>
+    <div class="meta-row">
+      <span class="tag">~60 сек</span>
+    </div>
+    <h2 contenteditable="true" class="scenario-title">Название сценария</h2>
+  </div>
+  <div class="scenario-body">
+    <div class="script-pane">
+      <div class="script-label">
+        Сценарий · озвучка
+        <span class="hint">⌨ редактируемый</span>
+      </div>
+      <div class="script-editable" contenteditable="true" id="script-${num}">Пишите сценарий здесь…</div>
+    </div>
+    <aside class="side">
+      <h3>Слои голоса</h3>
+      <ul><li>Добавить после написания</li></ul>
+      <h3>Что снимать</h3>
+      <ul><li>Добавить после написания</li></ul>
+    </aside>
+  </div>
+</section>`;
+
+  const addArea = document.querySelector('.add-area');
+  addArea.insertAdjacentHTML('beforebegin', template);
+  // re-attach listeners
+  document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+    el.addEventListener('blur', saveAll);
+  });
+  // scroll to new
+  document.querySelector(`[data-scenario="${num}"]`).scrollIntoView({ behavior: 'smooth' });
+  saveAll();
+  showStatus('Новый сценарий добавлен');
+}
+</script>
+
+</body>
+</html>

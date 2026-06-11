@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>ИИ-инструменты в работе над рилс</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --c-paper:      #f3ead3;
+    --c-paper-2:    #ebdfbf;
+    --c-navy:       #14213d;
+    --c-navy-soft:  #25324f;
+    --c-gold:       #c9a35f;
+    --c-gold-soft:  #b89055;
+    --c-gold-pale:  #e6d6a6;
+    --c-line:       rgba(20,33,61,0.18);
+    --c-line-soft:  rgba(20,33,61,0.07);
+    --c-danger:     #c2410c;
+    --c-green:      #2d6a4f;
+    --font-sans:    'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif:   'Cormorant Garamond', Georgia, serif;
+    --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+}
+
+html, body {
+    height: 100%; margin: 0; padding: 0;
+    background-color: #f3ead3;
+    background-image:
+        linear-gradient(rgba(20,33,61,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20,33,61,0.07) 1px, transparent 1px);
+    background-size: 32px 32px, 32px 32px;
+}
+.reveal, .reveal-viewport, .reveal .slides {
+    background: transparent !important;
+}
+.reveal .slides > section:not(.section-divider) {
+    background: transparent !important;
+}
+
+.reveal {
+    font-family: var(--font-sans); font-weight: 500; font-size: 28px;
+    color: var(--c-navy);
+    height: 100% !important;
+}
+.reveal .slides {
+    height: 100% !important;
+}
+
+.reveal section {
+    text-align: left; padding: 64px 84px; box-sizing: border-box;
+    background: transparent;
+}
+.reveal { background: transparent; }
+
+.reveal h1 { font-family: var(--font-sans); font-weight: 900; font-size: 3em; color: var(--c-navy); text-transform: none; letter-spacing: -0.02em; line-height: 1.08; margin: 0 0 0.3em 0; }
+.reveal h2 { font-family: var(--font-sans); font-weight: 800; font-size: 2em; color: var(--c-navy); text-transform: none; letter-spacing: -0.015em; line-height: 1.12; margin: 0 0 0.4em 0; }
+.reveal h3 { font-family: var(--font-sans); font-weight: 700; font-size: 1.1em; color: var(--c-navy-soft); text-transform: none; margin: 0 0 0.3em 0; }
+.reveal p { line-height: 1.5; margin: 0 0 0.6em 0; }
+.reveal strong { color: var(--c-navy); font-weight: 700; }
+.reveal em { color: var(--c-navy-soft); font-style: italic; font-family: var(--font-serif); font-weight: 500; }
+.reveal a { color: var(--c-navy-soft); text-decoration: none; border-bottom: 1px dashed var(--c-gold); }
+
+.reveal ul, .reveal ol { display: block; margin: 0 0 0 0.8em; }
+.reveal li { margin: 0.25em 0; line-height: 1.5; font-size: 0.9em; }
+.reveal ul li::marker { color: var(--c-gold); }
+
+.reveal pre {
+    background: var(--c-navy); border-radius: 10px; padding: 0;
+    font-size: 0.5em; width: 100%; max-width: 900px;
+    box-shadow: 0 8px 32px rgba(20,33,61,0.15);
+}
+.reveal pre code {
+    font-family: var(--font-mono); padding: 1em 1.2em; border-radius: 10px;
+    color: #e7eaf0;
+}
+.reveal :not(pre) > code {
+    font-family: var(--font-mono);
+    background: rgba(201,163,95,0.15); color: var(--c-navy-soft);
+    padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.85em;
+}
+
+/* Fragment animations */
+.reveal .fragment.fade-up { opacity: 0; }
+.reveal .fragment.fade-up.visible { animation: fadeInUp 0.5s ease both; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Components */
+.eyebrow {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.5em;
+    font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--c-gold-soft); border-top: 2px solid var(--c-gold);
+    padding-top: 0.7em; margin-bottom: 1.2em;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2em; align-items: start; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2em; }
+
+.card {
+    background: rgba(255,255,255,0.5); border: 1px solid var(--c-line);
+    border-radius: 10px; padding: 1em 1.2em;
+}
+.card .num {
+    font-family: var(--font-mono); font-size: 0.65em; color: var(--c-gold-soft);
+    letter-spacing: 0.15em; text-transform: uppercase;
+}
+.card h3 { font-size: 0.95em; margin: 0.2em 0; }
+.card p { font-size: 0.75em; color: var(--c-navy-soft); line-height: 1.4; margin: 0; }
+
+.vs-box { text-align: center; padding: 1.2em 1em; border-radius: 10px; }
+.vs-bad { background: rgba(194,65,12,0.06); border: 1px solid rgba(194,65,12,0.15); }
+.vs-good { background: rgba(45,106,79,0.06); border: 1px solid rgba(45,106,79,0.15); }
+.vs-label { font-family: var(--font-mono); font-size: 0.55em; text-transform: uppercase; letter-spacing: 0.25em; margin-bottom: 0.8em; }
+
+.big-num {
+    font-family: var(--font-sans); font-weight: 900; font-size: 5em;
+    color: var(--c-gold-pale); line-height: 0.8; display: block;
+}
+
+.step-row {
+    display: flex; align-items: flex-start; gap: 1em;
+    padding: 0.6em 0; border-bottom: 1px solid var(--c-line-soft);
+}
+.step-row:last-child { border-bottom: none; }
+.step-num {
+    flex-shrink: 0;
+    width: 1.6em; height: 1.6em;
+    background: var(--c-navy); color: var(--c-paper);
+    border-radius: 50%; font-size: 0.7em; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* Title slide */
+.title-slide h1 { font-size: 3.4em; line-height: 1; margin: 0.1em 0; }
+.title-slide .subtitle {
+    font-family: var(--font-serif); font-style: italic; font-size: 1.1em;
+    color: var(--c-navy-soft); max-width: 700px; margin: 0.3em 0 1.5em 0; line-height: 1.3;
+}
+.title-slide .meta {
+    font-family: var(--font-mono); font-size: 0.5em; letter-spacing: 0.26em;
+    text-transform: uppercase; color: var(--c-gold-soft); font-weight: 600;
+    border-top: 2px solid var(--c-gold); padding-top: 0.8em; width: 360px;
+}
+
+/* Section divider */
+.section-divider {
+    background: var(--c-navy) !important;
+}
+.section-divider h1 { color: var(--c-paper); font-size: 4.5em; }
+.section-divider .num {
+    font-family: var(--font-mono); font-size: 0.8em; color: var(--c-gold);
+    letter-spacing: 0.3em; text-transform: uppercase; display: block; margin-bottom: 0.5em;
+}
+
+/* Quote slide */
+.quote-slide { text-align: center !important; }
+.quote-slide .quote {
+    font-size: 1.5em; font-weight: 600; line-height: 1.3; max-width: 80%;
+    margin: 0 auto;
+    font-family: var(--font-serif); font-style: italic;
+}
+.quote-slide .quote::before { content: '«'; color: var(--c-gold); }
+.quote-slide .quote::after { content: '»'; color: var(--c-gold); }
+
+.reveal .progress { color: var(--c-gold); height: 4px; }
+.reveal .slide-number {
+    font-family: var(--font-mono); font-size: 14px; color: var(--c-navy-soft); opacity: 0.5;
+}
+
+.link-list { list-style: none; margin: 0; padding: 0; }
+.link-list li { padding: 0.35em 0; font-size: 0.8em; border-bottom: 1px solid var(--c-line-soft); }
+.link-list li:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- 0. ТИТУЛ -->
+<section class="title-slide">
+    <span class="eyebrow">Эфир • 12 июня 2026</span>
+    <h1>ИИ-инструменты<br>в работе над рилс</h1>
+    <p class="subtitle">Что реально работает, а что — рекламный шум. Живая демонстрация моих наработок с Клодом.</p>
+    <div class="meta">Уля • рилсуля</div>
+</section>
+
+<!-- 1. ПЛАТНАЯ ПОДПИСКА -->
+<section>
+    <span class="eyebrow">Важное</span>
+    <h2>Если вы не платите за подписку —<br>вы ещё не пользовались ИИ</h2>
+</section>
+
+<section>
+    <div class="grid-2">
+        <div class="vs-box vs-bad fragment fade-up">
+            <div class="vs-label" style="color: var(--c-danger);">Бесплатная версия</div>
+            <p>Старая модель<br>Ограничения по токенам<br>Нет памяти и проектов<br><br><em>Это демо-режим,<br>не инструмент</em></p>
+        </div>
+        <div class="vs-box vs-good fragment fade-up">
+            <div class="vs-label" style="color: var(--c-green);">Платная подписка</div>
+            <p>Передовая модель<br>Projects с файлами и инструкциями<br>Длинный контекст<br><br><em>Это ваш сотрудник</em></p>
+        </div>
+    </div>
+</section>
+
+<section class="quote-slide">
+    <div class="quote fragment fade-up">Я всё делаю в Клоде и теперь вообще не представляю без него своей жизни.</div>
+</section>
+
+<!-- 2. ПРОЕКТЫ = СОТРУДНИКИ -->
+<section>
+    <span class="eyebrow">Ключевой принцип</span>
+    <h2>Относитесь к проектам<br>как к сотрудникам</h2>
+</section>
+
+<section>
+    <span class="big-num fragment fade-up">01</span>
+    <h2 class="fragment fade-up">Объясняйте</h2>
+    <p class="fragment fade-up">Расскажите кто вы, какая задача, какой результат нужен.<br>Не «напиши пост» — а полный контекст.</p>
+</section>
+
+<section>
+    <span class="big-num fragment fade-up">02</span>
+    <h2 class="fragment fade-up">Будьте в диалоге</h2>
+    <p class="fragment fade-up">Просите чтобы он задавал вопросы.<br>Не принимайте первый ответ.<br>Уточняйте, спорьте, направляйте.</p>
+</section>
+
+<section>
+    <span class="big-num fragment fade-up">03</span>
+    <h2 class="fragment fade-up">Давайте примеры</h2>
+    <p class="fragment fade-up">«Вот это ДА, а это НЕТ».<br>Один раз обучили — и он будет работать именно так.</p>
+</section>
+
+<!-- 3. РАЗОЧАРОВАНИЕ -->
+<section>
+    <span class="eyebrow">Вступление</span>
+    <h2>Почему вы разочарованы<br>в ИИ</h2>
+    <p style="color: var(--c-navy-soft);">И это нормально.</p>
+</section>
+
+<section>
+    <div class="grid-2">
+        <div class="vs-box vs-bad fragment fade-up">
+            <div class="vs-label" style="color: var(--c-danger);">Ожидание</div>
+            <p style="font-size: 0.85em;">«Напиши мне пост»<br>→ Шедевр<br>→ Все лайкают</p>
+        </div>
+        <div class="vs-box vs-good fragment fade-up">
+            <div class="vs-label" style="color: var(--c-green);">Реальность</div>
+            <p style="font-size: 0.85em;">Пластмассовый шаблон,<br>который звучит<br>не как вы.</p>
+        </div>
+    </div>
+</section>
+
+<section class="quote-slide">
+    <div class="quote fragment fade-up">Проблема не в ИИ.<br>Проблема в подходе.</div>
+</section>
+
+<!-- 4. 4 ПРАВИЛА -->
+<section>
+    <span class="eyebrow">Фундамент</span>
+    <h2>ИИ не придумывает смыслы.<br>Он их усиливает.</h2>
+    <p style="color: var(--c-navy-soft);">Ваша экспертиза — фундамент, ИИ — ускоритель</p>
+</section>
+
+<section>
+    <div class="grid-2">
+        <div class="card fragment fade-up">
+            <span class="num">Правило 1</span>
+            <h3>Роль</h3>
+            <p>Кто он? Сценарист, продюсер, стилист. Назовите его должность.</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">Правило 2</span>
+            <h3>Контекст</h3>
+            <p>Для кого? Ниша, аудитория, цель ролика.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="grid-2">
+        <div class="card fragment fade-up">
+            <span class="num">Правило 3</span>
+            <h3>Пример</h3>
+            <p>Как надо? Покажите образец. «Вот это ДА, а это НЕТ».</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">Правило 4</span>
+            <h3>Фокус</h3>
+            <p>Одна задача за один раз. Не мешайте посты, рецепты и сценарии в одну кучу.</p>
+        </div>
+    </div>
+</section>
+
+<!-- РАЗДЕЛИТЕЛЬ: НАРАБОТКИ -->
+<section class="section-divider">
+    <span class="num">Мои наработки</span>
+    <h1>Что я сделала<br>с Клодом</h1>
+</section>
+
+<section>
+    <div class="grid-3">
+        <div class="card fragment fade-up">
+            <span class="num">📊</span>
+            <h3>Трекер привычек</h3>
+            <p>PWA-приложение + Telegram-бот. Привычки, счётчики, журнал.</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">👑</span>
+            <h3>Реестр очков уважения</h3>
+            <p>Сайт + бот голосования. Совет Свидетелей Паука.</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">👗</span>
+            <h3>Стилевой паспорт</h3>
+            <p>51 предмет гардероба. Палитра Soft Autumn. Kibbe.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="grid-3">
+        <div class="card fragment fade-up">
+            <span class="num">👔</span>
+            <h3>Стиль Лёши</h3>
+            <p>Гид по гардеробу мужа. Цвета, референсы, образы.</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">💌</span>
+            <h3>Приглашение на свидание</h3>
+            <p>Романтический сайт для Лёши. Бумажная текстура.</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">🎂</span>
+            <h3>Деньрожденческий сайт</h3>
+            <p>Вишлист, скидки, подарки.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="grid-3">
+        <div class="card fragment fade-up">
+            <span class="num">⚖️</span>
+            <h3>Сайт для Данила</h3>
+            <p>Сценарии Reels для бизнес-адвоката.</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">📖</span>
+            <h3>Методичка Reels</h3>
+            <p>Методика по эфирам. Структура, процесс.</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">🎨</span>
+            <h3>Галерея анимаций</h3>
+            <p>Поясняющие анимации для клиентов.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <span class="eyebrow">Живой показ</span>
+    <h2>Открываю в браузере</h2>
+    <ul class="link-list" style="margin-top: 0.8em;">
+        <li class="fragment fade-up">📊 <strong>Трекер привычек</strong></li>
+        <li class="fragment fade-up">👑 <strong>Реестр очков уважения</strong></li>
+        <li class="fragment fade-up">👗 <strong>Стилевой паспорт</strong></li>
+        <li class="fragment fade-up">👔 <strong>Стиль Лёши</strong></li>
+        <li class="fragment fade-up">💌 <strong>Приглашение на свидание</strong></li>
+        <li class="fragment fade-up">🎂 <strong>Деньрожденческий сайт</strong></li>
+        <li class="fragment fade-up">⚖️ <strong>Сайт Данила</strong></li>
+    </ul>
+</section>
+
+<!-- РАЗДЕЛИТЕЛЬ: ПРОЦЕСС -->
+<section class="section-divider">
+    <span class="num">Процесс</span>
+    <h1>7 шагов<br>рилс-процесса с ИИ</h1>
+</section>
+
+<section>
+    <h3>Общий план</h3>
+    <div class="step-row fragment fade-up"><span class="step-num">1</span> <span><strong>Стратегия</strong> — скормить курсовые, получить план</span></div>
+    <div class="step-row fragment fade-up"><span class="step-num">2</span> <span><strong>Трекер дел</strong> — когда сценарий, съёмка, выкладка</span></div>
+    <div class="step-row fragment fade-up"><span class="step-num">3</span> <span><strong>Референсы</strong> — вирусные ролики, адаптация под себя</span></div>
+    <div class="step-row fragment fade-up"><span class="step-num">4</span> <span><strong>Свой голос</strong> — обучить ИИ писать как вы</span></div>
+    <div class="step-row fragment fade-up"><span class="step-num">5</span> <span><strong>Перебивки</strong> — видео под каждую строку сценария</span></div>
+    <div class="step-row fragment fade-up"><span class="step-num">6</span> <span><strong>Монтаж</strong> — запись + перебивки + анимация</span></div>
+    <div class="step-row fragment fade-up"><span class="step-num">7</span> <span><strong>Обложка</strong> — заголовок → композиция → генерация</span></div>
+</section>
+
+<!-- ШАГ 1. СТРАТЕГИЯ -->
+<section>
+    <span class="eyebrow">Шаг 1</span>
+    <h2>Стратегия</h2>
+    <h3>Кормим курсовые → получаем контент-план</h3>
+</section>
+
+<section>
+    <h3>Что делаем</h3>
+    <ul>
+        <li class="fragment fade-up">Скармливаем <strong>все курсовые задания</strong></li>
+        <li class="fragment fade-up">Голосовой запрос: кто мы, чего хотим</li>
+        <li class="fragment fade-up">Слабые места, что усилить</li>
+        <li class="fragment fade-up">ИИ <strong>задаёт вопросы</strong>, не просто выдаёт</li>
+    </ul>
+    <p style="margin-top: 1em;" class="fragment fade-up">На выходе: <strong>когда снимать, что, сколько, темы</strong></p>
+</section>
+
+<section>
+    <h3>Структура промта</h3>
+    <pre class="fragment fade-up"><code data-trim class="language-text">
+&lt;role&gt;
+Ты — продюсер-стратег Reels.
+
+&lt;context&gt;
+Загрузи все курсовые файлы.
+Проанализируй: кто я, аудитория, боли.
+
+&lt;process&gt;
+Задавай вопросы. Не пиши план сразу.
+Сначала разберись в нише.
+Предложи структуру. Я подтверждаю —
+ты детализируешь.
+
+&lt;output&gt;
+Главные темы (5-7)
+Частота выкладки
+Календарь на месяц
+Слабые места — что усилить</code></pre>
+</section>
+
+<!-- ШАГ 2. ТРЕКЕР -->
+<section>
+    <span class="eyebrow">Шаг 2</span>
+    <h2>Трекер дел</h2>
+    <h3>Адаптируем трекер привычек под рилс-процесс</h3>
+</section>
+
+<section>
+    <h3>Что делаем</h3>
+    <ul>
+        <li class="fragment fade-up">Беру <strong>свой трекер привычек</strong> как шаблон</li>
+        <li class="fragment fade-up">Скидываю Клоду пример + выжимку из стратегии</li>
+        <li class="fragment fade-up">Привычки → этапы:<br><strong>сценарий → съёмка → монтаж → выкладка</strong></li>
+        <li class="fragment fade-up">Счётчики: сколько снято, сколько выложено</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Промт (схема)</h3>
+    <pre class="fragment fade-up"><code data-trim class="language-text">
+&lt;context&gt;
+Вот мой трекер привычек.
+Вот выжимка из стратегии:
+темы, частота, календарь.
+
+&lt;task&gt;
+Сделай такой же трекер для рилс-процесса.
+
+Этапы:
+— Написать сценарий
+— Снять
+— Смонтировать
+— Выложить
+
+Добавь дедлайны, счётчики роликов,
+визуальные индикаторы этапов.</code></pre>
+</section>
+
+<!-- ШАГ 3. РЕФЕРЕНСЫ -->
+<section>
+    <span class="eyebrow">Шаг 3</span>
+    <h2>Поиск референсов</h2>
+    <h3>Вирусные ролики на всех языках</h3>
+</section>
+
+<section>
+    <h3>Две метрики виральности</h3>
+    <div class="grid-2" style="margin-top: 0.8em;">
+        <div class="card fragment fade-up">
+            <span class="num">Метрика 1</span>
+            <h3>Reach Ratio</h3>
+            <p>Просмотры ÷ подписчики.<br>Насколько ролик пробил дальше своей базы.<br><br>1M просмотров у автора с 1 000 подписчиков → <strong>1000×</strong></p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">Метрика 2</span>
+            <h3>Outlier Score</h3>
+            <p>Просмотры ÷ средний охват соседних роликов.<br>Насколько ролик выбился из нормы канала.<br><br>Хотя бы одна метрика должна зашкаливать.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Как ищу</h3>
+    <ul>
+        <li class="fragment fade-up">YouTube Shorts, TikTok — <strong>инста работает плохо</strong></li>
+        <li class="fragment fade-up">8 языков поиска</li>
+        <li class="fragment fade-up">На выходе: <strong>о чём ролик + угол адаптации под вас</strong></li>
+    </ul>
+</section>
+
+<section>
+    <h3>Промт (схема)</h3>
+    <pre class="fragment fade-up"><code data-trim class="language-text">
+&lt;role&gt;
+Ты — аналитик вирусного контента.
+
+&lt;task&gt;
+Найди вирусные ролики по теме [тема].
+Платформы: YouTube Shorts, TikTok.
+Языки: русский + 7 других.
+
+&lt;metrics&gt;
+Reach Ratio = просмотры / подписчики.
+Outlier Score = просмотры / средний охват.
+
+&lt;output&gt;
+— Название, ссылка, платформа, просмотры
+— О чём (1-2 предложения)
+— 🎯 Как адаптировать под вашу нишу</code></pre>
+</section>
+
+<!-- ШАГ 4. ГОЛОС -->
+<section>
+    <span class="eyebrow">Шаг 4</span>
+    <h2>Свой голос</h2>
+    <h3>Обучаем ИИ писать как вы</h3>
+</section>
+
+<section>
+    <h3>Что скормить</h3>
+    <ul>
+        <li class="fragment fade-up"><strong>Все сценарии</strong> которые писали</li>
+        <li class="fragment fade-up"><strong>Все посты</strong> из соцсетей</li>
+        <li class="fragment fade-up"><strong>Гайды и лекции</strong> если есть</li>
+        <li class="fragment fade-up">Расшифровки эфиров и созвонов</li>
+    </ul>
+    <p style="margin-top: 1em; color: var(--c-navy-soft);" class="fragment fade-up">ИИ анализирует: обороты, стартовые слова, ритм.<br>Составляет <strong>правила tone of voice</strong>.</p>
+</section>
+
+<section>
+    <h3>Структура промта «Сценарист»</h3>
+    <pre class="fragment fade-up"><code data-trim class="language-text">
+&lt;role&gt;
+Ты — сценарист Reels для [имя].
+
+&lt;voice&gt;
+Примеры из реальных роликов:
+«Прикиньте какая ниша интересная»
+«Мужики, вы там совсем охренели!»
+Стартовые слова: «Короче», «Слушайте»
+
+&lt;rules&gt;
+Что делать:
+— Каждое предложение с новой строки
+— Первая фраза — парадокс или удар
+— Финал — переворот, не мораль
+
+Не делать НИКОГДА:
+— Не начинать с «Привет» / «Сегодня»
+— Не писать «важно понимать»,
+  «следует отметить»</code></pre>
+</section>
+
+<!-- ШАГ 5. ПЕРЕБИВКИ -->
+<section>
+    <span class="eyebrow">Шаг 5</span>
+    <h2>Перебивки</h2>
+    <h3>ИИ ищет видео под каждую строку сценария</h3>
+</section>
+
+<section>
+    <h3>Как это работает</h3>
+    <ul>
+        <li class="fragment fade-up">ИИ читает <strong>готовый сценарий</strong></li>
+        <li class="fragment fade-up">Размечает построчно — где можно что-то показать</li>
+        <li class="fragment fade-up">Подбирает <strong>источник под тему</strong>:<br>новости → YouTube/РБК, абстрактное → Pexels</li>
+        <li class="fragment fade-up">Проверяет доступность, ставит <strong>таймкоды</strong></li>
+    </ul>
+    <p style="margin-top: 1em; color: var(--c-navy-soft);" class="fragment fade-up"><strong>Точность выше качества</strong></p>
+</section>
+
+<section>
+    <h3>Что отдаёт ИИ</h3>
+    <pre class="fragment fade-up"><code data-trim class="language-text">
+### Видео 1. «Название» (4:23)
+Ссылка: https://youtube.com/...
+Источник: РБК
+
+| Строка сценария         | Таймкод |
+| «счета заблокировали»   | 1:23    |
+| «налоговая проверка»    | 3:40    |
+
+~8 видео-источников на сценарий.
+Если не нашлось — честно пишем
+«по этой строке не найдено».</code></pre>
+</section>
+
+<!-- ШАГ 6-7. ОБЛОЖКИ -->
+<section>
+    <span class="eyebrow">Шаг 6-7</span>
+    <h2>Монтаж + Обложка</h2>
+</section>
+
+<section>
+    <h3>Обложка за 1 минуту</h3>
+    <div class="grid-3" style="margin-top: 1em;">
+        <div class="card fragment fade-up">
+            <span class="num">01</span>
+            <h3>Заголовок</h3>
+            <p>ИИ пишет 5 вариантов. Вы выбираете лучший.</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">02</span>
+            <h3>Композиция</h3>
+            <p>ИИ придумывает свет, фон, позу. Даёт промт для генерации.</p>
+        </div>
+        <div class="card fragment fade-up">
+            <span class="num">03</span>
+            <h3>Генерация</h3>
+            <p>Вставляете своё фото → готово к выкладке.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ФИНАЛ -->
+<section class="section-divider" style="text-align: center !important;">
+    <span class="num">Спасибо</span>
+    <h1>Вопросы?</h1>
+</section>
+
+<section class="title-slide" style="text-align: center !important;">
+    <p style="font-family: var(--font-serif); font-style: italic; font-size: 1.3em; color: var(--c-navy-soft); max-width: 700px; margin: 0 auto 1em;">
+        ИИ не делает работу за вас.<br>
+        Но с правильным подходом — умножает вашу экспертизу в 10 раз.
+    </p>
+    <div class="meta" style="margin: 0 auto;">@рилсуля</div>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script>
+    Reveal.initialize({
+        hash: true,
+        slideNumber: 'c/t',
+        transition: 'slide',
+        transitionSpeed: 'default',
+        backgroundTransition: 'fade',
+        controls: true,
+        progress: true,
+        center: true,
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+    });
+</script>
+</body>
+</html>

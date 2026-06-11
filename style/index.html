@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Уля — стилевой паспорт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f1e8;
+    --bg-card: #fdf9f1;
+    --text: #3d2818;
+    --muted: #8b7e6c;
+    --accent: #b8624c;
+    --accent-dark: #8a4530;
+    --border: #ddd0bd;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 300;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247, 241, 232, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  nav .container { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  nav .brand { font-family: var(--serif); font-size: 1.5rem; font-style: italic; color: var(--accent-dark); }
+  nav ul { list-style: none; display: flex; gap: 18px; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; text-transform: lowercase; }
+  nav a:hover { color: var(--accent); }
+
+  /* HERO */
+  header.hero { padding: 90px 0 70px; text-align: center; }
+  header.hero .eyebrow { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
+  header.hero h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(3.5rem, 8vw, 6rem); line-height: 1; margin-bottom: 16px; }
+  header.hero h1 em { font-style: italic; color: var(--accent); }
+  header.hero .tagline { font-family: var(--serif); font-style: italic; font-size: 1.4rem; color: var(--muted); margin-bottom: 40px; }
+  header.hero .params { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; font-size: 0.9rem; color: var(--muted); }
+  header.hero .params span strong { color: var(--text); font-weight: 500; }
+
+  /* SECTIONS */
+  section { padding: 80px 0; border-top: 1px solid var(--border); }
+  .section-eyebrow { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.05; margin-bottom: 40px; }
+  h3 { font-family: var(--serif); font-weight: 500; font-size: 1.6rem; margin-bottom: 12px; }
+
+  /* DIAGNOSTIC GRID */
+  .diag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .diag-card { background: var(--bg-card); border: 1px solid var(--border); padding: 28px; }
+  .diag-card .label { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .diag-card .value { font-family: var(--serif); font-size: 1.7rem; font-weight: 500; color: var(--accent-dark); line-height: 1.1; margin-bottom: 10px; }
+  .diag-card .note { font-size: 0.88rem; color: var(--muted); }
+
+  /* PALETTE */
+  .palette-block { margin-bottom: 40px; }
+  .palette-block h3 .ok { color: #6b8e4e; }
+  .palette-block h3 .no { color: #c0392b; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+  .swatch { background: var(--bg-card); border: 1px solid var(--border); overflow: hidden; }
+  .swatch .color { height: 80px; }
+  .swatch .name { padding: 10px 12px; font-size: 0.8rem; color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
+  .swatch .name strong { color: var(--text); font-weight: 500; }
+  .swatch .name code { font-size: 0.7rem; opacity: 0.7; font-family: ui-monospace, monospace; }
+
+  /* RULES */
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .rule { padding: 24px; border-left: 3px solid var(--accent); background: var(--bg-card); }
+  .rule .icon { font-family: var(--serif); font-style: italic; font-size: 2rem; color: var(--accent); display: block; margin-bottom: 4px; }
+  .rule .head { font-family: var(--serif); font-size: 1.3rem; color: var(--accent-dark); margin-bottom: 6px; }
+  .rule p { color: var(--text); font-size: 0.95rem; }
+
+  /* FABRIC */
+  .fabric-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .fabric-list .chip { background: var(--bg-card); border: 1px solid var(--border); padding: 8px 16px; border-radius: 30px; font-size: 0.9rem; color: var(--text); }
+  .fabric-list .chip.no { color: var(--muted); text-decoration: line-through; opacity: 0.6; }
+
+  /* GALLERY */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; align-items: center; }
+  .filters .filter-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-right: 8px; }
+  .filters button {
+    background: transparent; border: 1px solid var(--border); color: var(--text);
+    padding: 6px 14px; border-radius: 30px; font-family: var(--sans); font-size: 0.83rem;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .filters button:hover { border-color: var(--accent); color: var(--accent); }
+  .filters button.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .item-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .item-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(61, 40, 24, 0.08); }
+  .item-card .photo {
+    width: 100%; aspect-ratio: 3/4; background: #eee5d4 center/cover no-repeat;
+  }
+  .item-card .info { padding: 14px; }
+  .item-card .info .name { font-family: var(--serif); font-size: 1.1rem; line-height: 1.2; margin-bottom: 6px; }
+  .item-card .info .meta { font-size: 0.75rem; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
+  .item-card .badge { position: absolute; top: 10px; right: 10px; font-size: 0.65rem; padding: 4px 10px; border-radius: 20px; background: var(--bg); color: var(--accent-dark); text-transform: uppercase; letter-spacing: 0.1em; }
+  .badge.zhem { background: var(--accent); color: white; }
+  .badge.dusha { background: #6b8e4e; color: white; }
+  .badge.nauchi { background: #d4a25a; color: white; }
+  .fav-btn {
+    position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.85);
+    border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+    font-size: 1rem; padding: 0; display: flex; align-items: center; justify-content: center;
+    transition: transform 0.15s;
+  }
+  .fav-btn:hover { transform: scale(1.1); }
+  .fav-btn.faved { background: var(--accent); color: white; }
+
+  /* REFS in rules */
+  .rule.with-refs {
+    display: grid; grid-template-columns: 1fr; gap: 14px;
+  }
+  @media (min-width: 700px) {
+    .rule.with-refs { grid-template-columns: 1fr auto; align-items: start; }
+  }
+  .ref-strip {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .ref-strip img {
+    width: 80px; height: 110px; object-fit: cover;
+    border: 1px solid var(--border); background: #eee5d4;
+  }
+  .ref-strip figure { margin: 0; }
+  .ref-strip figcaption {
+    font-size: 0.65rem; color: var(--muted); text-align: center;
+    margin-top: 4px; max-width: 80px;
+  }
+
+  /* GLASSES (форма-карточки) */
+  .glasses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .glass-card { background: var(--bg-card); border: 1px solid var(--border); padding: 20px; text-align: center; }
+  .glass-card .shape {
+    font-size: 3rem; line-height: 1; margin-bottom: 8px; color: var(--accent-dark);
+  }
+  .glass-card .gname { font-family: var(--serif); font-size: 1.2rem; color: var(--accent-dark); margin-bottom: 8px; }
+  .glass-card p { font-size: 0.88rem; color: var(--muted); }
+
+  /* FUTURE LOOKS */
+  .future-look {
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 18px; display: grid; gap: 12px;
+  }
+  .future-look-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px;
+  }
+  .future-look-item {
+    aspect-ratio: 3/4; background: #eee5d4 center/cover no-repeat;
+    border: 1px solid var(--border); position: relative;
+  }
+  .future-look-item.buy::after {
+    content: '+ КУПИТЬ'; position: absolute; top: 6px; left: 6px;
+    background: var(--accent); color: white; font-size: 0.55rem;
+    letter-spacing: 0.15em; padding: 3px 6px;
+  }
+  .future-look h4 {
+    font-family: var(--serif); font-size: 1.15rem; color: var(--accent-dark); margin: 0;
+  }
+  .future-look p { font-size: 0.85rem; color: var(--muted); margin: 0; }
+
+  /* MIXER */
+  .mixer-intro { color: var(--muted); margin-bottom: 30px; max-width: 600px; }
+  .mixer { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 30px; }
+  @media (max-width: 800px) { .mixer { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 500px) { .mixer { grid-template-columns: 1fr; } }
+  .slot {
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 14px; display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+  }
+  .slot .slot-label {
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--muted); text-align: center;
+  }
+  .slot .slot-photo {
+    aspect-ratio: 3/4; background: #eee5d4 center/cover no-repeat;
+    border: 1px solid var(--border); position: relative;
+  }
+  .slot .slot-photo.empty {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+    background: var(--bg);
+  }
+  .slot .slot-name {
+    font-family: var(--serif); font-size: 0.95rem; line-height: 1.2;
+    text-align: center; min-height: 2.4em;
+  }
+  .slot .slot-controls {
+    display: flex; gap: 4px; align-items: center; justify-content: center;
+  }
+  .slot .slot-controls button {
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 4px 10px; cursor: pointer; font-family: var(--sans); font-size: 0.85rem;
+    color: var(--text); transition: all 0.15s;
+  }
+  .slot .slot-controls button:hover { background: var(--accent); color: white; border-color: var(--accent); }
+  .slot .slot-controls .arrow { font-size: 1rem; padding: 4px 8px; }
+  .slot .slot-controls .counter { font-size: 0.7rem; color: var(--muted); padding: 0 6px; }
+
+  .mixer-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .mixer-actions button {
+    background: var(--accent); color: white; border: none;
+    padding: 10px 24px; font-family: var(--sans); font-size: 0.9rem;
+    cursor: pointer; letter-spacing: 0.05em;
+    transition: background 0.15s;
+  }
+  .mixer-actions button:hover { background: var(--accent-dark); }
+  .mixer-actions button.ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .mixer-actions button.ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+
+  .saved-sets-title { font-family: var(--serif); font-size: 1.4rem; color: var(--accent-dark); margin: 40px 0 16px; }
+  .saved-sets { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  .saved-set {
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 12px; display: flex; flex-direction: column; gap: 8px;
+    cursor: pointer; transition: transform 0.15s;
+  }
+  .saved-set:hover { transform: translateY(-2px); }
+  .saved-set .preview { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .saved-set .preview .mini {
+    aspect-ratio: 1; background: #eee5d4 center/cover no-repeat; border: 1px solid var(--border);
+  }
+  .saved-set .set-name { font-family: var(--serif); font-size: 0.95rem; text-align: center; }
+  .saved-set .delete-set {
+    align-self: flex-end; background: none; border: none; color: var(--muted);
+    cursor: pointer; font-size: 0.75rem; padding: 0;
+  }
+  .saved-set .delete-set:hover { color: #c0392b; }
+
+  /* NEVER */
+  .never-list { display: grid; gap: 12px; }
+  .never-item { display: flex; gap: 14px; padding: 16px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid #c0392b; }
+  .never-item .x { color: #c0392b; font-family: var(--serif); font-size: 1.4rem; line-height: 1; }
+  .never-item p { font-size: 0.95rem; }
+
+  /* FOOTER */
+  footer { padding: 60px 0 40px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); font-size: 0.85rem; }
+  footer em { font-family: var(--serif); font-style: italic; color: var(--accent); font-size: 1.1rem; }
+
+  /* MODAL (for detail view) */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(61, 40, 24, 0.7); z-index: 100;
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--bg); max-width: 700px; width: 100%; max-height: 90vh;
+    overflow-y: auto; border: 1px solid var(--border);
+  }
+  .modal img { width: 100%; max-height: 60vh; object-fit: contain; background: #eee5d4; }
+  .modal .modal-info { padding: 24px; }
+  .modal .modal-info h3 { margin-bottom: 12px; }
+  .modal .modal-info .meta-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .modal .modal-info .chip { background: var(--bg-card); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; color: var(--muted); }
+  .modal .modal-close { float: right; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--muted); line-height: 1; }
+
+  @media (max-width: 600px) {
+    nav .brand { font-size: 1.2rem; }
+    nav ul { gap: 12px; }
+    nav a { font-size: 0.78rem; }
+    section { padding: 60px 0; }
+    header.hero { padding: 60px 0 50px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="brand">Уля</div>
+    <ul>
+      <li><a href="#diagnostika">диагностика</a></li>
+      <li><a href="#palitra">палитра</a></li>
+      <li><a href="#pravila">правила</a></li>
+      <li><a href="#tkani">ткани</a></li>
+      <li><a href="#galereya">гардероб</a></li>
+      <li><a href="#mixer">миксер</a></li>
+      <li><a href="#shopping">докупить</a></li>
+      <li><a href="#future-looks">с докупкой</a></li>
+      <li><a href="#glasses">очки</a></li>
+      <li><a href="#travel">грузия</a></li>
+      <li><a href="#swim">купальник</a></li>
+      <li><a href="#nikogda">никогда</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">стилевой паспорт</div>
+    <h1>Уля <em>в палитре</em></h1>
+    <div class="tagline">Soft Autumn · Soft Natural · cottagecore</div>
+    <div class="params">
+      <span><strong>25</strong> лет</span>
+      <span><strong>162</strong> см</span>
+      <span><strong>64</strong> кг</span>
+      <span><strong>90/72/102</strong></span>
+      <span>размер <strong>44–46</strong></span>
+      <span>обувь <strong>38</strong> широкий носок</span>
+    </div>
+  </div>
+</header>
+
+<section id="diagnostika">
+  <div class="container">
+    <div class="section-eyebrow">кто я</div>
+    <h2>Четыре опоры</h2>
+    <div class="diag-grid">
+      <div class="diag-card">
+        <div class="label">Цветотип</div>
+        <div class="value">Soft Autumn</div>
+        <div class="note">нейтральный уклон — приглушённые тёплые тона, ничего звенящего у лица</div>
+      </div>
+      <div class="diag-card">
+        <div class="label">Кибби</div>
+        <div class="value">Soft Natural</div>
+        <div class="note">мягкие приталенные силуэты, средние принты, драпировка</div>
+      </div>
+      <div class="diag-card">
+        <div class="label">Фигура</div>
+        <div class="value">Груша</div>
+        <div class="note">бёдра шире плеч на 12 см — талию обозначать, низ не обтягивать</div>
+      </div>
+      <div class="diag-card">
+        <div class="label">Эстетика</div>
+        <div class="value">Cottagecore</div>
+        <div class="note">Casual Chic с историческими акцентами — корсеты, средневековые силуэты, природа</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="palitra">
+  <div class="container">
+    <div class="section-eyebrow">цвета</div>
+    <h2>Палитра</h2>
+
+    <div class="palette-block">
+      <h3><span class="ok">✓</span> мои</h3>
+      <div class="swatches" id="palette-yes"></div>
+    </div>
+
+    <div class="palette-block">
+      <h3><span class="no">✗</span> не мои</h3>
+      <div class="swatches" id="palette-no"></div>
+    </div>
+
+    <div style="margin-top: 30px; padding: 24px; background: var(--bg-card); border-left: 3px solid var(--accent); font-family: var(--serif); font-style: italic; font-size: 1.2rem; color: var(--accent-dark);">
+      Сомневаешься — <strong>шоколад</strong>, <strong>кремовый</strong> или <strong>оливковый</strong>.
+    </div>
+  </div>
+</section>
+
+<section id="pravila">
+  <div class="container">
+    <div class="section-eyebrow">фигура</div>
+    <h2>Железные правила</h2>
+    <div class="rules">
+      <div class="rule">
+        <span class="icon">I.</span>
+        <div class="head">Руки</div>
+        <p>Всегда закрывать от плеча до локтя. Комплексую.</p>
+      </div>
+      <div class="rule">
+        <span class="icon">II.</span>
+        <div class="head">Ноги</div>
+        <p>Показывать. Этим горжусь.</p>
+      </div>
+      <div class="rule">
+        <span class="icon">III.</span>
+        <div class="head">Талия</div>
+        <p>Всегда обозначать — ремнём, корсетом, кроем.</p>
+      </div>
+      <div class="rule">
+        <span class="icon">IV.</span>
+        <div class="head">Живот</div>
+        <p>Не обтягивать. Драпировка, свободный крой.</p>
+      </div>
+      <div class="rule">
+        <span class="icon">V.</span>
+        <div class="head">Один акцент</div>
+        <p>Странная деталь — одна. Лягушка ИЛИ шляпа ИЛИ ободок. Не всё разом.</p>
+      </div>
+      <div class="rule">
+        <span class="icon">VI.</span>
+        <div class="head">Чёрный у лица</div>
+        <p>Только под верхним слоем другого цвета.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tkani">
+  <div class="container">
+    <div class="section-eyebrow">материалы</div>
+    <h2>Без утюга</h2>
+    <p style="margin-bottom: 20px; color: var(--muted);">Утюга нет. Беру только то, что не превращается в комок.</p>
+    <h3 style="font-size: 1.1rem; color: var(--muted); margin-bottom: 14px;">Беру</h3>
+    <div class="fabric-list">
+      <span class="chip">лён с вискозой</span>
+      <span class="chip">тенсел</span>
+      <span class="chip">хлопок-сатин</span>
+      <span class="chip">трикотаж</span>
+      <span class="chip">шёлк</span>
+      <span class="chip">вельвет</span>
+      <span class="chip">шерсть</span>
+    </div>
+    <h3 style="font-size: 1.1rem; color: var(--muted); margin: 24px 0 14px;">Опасно</h3>
+    <div class="fabric-list">
+      <span class="chip no">чистый лён</span>
+      <span class="chip no">хлопок-поплин</span>
+    </div>
+    <p style="color: var(--muted); font-size: 0.88rem; margin-top: 14px;">Чистый лён — только с лайфхаком пара в ванной.</p>
+  </div>
+</section>
+
+<section id="galereya">
+  <div class="container">
+    <div class="section-eyebrow">мой гардероб</div>
+    <h2>51 вещь</h2>
+
+    <div class="filters">
+      <span class="filter-label">категория:</span>
+      <button class="active" data-filter="cat:all">всё</button>
+      <button data-filter="cat:жемчужина">жемчужины</button>
+      <button data-filter="cat:база">база</button>
+      <button data-filter="cat:научи">научи носить</button>
+      <button data-filter="cat:fav">♥ избранное</button>
+    </div>
+
+    <div class="filters">
+      <span class="filter-label">тип:</span>
+      <button class="active" data-filter="type:all">всё</button>
+      <button data-filter="type:dress">платья</button>
+      <button data-filter="type:top">верх</button>
+      <button data-filter="type:bottom">низ</button>
+      <button data-filter="type:outerwear">верхняя</button>
+      <button data-filter="type:corset">корсеты</button>
+      <button data-filter="type:jumpsuit">комбезы</button>
+      <button data-filter="type:hat">шляпы</button>
+      <button data-filter="type:accessory">аксессуары</button>
+      <button data-filter="type:shoes">обувь</button>
+    </div>
+
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<section id="mixer">
+  <div class="container">
+    <div class="section-eyebrow">собрать образ</div>
+    <h2>Миксер</h2>
+    <p class="mixer-intro">Стрелками крути вещи по слоту. Собрала образ — нажми «сохранить как сет», и он останется внизу. Никакого облака, всё в памяти браузера.</p>
+
+    <div class="mixer" id="mixer-slots"></div>
+
+    <div class="mixer-actions">
+      <button onclick="randomizeMix()">↻ случайный образ</button>
+      <button class="ghost" onclick="clearMix()">очистить</button>
+      <button onclick="saveSet()">сохранить как сет</button>
+    </div>
+
+    <h3 class="saved-sets-title">образы от стилиста</h3>
+    <p class="mixer-intro" style="margin-bottom: 16px;">24 готовых образа собрала под твою палитру, фигуру и эстетику. Клик — откроется в миксере наверху.</p>
+    <div class="saved-sets" id="stylist-sets"></div>
+
+    <h3 class="saved-sets-title">мои сохранённые образы</h3>
+    <div class="saved-sets" id="saved-sets"></div>
+  </div>
+</section>
+
+<section id="shopping">
+  <div class="container">
+    <div class="section-eyebrow">шоппинг-лист</div>
+    <h2>Докупить — 6 вещей</h2>
+    <p class="mixer-intro">Из твоих 30 референсов вычленила доминанту: жилет, длинная юбка, ботинки. Под каждым пунктом — точные фото из твоей же папки рефов, чтобы понимать о чём речь.</p>
+    <div class="rules" style="grid-template-columns: 1fr;">
+
+      <div class="rule with-refs" style="border-left-color: var(--accent);">
+        <div>
+          <span class="icon">1</span>
+          <div class="head">Жилет коричневый замшевый или бархатный</div>
+          <p>На пуговицах. Перекрывает 7 твоих рефов сразу. Поверх любой блузы или платья. Авито: «жилет бархат винтаж», магазин Veles_second в СПб.</p>
+        </div>
+        <div class="ref-strip">
+          <figure><img src="refs/IMG_6015.jpg" alt=""><figcaption>Veles_second</figcaption></figure>
+          <figure><img src="refs/IMG_6070.jpg" alt=""><figcaption>в пустыне</figcaption></figure>
+          <figure><img src="refs/IMG_6071.jpg" alt=""><figcaption>с шляпой</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="rule with-refs" style="border-left-color: var(--accent);">
+        <div>
+          <span class="icon">2</span>
+          <div class="head">Длинная многоярусная юбка</div>
+          <p>Оливковая, шалфейная или тёплый беж. Кружево, цыганка. У тебя ВСЕ юбки короткие — это главный пропуск в cottagecore. WB: «юбка цыганская ярусная», «юбка макси кружево».</p>
+        </div>
+        <div class="ref-strip">
+          <figure><img src="refs/IMG_6052.jpg" alt=""><figcaption>сарафан-фартук</figcaption></figure>
+          <figure><img src="refs/IMG_6053.jpg" alt=""><figcaption>оливковый сарафан</figcaption></figure>
+          <figure><img src="refs/IMG_6065.jpg" alt=""><figcaption>зелёное в поле</figcaption></figure>
+          <figure><img src="refs/IMG_6072.jpg" alt=""><figcaption>зелёная макси</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="rule with-refs" style="border-left-color: var(--accent);">
+        <div>
+          <span class="icon">3</span>
+          <div class="head">Тканевая сумка-портфель или хобо</div>
+          <p>Шоколадная или тёплый беж, лён / хлопок / замша. В твоих рефах сумка появляется в каждом втором луке — без неё образ не «закрыт». В гардеробе нет повседневной сумки на каждый день. Авито: «сумка винтаж замша коричневая», «сумка тканевая бохо».</p>
+        </div>
+        <div class="ref-strip">
+          <figure><img src="refs/IMG_6057.jpg" alt=""><figcaption>с сафари</figcaption></figure>
+          <figure><img src="refs/IMG_6069.jpg" alt=""><figcaption>с кардиганом</figcaption></figure>
+          <figure><img src="refs/IMG_6076.jpg" alt=""><figcaption>с комбезом</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="rule with-refs">
+        <div>
+          <span class="icon">4</span>
+          <div class="head">Кремовые широкие льняные брюки</div>
+          <p>Пара к шоколадным 6729. Расширит летний низ в два раза. WB: «брюки льняные широкие бежевые», «брюки палаццо лён кремовый».</p>
+        </div>
+        <div class="ref-strip">
+          <figure><img src="refs/IMG_6057.jpg" alt=""><figcaption>сафари-комплект</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="rule with-refs">
+        <div>
+          <span class="icon">5</span>
+          <div class="head">Блуза с природным принтом</div>
+          <p>Листья, цветы, ботаника — в кремовом / оливковом / терракотовом. Заземлённый принт, не пёстрый. Один «странный» акцент на образ — рубашка может быть таким. WB: «блуза с принтом листья», «рубашка ботаническая лён».</p>
+        </div>
+        <div class="ref-strip">
+          <figure><img src="refs/IMG_6067.jpg" alt=""><figcaption>пальмовый</figcaption></figure>
+          <figure><img src="refs/IMG_6076.jpg" alt=""><figcaption>цветочный под комбез</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="rule with-refs">
+        <div>
+          <span class="icon">6</span>
+          <div class="head">Длинное пальто с капюшоном (на потом)</div>
+          <p>Оливковое или шоколадное. Если бюджет тянет — закроет осень-зиму в твоей эстетике. На авито «пальто капюшон винтаж шерсть».</p>
+        </div>
+        <div class="ref-strip">
+          <figure><img src="refs/IMG_6050.jpg" alt=""><figcaption>зелёный плащ</figcaption></figure>
+          <figure><img src="refs/IMG_6056.jpg" alt=""><figcaption>шоколадное</figcaption></figure>
+          <figure><img src="refs/IMG_6066.jpg" alt=""><figcaption>оливковое с капюшоном</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; padding: 20px; background: var(--bg-card); border-left: 3px solid #c0392b; font-size: 0.95rem;">
+      <strong>НЕ покупать:</strong> ещё одну чёрную юбку, ещё один корсет, ещё один кардиган, ещё одни джинсы. Этого у тебя достаточно.
+    </div>
+  </div>
+</section>
+
+<section id="future-looks">
+  <div class="container">
+    <div class="section-eyebrow">образы с докупкой</div>
+    <h2>Как новые вещи сядут к старым</h2>
+    <p class="mixer-intro">Каждая будущая покупка добавляет ≈4 новых образа к гардеробу. Здесь видно как именно. Плашка <strong style="color: var(--accent);">+ КУПИТЬ</strong> на референсе будущей вещи, остальное — твои реальные фото.</p>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 30px 0 16px;">Жилет коричневый — даёт 4 образа</h3>
+    <div class="diag-grid">
+      <div class="future-look">
+        <h4>Кафе в Тбилиси</h4>
+        <p>Жилет + кремовая блуза + джинсовая мини + сандалии</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6015.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_8699.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6675.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5895.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Питерский смарт-кэжуал</h4>
+        <p>Жилет + оливковая рубашка + шоколадные брюки + терракотовая шляпа</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6071.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5910.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6729.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5921.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Жилет на платье в пол</h4>
+        <p>Жилет поверх терракотового платья — историчный силуэт</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6070.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6758.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5945.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Зимний с водолазкой</h4>
+        <p>Жилет + шоколадная водолазка + шоколадные брюки + ремень</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6015.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5912.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6729.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5894.jpg')"></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 40px 0 16px;">Длинная оливковая юбка — даёт 4 образа</h3>
+    <div class="diag-grid">
+      <div class="future-look">
+        <h4>Cottagecore с блузой и корсетом</h4>
+        <p>Юбка + кремовая блуза + молочный корсет + лисичка</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6072.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_8699.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5978.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6905.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Оливковая моноблок</h4>
+        <p>Юбка + оливковая рубашка + ремень + бежевая шляпа</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6053.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5910.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5894.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5945.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Юбка с водолазкой</h4>
+        <p>Юбка + шоколадная водолазка + ремень + терракотовая шляпа</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6052.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5912.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5894.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5921.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Юбка с полоской</h4>
+        <p>Юбка + рубашка в полоску + соломенная шляпа + лягушка</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6065.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5909.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5922.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6762.jpg')"></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 40px 0 16px;">Тканевая сумка — даёт 4 образа</h3>
+    <div class="diag-grid">
+      <div class="future-look">
+        <h4>Сумка + терракотовое платье</h4>
+        <p>Сумка + терракотовое в пол + бежевая шляпа = ивент-день</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6057.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6758.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5945.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Сумка + оливковая рубашка</h4>
+        <p>Сумка + оливковая рубашка + шоколадные брюки + ремень = смарт-кэжуал</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6069.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5910.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6729.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5894.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Сумка + комбез + лисичка</h4>
+        <p>Сумка + светло-оливковый комбез + ободок-лисичка = прогулка</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6076.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5966.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6905.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Сумка + блуза + шорты</h4>
+        <p>Сумка + кремовая блуза с оборками + шорты + ремень = пикник</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6057.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_8699.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5926.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5894.jpg')"></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 40px 0 16px;">Кремовые брюки — даёт 3 образа</h3>
+    <div class="diag-grid">
+      <div class="future-look">
+        <h4>Кремовый монохром</h4>
+        <p>Кремовые брюки + кремовая блуза + ремень + жемчужный ободок</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6057.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_8699.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5894.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6799.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Кремовые + водолазка</h4>
+        <p>Кремовые + шоколадная водолазка + терракотовая шляпа</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6057.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5912.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5921.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Кремовые + клетка</h4>
+        <p>Кремовые + клетчатая рубашка + бежевая шляпа</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6057.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5960.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5945.jpg')"></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 40px 0 16px;">Принт-блуза — даёт 3 образа</h3>
+    <div class="diag-grid">
+      <div class="future-look">
+        <h4>Принт + шоколадные брюки</h4>
+        <p>Принт-блуза + шоколадные брюки + ремень + бежевая шляпа = сафари-смарт</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6067.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6729.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5894.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5945.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Принт + шорты + лягушка</h4>
+        <p>Принт-блуза + джинсовые шорты + ремень + лягушка = бохо-кэжуал</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6076.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5926.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5894.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_6762.jpg')"></div>
+        </div>
+      </div>
+      <div class="future-look">
+        <h4>Принт под оливковый комбез</h4>
+        <p>Принт-блуза под светло-оливковый комбез + кепка с белкой = деревенский</p>
+        <div class="future-look-row">
+          <div class="future-look-item buy" style="background-image:url('refs/IMG_6076.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5966.jpg')"></div>
+          <div class="future-look-item" style="background-image:url('photos/IMG_5920.jpg')"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="glasses">
+  <div class="container">
+    <div class="section-eyebrow">от солнца</div>
+    <h2>Очки</h2>
+    <p class="mixer-intro">Овальное лицо + Soft Autumn + ты любишь круглые. Подходящих форм три. Главное — линзы с честной UV-защитой, иначе тёмные очки только вредят (зрачок расширяется, ультрафиолет залетает сильнее).</p>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin-bottom: 16px;">Три формы под твоё лицо</h3>
+    <div class="glasses-grid">
+      <div class="glass-card">
+        <div class="shape">◖◗</div>
+        <div class="gname">Cat-eye</div>
+        <p>Слегка приподнятые уголки. Винтаж 50-х, идёт твоему Soft Natural и обыгрывает овал лица. Оправа: <strong>черепаховая</strong> или <strong>шоколадная</strong>.</p>
+      </div>
+      <div class="glass-card">
+        <div class="shape">◯ ◯</div>
+        <div class="gname">Круглые</div>
+        <p>Твоя проверенная форма — на фото в них постоянно. Бери <strong>не маленькие Леннон</strong>, а средние, чтобы не утяжелить нижнюю часть лица. Шоколад / черепаха.</p>
+      </div>
+      <div class="glass-card">
+        <div class="shape">▱ ▱</div>
+        <div class="gname">Wayfarer</div>
+        <p>Классическая трапеция, как Ray-Ban. Подойдёт под джинсовое и сафари-сетапы. Оправа <strong>коричневая</strong> или <strong>тёплый беж</strong>.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 40px 0 16px;">Что должно быть на линзах</h3>
+    <div class="rules">
+      <div class="rule" style="border-left-color: var(--accent);">
+        <span class="icon">✓</span>
+        <div class="head">UV400</div>
+        <p>Маркировка обязательна. Блокирует и UVA, и UVB до 400 нм. Без неё — это не очки, а аксессуар, который вредит глазам.</p>
+      </div>
+      <div class="rule" style="border-left-color: var(--accent);">
+        <span class="icon">✓</span>
+        <div class="head">Категория темности 3</div>
+        <p>Для яркого солнца (Грузия, море). Категория 2 — для города. Категория 4 — горы, снег, ослепляет в городе.</p>
+      </div>
+      <div class="rule" style="border-left-color: var(--accent);">
+        <span class="icon">✓</span>
+        <div class="head">Поляризация</div>
+        <p>Снимает блики от воды, машин, асфальта. В Грузии и у моря — нужна. Метка «polarized» на упаковке.</p>
+      </div>
+      <div class="rule">
+        <span class="icon">✗</span>
+        <div class="head">НЕ брать</div>
+        <p>Без маркировки UV. Светлые «прозрачные» линзы как солнечные. Голубые / розовые / зеркальные радужные — искажают цвет и не в твоей палитре.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 40px 0 16px;">Где брать</h3>
+    <ul style="padding-left: 20px; line-height: 1.8;">
+      <li><strong>Ray-Ban Wayfarer / Round</strong> — оригинал ≈10-15к, всегда UV400. Если нужны на годы — это надёжно.</li>
+      <li><strong>Polaroid</strong> — поляризация хорошая (бренд её изобрёл), 3-5к. Хороший компромисс.</li>
+      <li><strong>Persol</strong> — итальянская винтажная оптика, есть в ЦУМ. 15-25к, для коллекции.</li>
+      <li><strong>WB / Lamoda:</strong> «очки солнцезащитные UV400 поляризация cat eye», смотри на отзывы и маркировки.</li>
+      <li><strong>Avito винтаж</strong> — оригинальные cat-eye 60-70-х по 1-3к. <em>Проверь тест UV в оптике перед покупкой.</em></li>
+    </ul>
+
+    <div style="margin-top: 24px; padding: 20px; background: var(--bg-card); border-left: 3px solid var(--accent); font-size: 0.95rem;">
+      <strong>Лайфхак:</strong> в любой оптике есть UV-тестер. Принеси очки — за 10 секунд скажут, держат UV или нет. Бесплатно. Перед поездкой обязательно.
+    </div>
+  </div>
+</section>
+
+<section id="travel">
+  <div class="container">
+    <div class="section-eyebrow">в портфель</div>
+    <h2>Капсула в Грузию</h2>
+    <p class="mixer-intro">11 вещей + одна пара обуви = минимум 15 разных образов. Один цвет-стержень (шоколад) + один акцент (терракот) + натуральные ткани. Всё сочетается между собой.</p>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin-bottom: 16px;">Что положить</h3>
+    <div class="gallery" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_6758.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Терракотовое в пол</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_6805.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Кремовое средневековое</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_6812.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Зелёное шёлковое</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_5910.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Оливковая рубашка</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_8699.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Кремовая блуза</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_5966.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Оливковый комбез</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_5926.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Джинсовые шорты</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_5978.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Молочный корсет</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_5894.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Шоколадный ремень</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_6790.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Кружевной воротник</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_6905.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Лисичка ободок</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_5945.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Бежевая шляпа</div></div></div>
+      <div class="item-card"><div class="photo" style="background-image:url('photos/IMG_5895.jpg')"></div><div class="info"><div class="name" style="font-size:0.85rem;">Сандалии (одна пара)</div></div></div>
+    </div>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 40px 0 16px;">15 готовых образов на каждый день</h3>
+    <ol style="padding-left: 20px; line-height: 1.8;">
+      <li>Терракотовое в пол + лисичка + сандалии (день у моря)</li>
+      <li>Терракотовое + молочный корсет поверх (вечер)</li>
+      <li>Кремовое средневековое + лисичка (ужин)</li>
+      <li>Кремовое + молочный корсет поверх (фотосет)</li>
+      <li>Зелёное шёлковое без корсета (жаркий день)</li>
+      <li>Зелёное + корсет + лисичка (вечер)</li>
+      <li>Оливковая рубашка + шорты + ремень + шляпа (город)</li>
+      <li>Блуза с оборками + шорты + ремень + шляпа (пикник)</li>
+      <li>Блуза с оборками + молочный корсет + шорты (вечер)</li>
+      <li>Блуза + кружевной воротник + шорты (фотосессия)</li>
+      <li>Оливковый комбез + лисичка (прогулка)</li>
+      <li>Оливковый комбез + ремень на талию (поджатый)</li>
+      <li>Блуза с оборками + комбез сверху (слой)</li>
+      <li>Терракотовое + кружевной воротник (платье «в люди»)</li>
+      <li>Оливковая рубашка + ремень на талию (рубашка-платье)</li>
+    </ol>
+
+    <div style="margin-top: 24px; padding: 20px; background: var(--bg-card); border-left: 3px solid var(--accent); font-size: 0.95rem;">
+      <strong>НЕ брать в Грузию:</strong> верхнюю тяжёлую, шерстяные жакеты, чёрный корсет (молочный универсальнее), чёрные комбезы.
+    </div>
+  </div>
+</section>
+
+<section id="swim">
+  <div class="container">
+    <div class="section-eyebrow">пляж</div>
+    <h2>Купальник</h2>
+
+    <div class="diag-grid" style="margin-bottom: 30px;">
+      <div class="diag-card">
+        <div class="label">Цвет № 1</div>
+        <div class="value" style="color: #5a3a2a;">Шоколад</div>
+        <div class="note">Самый безопасный, стройнит, в твоей палитре</div>
+      </div>
+      <div class="diag-card">
+        <div class="label">Цвет № 2</div>
+        <div class="value" style="color: #b8624c;">Терракот</div>
+        <div class="note">Твой акцентный — на пляже = огонь</div>
+      </div>
+      <div class="diag-card">
+        <div class="label">Цвет № 3</div>
+        <div class="value" style="color: #9aa489;">Шалфей</div>
+        <div class="note">Приглушённый зелёный, если хочется свежести</div>
+      </div>
+      <div class="diag-card">
+        <div class="label">Цвет № 4</div>
+        <div class="value" style="color: #7d3640;">Мягкий бордо</div>
+        <div class="note">Винный — драматично без чёрного</div>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin-bottom: 14px;">Форма — раздельный «ретро»</h3>
+    <div class="rules" style="grid-template-columns: 1fr 1fr;">
+      <div class="rule">
+        <span class="icon">↑</span>
+        <div class="head">Верх — балконет</div>
+        <p>Чашка с косточками С/D на твою грудь, <strong>широкие бретели</strong>. Тонкие будут впиваться. Никаких треугольников без поддержки.</p>
+      </div>
+      <div class="rule">
+        <span class="icon">↓</span>
+        <div class="head">Низ — высокая талия</div>
+        <p>Как твои любимые шорты. Прикрывает бока, обозначает талию. Может с оборкой или поясом. <strong>НЕ стринги</strong> — на груше не работает.</p>
+      </div>
+    </div>
+
+    <p style="margin-top: 24px; font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--muted);">Силуэт получится «пин-ап 50-х» — твой Soft Natural в любимом виде.</p>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 30px 0 14px;">Альтернатива — слитный</h3>
+    <p>Глубокий V-вырез или квадратный, оборка по линии бёдер, цвет бордо или шоколад. Закроет живот, обозначит талию.</p>
+
+    <h3 style="font-family: var(--serif); color: var(--accent-dark); margin: 30px 0 14px;">Где смотреть в РФ</h3>
+    <ul style="padding-left: 20px; line-height: 1.8;">
+      <li><strong>Intimissimi / Calzedonia</strong> — балконеты с поддержкой, нужные цвета бывают</li>
+      <li><strong>WB:</strong> «купальник ретро высокая талия», «купальник балконет с косточками»</li>
+      <li><strong>Pin-up Stars / Marlies Dekkers</strong> (бюджет от 8к) — самая красивая поддержка груди</li>
+      <li><strong>Avito</strong> — винтажные раздельные купальники 50-х по 1.5-3к</li>
+    </ul>
+
+    <div style="margin-top: 24px; padding: 20px; background: var(--bg-card); border-left: 3px solid #c0392b; font-size: 0.95rem;">
+      <strong>НЕ покупать:</strong> чёрный купальник, белый, неон, любой холодный голубой/розовый. И стринги.
+    </div>
+  </div>
+</section>
+
+<section id="nikogda">
+  <div class="container">
+    <div class="section-eyebrow">стоп-лист</div>
+    <h2>Никогда</h2>
+    <div class="never-list">
+      <div class="never-item"><span class="x">✗</span><p>Чёрный или белый прямо у лица без буфера другого цвета.</p></div>
+      <div class="never-item"><span class="x">✗</span><p>Узкий носок и жёсткая подошва. Даже если силуэтно подходит.</p></div>
+      <div class="never-item"><span class="x">✗</span><p>Каблуки. Никаких.</p></div>
+      <div class="never-item"><span class="x">✗</span><p>Открытые плечи + открытые руки одновременно.</p></div>
+      <div class="never-item"><span class="x">✗</span><p>Обтяжка по животу. Никогда.</p></div>
+      <div class="never-item"><span class="x">✗</span><p>Холодный голубой/серый/лиловый/неон у лица.</p></div>
+      <div class="never-item"><span class="x">✗</span><p>Два «странных» акцента в одном образе.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p style="margin-bottom: 8px;">Сделано <em>с собой</em> и для себя — май 2026</p>
+    <p>гардероб обновляется по жизни</p>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <img id="modal-img" alt="">
+    <div class="modal-info" id="modal-info"></div>
+  </div>
+</div>
+
+<script type="application/json" id="wardrobe-data">
+{
+  "meta": {
+    "owner": "Уля",
+    "updated": "2026-05-17",
+    "total_items": 51,
+    "items_with_scarf_split": 51,
+    "color_type": "Soft Autumn (нейтральный уклон)",
+    "kibbe": "Soft Natural",
+    "figure": "Груша (А-силуэт)",
+    "aesthetic": "Cottagecore / Casual Chic / Natural"
+  },
+  "palette": {
+    "yes": ["терракот", "шоколад", "оливковый", "тёплый беж", "верблюжий", "тауп", "кремовый", "мягкий бордо", "пыльный коралл", "джинсовый синий", "шалфей"],
+    "no": ["чёрный у лица", "чистый белый", "неон", "фуксия", "ледяной голубой", "яркий жёлтый"]
+  },
+  "items": [
+    {
+      "id": "6758",
+      "photo": "photos/IMG_6758.jpg",
+      "name": "Терракотовое льняное платье в пол",
+      "type": "dress",
+      "colors": ["терракот"],
+      "category": "жемчужина",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "event",
+      "tags": ["рукав длинный", "cottagecore", "лён", "в пол"]
+    },
+    {
+      "id": "5944",
+      "photo": "photos/IMG_5944.jpg",
+      "name": "Терракотовый пуховик с капюшоном",
+      "type": "outerwear",
+      "colors": ["терракот"],
+      "category": "жемчужина",
+      "seasons": ["осень"],
+      "formality": "casual",
+      "tags": ["пуховик", "капюшон", "тёплый"]
+    },
+    {
+      "id": "6805",
+      "photo": "photos/IMG_6805.jpg",
+      "name": "Кремовое средневековое платье с рукавами-крыльями",
+      "type": "dress",
+      "colors": ["кремовый"],
+      "category": "жемчужина",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "event",
+      "tags": ["средневековое", "рукава-крылья", "шнуровка"]
+    },
+    {
+      "id": "5921",
+      "photo": "photos/IMG_5921.jpg",
+      "name": "Терракотовая фетровая шляпа с золотой цепочкой",
+      "type": "hat",
+      "colors": ["терракот"],
+      "category": "жемчужина",
+      "seasons": ["осень", "зима", "весна"],
+      "formality": "smart",
+      "tags": ["фетр", "цепочка", "акцент"]
+    },
+    {
+      "id": "5923",
+      "photo": "photos/IMG_5923.jpg",
+      "name": "Шоколадный шёлковый тренч асимметричный",
+      "type": "outerwear",
+      "colors": ["шоколад"],
+      "category": "жемчужина",
+      "seasons": ["весна", "осень"],
+      "formality": "smart",
+      "tags": ["шёлк", "асимметрия", "длинный"]
+    },
+    {
+      "id": "5970",
+      "photo": "photos/IMG_5970.jpg",
+      "name": "Оранжевая шляпа со стимпанк-очками",
+      "type": "hat",
+      "colors": ["терракот"],
+      "category": "жемчужина",
+      "seasons": ["весна", "осень"],
+      "formality": "event",
+      "tags": ["стимпанк", "странный акцент", "очки"]
+    },
+    {
+      "id": "6577",
+      "photo": "photos/IMG_6577.jpg",
+      "name": "Коричневая вельветовая куртка оверсайз",
+      "type": "outerwear",
+      "colors": ["шоколад"],
+      "category": "жемчужина",
+      "seasons": ["осень", "весна"],
+      "formality": "casual",
+      "tags": ["вельвет", "оверсайз"]
+    },
+    {
+      "id": "6905",
+      "photo": "photos/IMG_6905.jpg",
+      "name": "Терракотовый вязаный ободок-лисичка",
+      "type": "accessory",
+      "colors": ["терракот"],
+      "category": "жемчужина",
+      "seasons": ["осень", "зима"],
+      "formality": "casual",
+      "tags": ["ручная работа", "лисичка", "акцент"]
+    },
+    {
+      "id": "6762",
+      "photo": "photos/IMG_6762.jpg",
+      "name": "Зелёная вязаная сумка-лягушка",
+      "type": "accessory",
+      "colors": ["зелёный"],
+      "category": "душа",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "casual",
+      "tags": ["лягушка", "странный акцент", "со всем подряд"]
+    },
+    {
+      "id": "5957",
+      "photo": "photos/IMG_5957.jpg",
+      "name": "Коричневое средневековое платье со шнуровкой",
+      "type": "dress",
+      "colors": ["шоколад"],
+      "category": "база",
+      "seasons": ["осень", "зима", "весна"],
+      "formality": "event",
+      "tags": ["средневековое", "шнуровка"]
+    },
+    {
+      "id": "6083",
+      "photo": "photos/IMG_6083.jpg",
+      "name": "Голубое средневековое платье с корсетом",
+      "type": "dress",
+      "colors": ["джинсовый синий"],
+      "category": "база",
+      "seasons": ["весна", "лето"],
+      "formality": "event",
+      "tags": ["средневековое", "корсет", "шнуровка"]
+    },
+    {
+      "id": "5993",
+      "photo": "photos/IMG_5993.jpg",
+      "name": "Тёмно-синее мини с пышными рукавами",
+      "type": "dress",
+      "colors": ["джинсовый синий"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "smart",
+      "tags": ["пышные рукава", "квадратный вырез", "носит с корсетом"]
+    },
+    {
+      "id": "6038",
+      "photo": "photos/IMG_6038.jpg",
+      "name": "Чёрное миди V-вырез с пышными рукавами",
+      "type": "dress",
+      "colors": ["чёрный"],
+      "category": "база",
+      "seasons": ["осень", "зима"],
+      "formality": "event",
+      "tags": ["пышные рукава", "V-вырез", "носит с корсетом"]
+    },
+    {
+      "id": "6812",
+      "photo": "photos/IMG_6812.jpg",
+      "name": "Зелёное шёлковое длинное платье",
+      "type": "dress",
+      "colors": ["зелёный"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "smart",
+      "tags": ["шёлк", "халат-стиль", "носит с корсетом", "разрез"]
+    },
+    {
+      "id": "5910",
+      "photo": "photos/IMG_5910.jpg",
+      "name": "Оливковая льняная рубашка короткий рукав",
+      "type": "top",
+      "colors": ["оливковый"],
+      "category": "база",
+      "seasons": ["весна", "лето"],
+      "formality": "casual",
+      "tags": ["лён", "оверсайз"]
+    },
+    {
+      "id": "5909",
+      "photo": "photos/IMG_5909.jpg",
+      "name": "Рубашка оверсайз в бордово-белую полоску",
+      "type": "top",
+      "colors": ["бордо", "кремовый"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "casual",
+      "tags": ["полоска", "оверсайз"]
+    },
+    {
+      "id": "5912",
+      "photo": "photos/IMG_5912.jpg",
+      "name": "Шоколадная трикотажная водолазка",
+      "type": "top",
+      "colors": ["шоколад"],
+      "category": "база",
+      "seasons": ["осень", "зима"],
+      "formality": "casual",
+      "tags": ["трикотаж", "водолазка"]
+    },
+    {
+      "id": "5960",
+      "photo": "photos/IMG_5960.jpg",
+      "name": "Клетчатая оверсайз рубашка",
+      "type": "top",
+      "colors": ["шоколад", "бордо"],
+      "category": "база",
+      "seasons": ["осень", "весна"],
+      "formality": "casual",
+      "tags": ["клетка", "оверсайз"]
+    },
+    {
+      "id": "8698",
+      "photo": "photos/IMG_8698.jpg",
+      "name": "Поло-блузы трикотажные (коричневая + кремовая)",
+      "type": "top",
+      "colors": ["шоколад", "кремовый"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "casual",
+      "tags": ["поло", "трикотаж", "пара вещей на одном фото"]
+    },
+    {
+      "id": "8699",
+      "photo": "photos/IMG_8699.jpg",
+      "name": "Кремовая блуза с оборками",
+      "type": "top",
+      "colors": ["кремовый"],
+      "category": "база",
+      "seasons": ["весна", "лето"],
+      "formality": "smart",
+      "tags": ["оборки", "cottagecore"]
+    },
+    {
+      "id": "5981",
+      "photo": "photos/IMG_5981.jpg",
+      "name": "Чёрный кроп-топ длинный рукав",
+      "type": "top",
+      "colors": ["чёрный"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "casual",
+      "tags": ["кроп", "обязательно высокая посадка"]
+    },
+    {
+      "id": "5924",
+      "photo": "photos/IMG_5924.jpg",
+      "name": "Чёрный топ-комбинезон с шортами",
+      "type": "jumpsuit",
+      "colors": ["чёрный"],
+      "category": "база",
+      "seasons": ["весна", "лето"],
+      "formality": "smart",
+      "tags": ["короткий", "квадратный вырез", "рукав 3/4"]
+    },
+    {
+      "id": "6729",
+      "photo": "photos/IMG_6729.jpg",
+      "name": "Шоколадные широкие брюки",
+      "type": "bottom",
+      "colors": ["шоколад"],
+      "category": "база",
+      "seasons": ["осень", "зима", "весна"],
+      "formality": "smart",
+      "tags": ["широкие", "высокая посадка"]
+    },
+    {
+      "id": "5926",
+      "photo": "photos/IMG_5926.jpg",
+      "name": "Джинсовые шорты-бермуды светлые широкие",
+      "type": "bottom",
+      "colors": ["голубой"],
+      "category": "база",
+      "seasons": ["лето"],
+      "formality": "casual",
+      "tags": ["шорты", "широкие", "высокая посадка"]
+    },
+    {
+      "id": "6675",
+      "photo": "photos/IMG_6675.jpg",
+      "name": "Джинсовая мини-юбка светлая",
+      "type": "bottom",
+      "colors": ["голубой"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "casual",
+      "tags": ["мини", "выше колена", "хочет собрать образы"]
+    },
+    {
+      "id": "5919",
+      "photo": "photos/IMG_5919.jpg",
+      "name": "Серый шерстяной жакет оверсайз",
+      "type": "outerwear",
+      "colors": ["серый"],
+      "category": "база",
+      "seasons": ["осень", "весна"],
+      "formality": "smart",
+      "tags": ["шерсть", "оверсайз", "любимый"]
+    },
+    {
+      "id": "6536",
+      "photo": "photos/IMG_6536.jpg",
+      "name": "Чёрный бомбер",
+      "type": "outerwear",
+      "colors": ["чёрный"],
+      "category": "база",
+      "seasons": ["весна", "осень"],
+      "formality": "casual",
+      "tags": ["бомбер"]
+    },
+    {
+      "id": "6808",
+      "photo": "photos/IMG_6808.jpg",
+      "name": "Серо-синий жакет",
+      "type": "outerwear",
+      "colors": ["серый", "джинсовый синий"],
+      "category": "база",
+      "seasons": ["весна", "осень"],
+      "formality": "smart",
+      "tags": ["жакет"]
+    },
+    {
+      "id": "6026",
+      "photo": "photos/IMG_6026.jpg",
+      "name": "Серое длинное пальто-тренч оверсайз",
+      "type": "outerwear",
+      "colors": ["серый"],
+      "category": "база",
+      "seasons": ["осень", "весна"],
+      "formality": "smart",
+      "tags": ["пальто", "тренч", "оверсайз", "длинное"],
+      "note": "На фото также бежевый шарф с бахромой (отдельная позиция)"
+    },
+    {
+      "id": "6026-scarf",
+      "photo": "photos/IMG_6026.jpg",
+      "name": "Бежевый шарф с бахромой",
+      "type": "accessory",
+      "colors": ["тёплый беж"],
+      "category": "база",
+      "seasons": ["осень", "зима", "весна"],
+      "formality": "casual",
+      "tags": ["шарф", "бахрома"]
+    },
+    {
+      "id": "6906",
+      "photo": "photos/IMG_6906.jpg",
+      "name": "Бежевый вязаный капор",
+      "type": "hat",
+      "colors": ["тёплый беж"],
+      "category": "база",
+      "seasons": ["осень", "зима", "весна"],
+      "formality": "casual",
+      "tags": ["капор", "вязаный", "молния"]
+    },
+    {
+      "id": "5971",
+      "photo": "photos/IMG_5971.jpg",
+      "name": "Чёрный корсет с цветочной вышивкой",
+      "type": "corset",
+      "colors": ["чёрный"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "smart",
+      "tags": ["вышивка", "цветы"]
+    },
+    {
+      "id": "5978",
+      "photo": "photos/IMG_5978.jpg",
+      "name": "Молочный корсет со шнуровкой",
+      "type": "corset",
+      "colors": ["кремовый"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "smart",
+      "tags": ["шнуровка", "молочный"]
+    },
+    {
+      "id": "5966",
+      "photo": "photos/IMG_5966.jpg",
+      "name": "Светло-оливковый комбинезон",
+      "type": "jumpsuit",
+      "colors": ["оливковый"],
+      "category": "база",
+      "seasons": ["весна", "лето"],
+      "formality": "casual",
+      "tags": ["комбез"]
+    },
+    {
+      "id": "6647",
+      "photo": "photos/IMG_6647.jpg",
+      "name": "Кремовый комбинезон-шорты с поясом",
+      "type": "jumpsuit",
+      "colors": ["кремовый"],
+      "category": "база",
+      "seasons": ["весна", "лето"],
+      "formality": "smart",
+      "tags": ["комбез", "шорты", "пояс"]
+    },
+    {
+      "id": "6806",
+      "photo": "photos/IMG_6806.jpg",
+      "name": "Коричневый хлопковый сарафан-комбинезон",
+      "type": "jumpsuit",
+      "colors": ["шоколад"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "casual",
+      "tags": ["хлопок", "бретельки", "сарафан"]
+    },
+    {
+      "id": "5894",
+      "photo": "photos/IMG_5894.jpg",
+      "name": "Кожаный ремень шоколадный с орнаментом",
+      "type": "accessory",
+      "colors": ["шоколад"],
+      "category": "база",
+      "seasons": ["весь год"],
+      "formality": "casual",
+      "tags": ["кожа", "орнамент", "талия"]
+    },
+    {
+      "id": "5922",
+      "photo": "photos/IMG_5922.jpg",
+      "name": "Соломенная шляпа с белым шарфом в горошек",
+      "type": "hat",
+      "colors": ["тёплый беж", "кремовый"],
+      "category": "база",
+      "seasons": ["лето"],
+      "formality": "casual",
+      "tags": ["солома", "шарф", "горошек"]
+    },
+    {
+      "id": "5945",
+      "photo": "photos/IMG_5945.jpg",
+      "name": "Бежевая широкополая шляпа",
+      "type": "hat",
+      "colors": ["тёплый беж"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "smart",
+      "tags": ["широкополая"]
+    },
+    {
+      "id": "5920",
+      "photo": "photos/IMG_5920.jpg",
+      "name": "Сине-бежевая кепка с белкой",
+      "type": "hat",
+      "colors": ["джинсовый синий", "тёплый беж"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "casual",
+      "tags": ["кепка", "белка", "акцент"]
+    },
+    {
+      "id": "6790",
+      "photo": "photos/IMG_6790.jpg",
+      "name": "Белый кружевной воротник",
+      "type": "accessory",
+      "colors": ["кремовый"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "event",
+      "tags": ["кружево", "воротник"]
+    },
+    {
+      "id": "6799",
+      "photo": "photos/IMG_6799.jpg",
+      "name": "Жемчужный ободок для волос",
+      "type": "accessory",
+      "colors": ["кремовый"],
+      "category": "база",
+      "seasons": ["весь год"],
+      "formality": "event",
+      "tags": ["жемчуг", "ободок"]
+    },
+    {
+      "id": "5895",
+      "photo": "photos/IMG_5895.jpg",
+      "name": "Красные сандалии Suicoke",
+      "type": "shoes",
+      "colors": ["красный"],
+      "category": "база",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "casual",
+      "tags": ["сандалии", "Suicoke", "акцент"]
+    },
+    {
+      "id": "5982",
+      "photo": "photos/IMG_5982.jpg",
+      "name": "Серое мини с V-вырезом и корсетной талией",
+      "type": "dress",
+      "colors": ["серый"],
+      "category": "научи",
+      "seasons": ["весна", "осень"],
+      "formality": "smart",
+      "tags": ["мини", "корсетная талия", "V-вырез"]
+    },
+    {
+      "id": "6494",
+      "photo": "photos/IMG_6494.jpg",
+      "name": "Серое миди с принтом мышек/уток",
+      "type": "dress",
+      "colors": ["серый"],
+      "category": "научи",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "smart",
+      "tags": ["принт", "мышки", "миди", "идеальный силуэт"]
+    },
+    {
+      "id": "6902",
+      "photo": "photos/IMG_6902.jpg",
+      "name": "Бирюзовый вязаный кардиган",
+      "type": "outerwear",
+      "colors": ["бирюзовый"],
+      "category": "научи",
+      "seasons": ["весна", "осень"],
+      "formality": "casual",
+      "tags": ["вязаный", "холодный цвет"]
+    },
+    {
+      "id": "6903",
+      "photo": "photos/IMG_6903.jpg",
+      "name": "Бирюзовый кокошник",
+      "type": "hat",
+      "colors": ["бирюзовый"],
+      "category": "научи",
+      "seasons": ["лето"],
+      "formality": "event",
+      "tags": ["кокошник", "русский стиль"]
+    },
+    {
+      "id": "5953",
+      "photo": "photos/IMG_5953.jpg",
+      "name": "Белое корсетное платье",
+      "type": "dress",
+      "colors": ["белый"],
+      "category": "научи",
+      "seasons": ["весна", "лето"],
+      "formality": "event",
+      "tags": ["корсет", "белый у лица"]
+    },
+    {
+      "id": "5918",
+      "photo": "photos/IMG_5918.jpg",
+      "name": "Чёрный готический жакет с капюшоном и бахромой",
+      "type": "outerwear",
+      "colors": ["чёрный"],
+      "category": "научи",
+      "seasons": ["осень", "весна"],
+      "formality": "event",
+      "tags": ["готика", "капюшон", "бахрома", "если не получится — выкинуть"]
+    },
+    {
+      "id": "5925",
+      "photo": "photos/IMG_5925.jpg",
+      "name": "Чёрная юбка-солнце мини + чёрный кроп-топ",
+      "type": "dress",
+      "colors": ["чёрный"],
+      "category": "научи",
+      "seasons": ["весна", "лето"],
+      "formality": "casual",
+      "tags": ["юбка-солнце", "кроп", "открытый живот"]
+    },
+    {
+      "id": "6807",
+      "photo": "photos/IMG_6807.jpg",
+      "name": "Тёмно-синяя юбка с воланом",
+      "type": "bottom",
+      "colors": ["джинсовый синий"],
+      "category": "научи",
+      "seasons": ["весна", "лето", "осень"],
+      "formality": "smart",
+      "tags": ["волан", "юбка"]
+    }
+  ]
+}
+</script>
+
+<script>
+  // PALETTE
+  const PALETTE_YES = [
+    { name: 'терракот', hex: '#b8624c' },
+    { name: 'шоколад', hex: '#5a3a2a' },
+    { name: 'оливковый', hex: '#6b6a3d' },
+    { name: 'верблюжий', hex: '#c8956d' },
+    { name: 'тёплый беж', hex: '#c7b299' },
+    { name: 'тауп', hex: '#8b7e6c' },
+    { name: 'кремовый', hex: '#f0e6d6' },
+    { name: 'мягкий бордо', hex: '#7d3640' },
+    { name: 'пыльный коралл', hex: '#d99e88' },
+    { name: 'джинсовый синий', hex: '#5a708a' },
+    { name: 'шалфей', hex: '#9aa489' }
+  ];
+  const PALETTE_NO = [
+    { name: 'чёрный у лица', hex: '#0a0a0a' },
+    { name: 'чистый белый', hex: '#ffffff' },
+    { name: 'неон', hex: '#39ff14' },
+    { name: 'фуксия', hex: '#ff2bd6' },
+    { name: 'ледяной голубой', hex: '#b0d8e8' },
+    { name: 'яркий жёлтый', hex: '#ffeb3b' }
+  ];
+
+  function renderPalette() {
+    const yes = document.getElementById('palette-yes');
+    const no = document.getElementById('palette-no');
+    PALETTE_YES.forEach(c => {
+      yes.innerHTML += `<div class="swatch"><div class="color" style="background:${c.hex}"></div><div class="name"><strong>${c.name}</strong><code>${c.hex}</code></div></div>`;
+    });
+    PALETTE_NO.forEach(c => {
+      no.innerHTML += `<div class="swatch"><div class="color" style="background:${c.hex}"></div><div class="name"><strong>${c.name}</strong><code>${c.hex}</code></div></div>`;
+    });
+  }
+
+  // GALLERY
+  const WARDROBE = JSON.parse(document.getElementById('wardrobe-data').textContent);
+  const STATE = { cat: 'all', type: 'all', favs: JSON.parse(localStorage.getItem('ulya-favs') || '[]') };
+
+  function isFav(id) { return STATE.favs.includes(id); }
+  function toggleFav(id) {
+    if (isFav(id)) STATE.favs = STATE.favs.filter(x => x !== id);
+    else STATE.favs.push(id);
+    localStorage.setItem('ulya-favs', JSON.stringify(STATE.favs));
+    renderGallery();
+  }
+
+  function renderGallery() {
+    const gallery = document.getElementById('gallery');
+    const items = WARDROBE.items.filter(it => {
+      if (STATE.cat === 'fav') { if (!isFav(it.id)) return false; }
+      else if (STATE.cat !== 'all' && it.category !== STATE.cat) return false;
+      if (STATE.type !== 'all' && it.type !== STATE.type) return false;
+      return true;
+    });
+    gallery.innerHTML = items.map(it => {
+      const badge = it.category === 'жемчужина' ? '<span class="badge zhem">💎</span>'
+        : it.category === 'душа' ? '<span class="badge dusha">💚</span>'
+        : it.category === 'научи' ? '<span class="badge nauchi">научи</span>'
+        : '';
+      return `
+        <div class="item-card" onclick="openModal('${it.id}')">
+          <button class="fav-btn ${isFav(it.id) ? 'faved' : ''}" onclick="event.stopPropagation(); toggleFav('${it.id}')">${isFav(it.id) ? '♥' : '♡'}</button>
+          ${badge}
+          <div class="photo" style="background-image:url('${it.photo}')"></div>
+          <div class="info">
+            <div class="name">${it.name}</div>
+            <div class="meta">
+              ${(it.colors || []).slice(0, 2).map(c => `<span>${c}</span>`).join(' · ')}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    if (items.length === 0) gallery.innerHTML = '<p style="color: var(--muted); padding: 40px 0;">Ничего не найдено по фильтру.</p>';
+  }
+
+  function setupFilters() {
+    document.querySelectorAll('.filters button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const [group, value] = btn.dataset.filter.split(':');
+        STATE[group] = value;
+        const parent = btn.parentElement;
+        parent.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderGallery();
+      });
+    });
+  }
+
+  function openModal(id) {
+    const it = WARDROBE.items.find(x => x.id === id);
+    if (!it) return;
+    document.getElementById('modal-img').src = it.photo;
+    document.getElementById('modal-info').innerHTML = `
+      <h3>${it.name}</h3>
+      <div class="meta-row">
+        <span class="chip">${it.type}</span>
+        ${(it.colors || []).map(c => `<span class="chip">${c}</span>`).join('')}
+        ${(it.seasons || []).map(s => `<span class="chip">${s}</span>`).join('')}
+        <span class="chip">${it.category}</span>
+      </div>
+      ${it.tags && it.tags.length ? `<p style="color: var(--muted); font-size: 0.9rem;">${it.tags.join(' · ')}</p>` : ''}
+      ${it.note ? `<p style="margin-top: 12px; font-style: italic; color: var(--muted);">${it.note}</p>` : ''}
+    `;
+    document.getElementById('modal').classList.add('open');
+  }
+  function closeModal() { document.getElementById('modal').classList.remove('open'); }
+  document.getElementById('modal').addEventListener('click', e => {
+    if (e.target.id === 'modal') closeModal();
+  });
+
+  // ===== MIXER =====
+  const SLOTS = [
+    { key: 'outerwear', label: 'верхняя', types: ['outerwear'] },
+    { key: 'body',      label: 'верх / платье', types: ['dress', 'top', 'jumpsuit'] },
+    { key: 'bottom',    label: 'низ',        types: ['bottom'] },
+    { key: 'corset',    label: 'корсет',     types: ['corset'] },
+    { key: 'hat',       label: 'шляпа / капор', types: ['hat'] },
+    { key: 'accent',    label: 'акцент / обувь', types: ['accessory', 'shoes'] }
+  ];
+
+  let MIX = {};
+  SLOTS.forEach(s => MIX[s.key] = null);
+
+  function getSlotItems(slot) {
+    return WARDROBE.items.filter(it => slot.types.includes(it.type));
+  }
+
+  function renderMixer() {
+    const container = document.getElementById('mixer-slots');
+    container.innerHTML = SLOTS.map(slot => {
+      const items = getSlotItems(slot);
+      const currentId = MIX[slot.key];
+      const current = currentId ? items.find(i => i.id === currentId) : null;
+      const idx = current ? items.findIndex(i => i.id === currentId) : -1;
+      return `
+        <div class="slot" data-slot="${slot.key}">
+          <div class="slot-label">${slot.label}</div>
+          <div class="slot-photo ${current ? '' : 'empty'}" ${current ? `style="background-image:url('${current.photo}')"` : ''}>
+            ${current ? '' : '+'}
+          </div>
+          <div class="slot-name">${current ? current.name : '<span style="color:var(--muted)">пусто</span>'}</div>
+          <div class="slot-controls">
+            <button class="arrow" onclick="cycleSlot('${slot.key}', -1)">←</button>
+            <span class="counter">${current ? (idx + 1) + '/' + items.length : '0/' + items.length}</span>
+            <button class="arrow" onclick="cycleSlot('${slot.key}', 1)">→</button>
+            ${current ? `<button onclick="clearSlot('${slot.key}')">×</button>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function cycleSlot(slotKey, dir) {
+    const slot = SLOTS.find(s => s.key === slotKey);
+    const items = getSlotItems(slot);
+    if (items.length === 0) return;
+    const currentId = MIX[slotKey];
+    let idx = currentId ? items.findIndex(i => i.id === currentId) : -1;
+    idx = (idx + dir + items.length) % items.length;
+    MIX[slotKey] = items[idx].id;
+    renderMixer();
+  }
+
+  function clearSlot(slotKey) {
+    MIX[slotKey] = null;
+    renderMixer();
+  }
+
+  function clearMix() {
+    SLOTS.forEach(s => MIX[s.key] = null);
+    renderMixer();
+  }
+
+  function randomizeMix() {
+    // Случайно: с вероятностью 0.6 платье, иначе верх+низ. Верхняя — 0.4. Шляпа — 0.5. Корсет — 0.4. Акцент — 0.6.
+    clearMix();
+    const dresses = WARDROBE.items.filter(i => i.type === 'dress' || i.type === 'jumpsuit');
+    const tops = WARDROBE.items.filter(i => i.type === 'top');
+    const bottoms = WARDROBE.items.filter(i => i.type === 'bottom');
+    const outers = WARDROBE.items.filter(i => i.type === 'outerwear');
+    const hats = WARDROBE.items.filter(i => i.type === 'hat');
+    const corsets = WARDROBE.items.filter(i => i.type === 'corset');
+    const accents = WARDROBE.items.filter(i => i.type === 'accessory' || i.type === 'shoes');
+    const pick = (arr) => arr.length ? arr[Math.floor(Math.random() * arr.length)] : null;
+    if (Math.random() < 0.6) {
+      const d = pick(dresses); if (d) MIX.body = d.id;
+    } else {
+      const t = pick(tops); if (t) MIX.body = t.id;
+      const b = pick(bottoms); if (b) MIX.bottom = b.id;
+    }
+    if (Math.random() < 0.4) { const o = pick(outers); if (o) MIX.outerwear = o.id; }
+    if (Math.random() < 0.5) { const h = pick(hats); if (h) MIX.hat = h.id; }
+    if (Math.random() < 0.4) { const c = pick(corsets); if (c) MIX.corset = c.id; }
+    if (Math.random() < 0.6) { const a = pick(accents); if (a) MIX.accent = a.id; }
+    renderMixer();
+  }
+
+  function saveSet() {
+    const hasAnything = Object.values(MIX).some(v => v !== null);
+    if (!hasAnything) { alert('Сначала собери что-нибудь.'); return; }
+    const name = prompt('Как назовём этот образ?', 'образ');
+    if (!name) return;
+    const sets = JSON.parse(localStorage.getItem('ulya-sets') || '[]');
+    sets.push({ id: Date.now(), name, mix: { ...MIX } });
+    localStorage.setItem('ulya-sets', JSON.stringify(sets));
+    renderSavedSets();
+  }
+
+  function loadSet(setId) {
+    const sets = JSON.parse(localStorage.getItem('ulya-sets') || '[]');
+    const s = sets.find(x => x.id === setId);
+    if (!s) return;
+    MIX = { ...s.mix };
+    renderMixer();
+    document.getElementById('mixer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function deleteSet(setId) {
+    if (!confirm('Удалить этот сет?')) return;
+    const sets = JSON.parse(localStorage.getItem('ulya-sets') || '[]').filter(x => x.id !== setId);
+    localStorage.setItem('ulya-sets', JSON.stringify(sets));
+    renderSavedSets();
+  }
+
+  function renderSavedSets() {
+    const container = document.getElementById('saved-sets');
+    const sets = JSON.parse(localStorage.getItem('ulya-sets') || '[]');
+    if (sets.length === 0) {
+      container.innerHTML = '<p style="color:var(--muted); font-style:italic;">пока ни одного сохранённого образа</p>';
+      return;
+    }
+    container.innerHTML = sets.map(s => {
+      const minis = Object.values(s.mix).filter(Boolean).slice(0, 4).map(id => {
+        const it = WARDROBE.items.find(x => x.id === id);
+        return it ? `<div class="mini" style="background-image:url('${it.photo}')"></div>` : '';
+      }).join('');
+      return `
+        <div class="saved-set" onclick="loadSet(${s.id})">
+          <div class="preview">${minis}</div>
+          <div class="set-name">${s.name}</div>
+          <button class="delete-set" onclick="event.stopPropagation(); deleteSet(${s.id})">удалить</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ===== STYLIST SETS — 24 готовых образа =====
+  const STYLIST_SETS = [
+    // Повседневные / прогулки
+    { name: 'Петроградка, тёплый сентябрь', occasion: 'прогулка', mix: { body: '5910', bottom: '6729', hat: '5945', accent: '5894' } },
+    { name: 'Кофе на Рубинштейна', occasion: 'встреча', mix: { body: '8699', bottom: '6675', hat: '5922', accent: '5894' } },
+    { name: 'Дача в лягушке', occasion: 'дом / природа', mix: { body: '5966', hat: '5922', accent: '6762' } },
+    { name: 'Полоска на завтрак', occasion: 'кэжуал', mix: { body: '5909', bottom: '6675', accent: '5894' } },
+
+    // Питерские слои
+    { name: 'Шоколадный монохром', occasion: 'осень, дождь', mix: { outerwear: '5923', body: '5912', bottom: '6729', hat: '5921', accent: '5894' } },
+    { name: 'Серый тренч на встречу', occasion: 'смарт-кэжуал', mix: { outerwear: '6026', body: '5912', bottom: '6729', hat: '5945', accent: '6026-scarf' } },
+    { name: 'Терракотовый пуховик', occasion: 'холодная осень', mix: { outerwear: '5944', body: '5912', bottom: '6729', accent: '6905' } },
+    { name: 'Вельвет + терракот', occasion: 'вечерний выход', mix: { outerwear: '6577', body: '5993', corset: '5978', hat: '5921' } },
+
+    // Корсетные
+    { name: 'Молочный корсет + средневековое', occasion: 'ивент', mix: { body: '5957', corset: '5978', accent: '6905' } },
+    { name: 'Чёрный корсет + синее', occasion: 'готик-романтика', mix: { body: '5993', corset: '5971', accent: '6799' } },
+    { name: 'Корсет на блузу', occasion: 'смарт', mix: { body: '8699', bottom: '6729', corset: '5978' } },
+
+    // Средневековые / ивенты
+    { name: 'Кремовое средневековое', occasion: 'фотосессия', mix: { body: '6805', accent: '6905' } },
+    { name: 'Голубое средневековое', occasion: 'ивент', mix: { body: '6083', accent: '6799' } },
+    { name: 'Зелёное на выход', occasion: 'свидание', mix: { body: '6812', corset: '5971', accent: '6905' } },
+    { name: 'Красная Шапочка', occasion: 'тематика', mix: { outerwear: '5944', body: '5957', accent: '6905' } },
+
+    // Лето
+    { name: 'Лето в шортах', occasion: 'жара', mix: { body: '8698', bottom: '5926', hat: '5922', accent: '5895' } },
+    { name: 'Терракотовое в пол', occasion: 'жара / ивент', mix: { body: '6758', hat: '5945', accent: '6905' } },
+    { name: 'Блуза + шорты', occasion: 'кафе летом', mix: { body: '8699', bottom: '5926', hat: '5945', accent: '5894' } },
+
+    // С чёрным (под правила)
+    { name: 'Чёрное миди + серый жакет', occasion: 'ивент', mix: { outerwear: '5919', body: '6038', hat: '5921' } },
+    { name: 'Чёрный комбез + сандалии', occasion: 'смарт-кэжуал', mix: { body: '5924', hat: '5945', accent: '5895' } },
+    { name: 'Бомбер с белкой', occasion: 'кэжуал', mix: { outerwear: '6536', body: '5910', bottom: '6675', hat: '5920' } },
+
+    // Странные акценты
+    { name: 'Стимпанк-шляпа', occasion: 'фотосет', mix: { body: '6758', hat: '5970' } },
+
+    // Из «научи носить»
+    { name: 'Серое миди с мышками', occasion: 'свидание днём', mix: { outerwear: '6577', body: '6494', accent: '5894' } }
+  ];
+
+  function renderStylistSets() {
+    const container = document.getElementById('stylist-sets');
+    container.innerHTML = STYLIST_SETS.map((s, idx) => {
+      const minis = Object.values(s.mix).filter(Boolean).slice(0, 4).map(id => {
+        const it = WARDROBE.items.find(x => x.id === id);
+        return it ? `<div class="mini" style="background-image:url('${it.photo}')"></div>` : '';
+      }).join('');
+      return `
+        <div class="saved-set" onclick="loadStylistSet(${idx})" title="${s.occasion}">
+          <div class="preview">${minis}</div>
+          <div class="set-name">${s.name}</div>
+          <div style="text-align:center; font-size:0.72rem; color:var(--muted); font-style:italic;">${s.occasion}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function loadStylistSet(idx) {
+    const s = STYLIST_SETS[idx];
+    if (!s) return;
+    SLOTS.forEach(slot => MIX[slot.key] = null);
+    Object.keys(s.mix).forEach(k => { MIX[k] = s.mix[k]; });
+    renderMixer();
+    document.getElementById('mixer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // INIT
+  renderPalette();
+  setupFilters();
+  renderGallery();
+  renderMixer();
+  renderSavedSets();
+  renderStylistSets();
+</script>
+
+</body>
+</html>

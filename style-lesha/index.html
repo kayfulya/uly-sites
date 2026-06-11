@@ -1,0 +1,1299 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Стиль Лёши — гид по гардеробу</title>
+<style>
+:root {
+  --bg: #f4ede2;
+  --paper: #fbf6ec;
+  --ink: #2a1f17;
+  --muted: #6b5847;
+  --line: #d9c9b3;
+
+  --camel: #b18761;
+  --olive: #6c6a3a;
+  --bottle: #2f4a36;
+  --wine: #6b2a2a;
+  --rust: #a45a2a;
+  --mustard: #c08c2f;
+  --chocolate: #4a2f1d;
+  --petrol: #2a4452;
+  --cream: #efe3cd;
+  --beige: #c9b08c;
+
+  --bad: #7d1414;
+  --good: #2f4a36;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.5; }
+body { padding: 0 0 80px 0; }
+
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+header.hero {
+  background: linear-gradient(160deg, var(--chocolate), var(--rust));
+  color: var(--cream);
+  padding: 60px 24px 50px;
+  text-align: center;
+}
+header.hero h1 { font-size: 38px; margin: 0 0 10px 0; letter-spacing: -0.5px; }
+header.hero p { font-size: 17px; opacity: 0.9; max-width: 560px; margin: 0 auto; }
+header.hero .meta { font-size: 13px; opacity: 0.75; margin-top: 18px; letter-spacing: 1px; text-transform: uppercase; }
+
+section { background: var(--paper); border-radius: 18px; padding: 36px 32px; margin: 24px auto; max-width: 880px; box-shadow: 0 2px 18px rgba(74,47,29,0.07); }
+section h2 { font-size: 26px; margin: 0 0 6px 0; letter-spacing: -0.3px; }
+section .lede { color: var(--muted); font-size: 16px; margin: 0 0 24px 0; }
+
+.row { display: flex; gap: 16px; flex-wrap: wrap; }
+.col { flex: 1 1 0; min-width: 240px; }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+
+/* Палитра */
+.swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
+.sw { border-radius: 12px; padding: 14px 12px; color: #fff; font-weight: 600; font-size: 13px; min-height: 90px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 -20px 30px rgba(0,0,0,0.12); }
+.sw .name { font-size: 14px; }
+.sw .hex { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; opacity: 0.9; letter-spacing: 0.5px; }
+.sw.light { color: var(--ink); text-shadow: none; }
+
+/* Запреты */
+.no-swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-top: 12px; }
+.no-sw { position: relative; border-radius: 12px; padding: 14px 12px; min-height: 80px; font-weight: 600; font-size: 13px; display: flex; align-items: flex-end; }
+.no-sw::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(135deg, transparent 47%, #7d1414 47%, #7d1414 53%, transparent 53%); border-radius: 12px; pointer-events: none; }
+
+/* Фигура */
+.figure-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; align-items: center; }
+@media (max-width: 640px) { .figure-row { grid-template-columns: 1fr; } }
+.silhouette { background: var(--cream); border-radius: 14px; padding: 20px; display: flex; justify-content: center; }
+.fig-list { padding: 0; margin: 0; list-style: none; }
+.fig-list li { padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: 15px; }
+.fig-list li:last-child { border: none; }
+.fig-list b { color: var(--chocolate); }
+
+/* Сравнение брюки */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 640px) { .compare { grid-template-columns: 1fr; } }
+.compare .panel { background: #fff; border-radius: 14px; padding: 18px; border: 2px solid; }
+.compare .good { border-color: var(--good); }
+.compare .bad { border-color: var(--bad); }
+.compare .label { font-size: 13px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; margin-bottom: 8px; }
+.compare .good .label { color: var(--good); }
+.compare .bad .label { color: var(--bad); }
+.compare h4 { margin: 4px 0 8px; font-size: 17px; }
+.compare p { margin: 0 0 6px; font-size: 14px; color: var(--muted); }
+
+/* Flat lay лук */
+.lookboard { background: linear-gradient(180deg, #efe3cd, #e3d2b3); border-radius: 16px; padding: 30px 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; place-items: center; min-height: 360px; }
+.item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.item .cap { font-size: 12px; color: var(--muted); text-align: center; max-width: 130px; }
+
+/* CSS-вещи */
+.tshirt {
+  width: 110px; height: 130px; background: var(--cream);
+  clip-path: polygon(30% 0%, 38% 8%, 45% 0%, 55% 0%, 62% 8%, 70% 0%, 100% 20%, 85% 22%, 85% 100%, 15% 100%, 15% 22%, 0% 20%);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+}
+.oxford {
+  width: 120px; height: 150px; background: #f7eede;
+  clip-path: polygon(28% 0%, 36% 6%, 48% 14%, 52% 14%, 64% 6%, 72% 0%, 100% 16%, 88% 30%, 88% 100%, 12% 100%, 12% 30%, 0% 16%);
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+}
+.oxford::after { content: ""; position: absolute; left: 50%; top: 14%; width: 2px; height: 85%; background: #d6c4a4; }
+.merino {
+  width: 120px; height: 140px; background: var(--olive);
+  clip-path: polygon(22% 5%, 42% 0%, 58% 0%, 78% 5%, 100% 18%, 90% 28%, 90% 100%, 10% 100%, 10% 28%, 0% 18%);
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+}
+.merino::after { content: ""; position: absolute; left: 38%; top: 0; width: 24%; height: 12%; background: var(--bg); border-radius: 0 0 50% 50%; }
+.chinos {
+  width: 110px; height: 170px; background: var(--camel);
+  clip-path: polygon(15% 0%, 85% 0%, 88% 30%, 65% 100%, 52% 100%, 50% 35%, 48% 100%, 35% 100%, 12% 30%);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+}
+.jeans {
+  width: 110px; height: 175px; background: #2a4452;
+  clip-path: polygon(15% 0%, 85% 0%, 88% 28%, 62% 100%, 50% 100%, 50% 32%, 50% 100%, 38% 100%, 12% 28%);
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+}
+.jeans::after { content: ""; position: absolute; left: 50%; top: 0; width: 1px; height: 100%; background: rgba(0,0,0,0.2); }
+.suit-pants {
+  width: 110px; height: 175px; background: var(--chocolate);
+  clip-path: polygon(15% 0%, 85% 0%, 86% 28%, 63% 100%, 53% 100%, 50% 33%, 47% 100%, 37% 100%, 14% 28%);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+}
+.bad-jeans {
+  width: 130px; height: 175px; background: #6a7b86;
+  clip-path: polygon(8% 0%, 92% 0%, 96% 25%, 78% 100%, 55% 100%, 50% 30%, 45% 100%, 22% 100%, 4% 25%);
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+  opacity: 0.95;
+}
+.bad-jeans::before { content: ""; position: absolute; top: 8%; left: 20%; width: 22%; height: 16%; background: rgba(0,0,0,0.18); border-radius: 4px; }
+.bad-jeans::after { content: ""; position: absolute; top: 8%; right: 20%; width: 22%; height: 16%; background: rgba(0,0,0,0.18); border-radius: 4px; }
+.jacket {
+  width: 150px; height: 170px; background: var(--bottle);
+  clip-path: polygon(20% 0%, 35% 6%, 45% 14%, 50% 100%, 55% 100%, 55% 14%, 65% 6%, 80% 0%, 100% 12%, 92% 30%, 92% 100%, 50% 100%, 8% 100%, 8% 30%, 0% 12%);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+.coat {
+  width: 150px; height: 200px; background: var(--camel);
+  clip-path: polygon(22% 0%, 38% 8%, 48% 14%, 52% 14%, 62% 8%, 78% 0%, 100% 12%, 92% 28%, 92% 100%, 8% 100%, 8% 28%, 0% 12%);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+.sneaker {
+  width: 140px; height: 60px; background: var(--cream); border-radius: 50% 50% 12px 12px / 60% 60% 12px 12px;
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+}
+.sneaker::before { content: ""; position: absolute; bottom: 0; left: -4%; right: -4%; height: 22%; background: #e0e0e0; border-radius: 50% 50% 6px 6px / 80% 80% 6px 6px; }
+.sneaker::after { content: ""; position: absolute; top: 25%; left: 30%; width: 40%; height: 12%; background: rgba(0,0,0,0.1); border-radius: 50%; }
+.loafer {
+  width: 140px; height: 55px; background: var(--chocolate); border-radius: 60% 50% 8px 8px / 80% 70% 8px 8px;
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+.loafer::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 18%; background: #2a1f17; border-radius: 0 0 8px 8px; }
+.bad-shoe {
+  width: 140px; height: 38px; background: #1a1a1a; border-radius: 50% 50% 4px 4px / 70% 70% 4px 4px;
+  position: relative;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+  opacity: 0.95;
+}
+.bad-shoe::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 12%; background: #ffffff; border-radius: 0 0 4px 4px; }
+
+/* Сравнение Уля / Лёша */
+.share { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 720px) { .share { grid-template-columns: 1fr; } }
+.share .who { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.share .who h4 { margin: 0 0 8px; font-size: 15px; }
+.share .who .palette { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+.share .who .palette span { width: 28px; height: 28px; border-radius: 6px; }
+.share .who p { font-size: 13px; color: var(--muted); margin: 0; }
+
+/* Обувь правила */
+.shoe-rule { background: #fff; border-radius: 12px; padding: 14px; display: flex; gap: 14px; align-items: center; margin-bottom: 12px; border-left: 4px solid var(--good); }
+.shoe-rule.no { border-left-color: var(--bad); }
+.shoe-rule .icon { width: 28px; flex-shrink: 0; font-weight: 700; color: var(--good); font-size: 18px; }
+.shoe-rule.no .icon { color: var(--bad); }
+.shoe-rule .txt { font-size: 14px; }
+.shoe-rule .txt b { display: block; margin-bottom: 2px; }
+
+/* Метки */
+.tag { display: inline-block; background: var(--cream); color: var(--chocolate); padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; margin-right: 6px; }
+
+/* Кнопочка */
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; justify-content: center; }
+.toc a { background: rgba(255,255,255,0.15); color: var(--cream); text-decoration: none; padding: 8px 14px; border-radius: 100px; font-size: 13px; }
+
+footer { text-align: center; color: var(--muted); font-size: 13px; margin: 40px 0 0; }
+
+/* Луки */
+.looks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px; }
+.look { background: #fff; border-radius: 16px; padding: 0; overflow: hidden; border: 1px solid var(--line); display: flex; flex-direction: column; }
+.look .ref-photo { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; background: var(--cream); }
+.look .look-head { padding: 16px 18px 0; }
+.look .look-head h4 { margin: 0 0 4px; font-size: 18px; }
+.look .look-head .ctx { font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--rust); font-weight: 700; }
+.look .flat { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: flex-end; padding: 24px 14px 18px; background: linear-gradient(180deg, #efe3cd, #e3d2b3); margin: 14px 0 0; min-height: 200px; }
+.look .why { padding: 14px 18px 18px; }
+.look .why ul { margin: 0; padding-left: 18px; }
+.look .why li { font-size: 13.5px; color: var(--muted); margin-bottom: 6px; }
+.look .why li b { color: var(--ink); }
+
+/* Мини-вещи для луков (компактные) */
+.mini { filter: drop-shadow(0 3px 6px rgba(0,0,0,0.1)); }
+.mini-oxford { width: 70px; height: 90px; clip-path: polygon(28% 0%, 36% 6%, 48% 14%, 52% 14%, 64% 6%, 72% 0%, 100% 16%, 88% 30%, 88% 100%, 12% 100%, 12% 30%, 0% 16%); }
+.mini-tshirt { width: 64px; height: 76px; clip-path: polygon(30% 0%, 38% 8%, 45% 0%, 55% 0%, 62% 8%, 70% 0%, 100% 20%, 85% 22%, 85% 100%, 15% 100%, 15% 22%, 0% 20%); }
+.mini-henley { width: 64px; height: 80px; clip-path: polygon(34% 0%, 44% 10%, 50% 18%, 56% 10%, 66% 0%, 100% 20%, 85% 24%, 85% 100%, 15% 100%, 15% 24%, 0% 20%); position: relative; }
+.mini-henley::after { content: ""; position: absolute; left: 45%; top: 0; width: 1px; height: 25%; background: rgba(0,0,0,0.25); }
+.mini-merino { width: 68px; height: 82px; clip-path: polygon(22% 5%, 42% 0%, 58% 0%, 78% 5%, 100% 18%, 90% 28%, 90% 100%, 10% 100%, 10% 28%, 0% 18%); position: relative; }
+.mini-merino::after { content: ""; position: absolute; left: 38%; top: 0; width: 24%; height: 14%; background: var(--paper); border-radius: 0 0 50% 50%; }
+.mini-cardi { width: 74px; height: 84px; clip-path: polygon(0% 14%, 28% 4%, 48% 18%, 52% 18%, 72% 4%, 100% 14%, 90% 30%, 90% 100%, 10% 100%, 10% 30%); position: relative; }
+.mini-cardi::after { content: ""; position: absolute; left: 49%; top: 18%; width: 2%; height: 82%; background: rgba(0,0,0,0.2); }
+.mini-overshirt { width: 80px; height: 92px; clip-path: polygon(0% 14%, 20% 4%, 38% 14%, 50% 18%, 62% 14%, 80% 4%, 100% 14%, 92% 30%, 92% 100%, 8% 100%, 8% 30%); position: relative; }
+.mini-overshirt::after { content: ""; position: absolute; left: 49%; top: 18%; width: 2%; height: 82%; background: rgba(0,0,0,0.25); }
+.mini-blazer { width: 84px; height: 96px; clip-path: polygon(18% 0%, 32% 6%, 42% 14%, 48% 100%, 52% 100%, 58% 14%, 68% 6%, 82% 0%, 100% 12%, 90% 30%, 90% 100%, 50% 100%, 10% 100%, 10% 30%, 0% 12%); }
+.mini-bomber { width: 84px; height: 80px; clip-path: polygon(0% 18%, 22% 4%, 78% 4%, 100% 18%, 92% 30%, 92% 100%, 8% 100%, 8% 30%); position: relative; }
+.mini-bomber::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 10%; background: rgba(0,0,0,0.2); }
+.mini-coat { width: 80px; height: 110px; clip-path: polygon(22% 0%, 38% 8%, 48% 14%, 52% 14%, 62% 8%, 78% 0%, 100% 12%, 92% 28%, 92% 100%, 8% 100%, 8% 28%, 0% 12%); }
+.mini-chinos { width: 60px; height: 100px; clip-path: polygon(15% 0%, 85% 0%, 88% 30%, 65% 100%, 52% 100%, 50% 35%, 48% 100%, 35% 100%, 12% 30%); }
+.mini-suit-pants { width: 60px; height: 102px; clip-path: polygon(15% 0%, 85% 0%, 86% 28%, 63% 100%, 53% 100%, 50% 33%, 47% 100%, 37% 100%, 14% 28%); }
+.mini-jeans { width: 60px; height: 102px; clip-path: polygon(15% 0%, 85% 0%, 88% 28%, 62% 100%, 50% 100%, 50% 32%, 50% 100%, 38% 100%, 12% 28%); position: relative; }
+.mini-jeans::after { content: ""; position: absolute; left: 50%; top: 0; width: 1px; height: 100%; background: rgba(0,0,0,0.25); }
+.mini-sneaker { width: 80px; height: 32px; border-radius: 50% 50% 6px 6px / 60% 60% 6px 6px; position: relative; }
+.mini-sneaker::before { content: ""; position: absolute; bottom: 0; left: -3%; right: -3%; height: 24%; background: #e0e0e0; border-radius: 50% 50% 4px 4px / 80% 80% 4px 4px; }
+.mini-loafer { width: 78px; height: 28px; border-radius: 60% 50% 6px 6px / 80% 70% 6px 6px; position: relative; }
+.mini-loafer::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 18%; background: rgba(0,0,0,0.4); border-radius: 0 0 4px 4px; }
+.mini-boot { width: 78px; height: 50px; clip-path: polygon(0% 60%, 12% 0%, 70% 0%, 100% 60%, 100% 100%, 0% 100%); position: relative; }
+.mini-boot::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 14%; background: rgba(0,0,0,0.35); }
+.mini-belt { width: 90px; height: 10px; background: var(--chocolate); border-radius: 2px; position: relative; }
+.mini-belt::after { content: ""; position: absolute; right: 14%; top: -2px; width: 8px; height: 14px; background: #c9a76a; border-radius: 2px; }
+.mini-watch { width: 30px; height: 30px; background: #2a1f17; border-radius: 50%; border: 3px solid #c9a76a; }
+.mini-bag { width: 70px; height: 50px; background: var(--chocolate); border-radius: 4px 4px 8px 8px; position: relative; }
+.mini-bag::before { content: ""; position: absolute; left: 20%; right: 20%; top: -16px; height: 18px; border: 3px solid var(--chocolate); border-bottom: 0; border-radius: 50% 50% 0 0; background: transparent; }
+.mini-scarf { width: 70px; height: 20px; border-radius: 4px; position: relative; }
+.mini-scarf::after { content: ""; position: absolute; right: 0; bottom: -8px; width: 12px; height: 12px; background: inherit; }
+.mini-cap { width: 60px; height: 30px; border-radius: 50% 50% 4px 4px / 90% 90% 4px 4px; position: relative; }
+.mini-cap::after { content: ""; position: absolute; left: -10%; bottom: 0; width: 50%; height: 10px; background: inherit; border-radius: 50%; }
+.mini-beanie { width: 56px; height: 40px; border-radius: 50% 50% 4px 4px / 80% 80% 4px 4px; position: relative; }
+.mini-beanie::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 25%; background: rgba(0,0,0,0.15); border-radius: 0 0 4px 4px; }
+
+/* Архетипы */
+.arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.arch { background: #fff; border-radius: 14px; padding: 0; border: 1px solid var(--line); overflow: hidden; }
+.arch .arch-photo { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; background: var(--cream); }
+.arch .arch-body { padding: 16px; }
+.arch .swatch-strip { display: flex; gap: 4px; margin-bottom: 10px; }
+.arch .swatch-strip span { flex: 1; height: 28px; border-radius: 6px; }
+.arch h4 { margin: 0 0 4px; font-size: 16px; }
+.arch .sub { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.arch p { font-size: 13.5px; color: var(--ink); margin: 0 0 8px; }
+.arch .keys { font-size: 12px; color: var(--muted); }
+.arch .keys b { color: var(--ink); }
+
+/* Иконы */
+.icons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.icon-card { background: #fff; border-radius: 14px; padding: 0; border: 1px solid var(--line); overflow: hidden; }
+.icon-card .icon-photo { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; background: var(--cream); }
+.icon-card .icon-body { padding: 14px 16px 16px; }
+.icon-card h4 { margin: 0 0 4px; font-size: 16px; color: var(--chocolate); }
+.icon-card .role { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+.icon-card p { font-size: 13px; margin: 0 0 8px; color: var(--ink); }
+.icon-card .search { font-size: 12px; color: var(--muted); font-style: italic; }
+
+/* План */
+.plan-list { padding: 0; margin: 0; list-style: none; }
+.plan-list li { background: #fff; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border-left: 4px solid var(--olive); display: flex; gap: 14px; align-items: flex-start; }
+.plan-list li .num { font-weight: 700; color: var(--rust); font-size: 18px; flex-shrink: 0; width: 28px; }
+.plan-list li.done { border-left-color: var(--good); opacity: 0.7; }
+.plan-list li.next { border-left-color: var(--rust); }
+.plan-list li h5 { margin: 0 0 4px; font-size: 15px; }
+.plan-list li p { margin: 0; font-size: 13px; color: var(--muted); }
+
+/* Галерея вдохновения */
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.gallery figure { margin: 0; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+.gallery figure img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; }
+.gallery figcaption { padding: 10px 12px; font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.gallery figcaption b { color: var(--ink); display: block; margin-bottom: 2px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Стиль Лёши</h1>
+  <p>Гид по гардеробу: цветотип, фигура, что носить и что не носить. С картинками, чтобы понятно с первого взгляда.</p>
+  <div class="meta">Soft Autumn · V-shape · Smart Casual</div>
+  <div class="toc">
+    <a href="#colour">Цвета</a>
+    <a href="#ula-vs-lesha">Уля vs Лёша</a>
+    <a href="#figure">Фигура</a>
+    <a href="#trousers">Брюки</a>
+    <a href="#shoes">Обувь</a>
+    <a href="#yes">Что носить</a>
+    <a href="#no">Что НЕ носить</a>
+    <a href="#looks">Готовые луки</a>
+    <a href="#archetypes">Архетипы стиля</a>
+    <a href="#inspo">Галерея</a>
+    <a href="#icons">Иконы</a>
+    <a href="#plan">План сайта</a>
+  </div>
+</header>
+
+<section id="colour">
+  <h2>1. Цветотип — Soft Autumn (тёплая осень)</h2>
+  <p class="lede">Палитра «тёплая осень»: цвета как у осенней листвы, кофе, мха, охры, ржавчины. Все приглушённые, мягкие — не яркие, не неоновые. Подходят к карим тёплым глазам, тёмно-каштановым волосам и тёплой коже Лёши.</p>
+
+  <h3 style="margin-top:10px">Палитра — носить смело</h3>
+  <div class="swatches">
+    <div class="sw" style="background:#b18761"><span class="name">Верблюжий</span><span class="hex">#B18761</span></div>
+    <div class="sw" style="background:#6c6a3a"><span class="name">Оливковый</span><span class="hex">#6C6A3A</span></div>
+    <div class="sw" style="background:#2f4a36"><span class="name">Бутылочный зелёный</span><span class="hex">#2F4A36</span></div>
+    <div class="sw" style="background:#6b2a2a"><span class="name">Винный</span><span class="hex">#6B2A2A</span></div>
+    <div class="sw" style="background:#a45a2a"><span class="name">Ржавый</span><span class="hex">#A45A2A</span></div>
+    <div class="sw" style="background:#c08c2f"><span class="name">Горчичный</span><span class="hex">#C08C2F</span></div>
+    <div class="sw" style="background:#4a2f1d"><span class="name">Шоколад</span><span class="hex">#4A2F1D</span></div>
+    <div class="sw" style="background:#2a4452"><span class="name">Петроль (тёплый navy)</span><span class="hex">#2A4452</span></div>
+    <div class="sw light" style="background:#efe3cd"><span class="name">Кремовый</span><span class="hex">#EFE3CD</span></div>
+    <div class="sw light" style="background:#c9b08c"><span class="name">Тёплый беж</span><span class="hex">#C9B08C</span></div>
+  </div>
+
+  <h3 style="margin-top:28px">Цвета, которые НЕ работают</h3>
+  <p style="color:var(--muted); font-size:14px; margin:0 0 10px">Тушат тёплый подтон, делают лицо уставшим. Чёрный — только с верхним слоем другого цвета, не у самого лица.</p>
+  <div class="no-swatches">
+    <div class="no-sw" style="background:#000; color:#fff">Чистый чёрный<br>у лица</div>
+    <div class="no-sw" style="background:#ffffff; color:#222">Ярко-белый</div>
+    <div class="no-sw" style="background:#9ea7b3; color:#fff">Холодный<br>стальной</div>
+    <div class="no-sw" style="background:#a8d8ee; color:#222">Ледяной<br>голубой</div>
+    <div class="no-sw" style="background:#ff2d8a; color:#fff">Фуксия / неон</div>
+    <div class="no-sw" style="background:#39ff14; color:#000">Неоновый<br>зелёный</div>
+  </div>
+</section>
+
+<section id="ula-vs-lesha">
+  <h2>2. У вас с Лёшей один сезон — но разный «уклон»</h2>
+  <p class="lede">Оба — Soft Autumn. Значит общая база, общие цвета, можно даже носить вещи похожих оттенков и не «спорить» по цвету. Разница в нюансах.</p>
+  <div class="share">
+    <div class="who">
+      <h4>Уля — Soft Autumn нейтральный</h4>
+      <div class="palette">
+        <span style="background:#b18761"></span>
+        <span style="background:#6c6a3a"></span>
+        <span style="background:#a8907a"></span>
+        <span style="background:#7d6e5a"></span>
+        <span style="background:#c9b08c"></span>
+      </div>
+      <p>Мягче, прохладнее в нейтрале. Подходят тауп, дымчатый беж, шалфей, пыльный коралл.</p>
+    </div>
+    <div class="who">
+      <h4>Лёша — Soft Autumn тёплый</h4>
+      <div class="palette">
+        <span style="background:#4a2f1d"></span>
+        <span style="background:#a45a2a"></span>
+        <span style="background:#c08c2f"></span>
+        <span style="background:#2f4a36"></span>
+        <span style="background:#6b2a2a"></span>
+      </div>
+      <p>Глубже, теплее. Шоколад, охра, горчица, винный, бутылочный зелёный — его опорные цвета.</p>
+    </div>
+    <div class="who">
+      <h4>Общее (носите оба)</h4>
+      <div class="palette">
+        <span style="background:#b18761"></span>
+        <span style="background:#6c6a3a"></span>
+        <span style="background:#efe3cd"></span>
+        <span style="background:#c9b08c"></span>
+        <span style="background:#2a4452"></span>
+      </div>
+      <p>Верблюжий, оливковый, кремовый, тёплый беж, петроль. На фотках вместе будете в гармонии.</p>
+    </div>
+  </div>
+</section>
+
+<section id="figure">
+  <h2>3. Фигура — перевёрнутый треугольник (V-shape)</h2>
+  <p class="lede">Плечи шире бёдер, талия узкая. Это «героический» мужской силуэт — на нём отлично сидит smart casual. Главное — не добавлять ширину плечам, подчёркивать талию, давать форму ягодицам через крой брюк.</p>
+
+  <div class="figure-row">
+    <div class="silhouette">
+      <svg viewBox="0 0 200 380" width="180" height="340">
+        <!-- голова -->
+        <ellipse cx="100" cy="40" rx="22" ry="28" fill="#c9b08c"/>
+        <!-- шея -->
+        <rect x="92" y="62" width="16" height="14" fill="#c9b08c"/>
+        <!-- плечи и торс V -->
+        <path d="M 40 90 Q 100 76 160 90 L 130 220 Q 100 232 70 220 Z" fill="#b18761"/>
+        <!-- ноги -->
+        <rect x="80" y="220" width="18" height="140" fill="#4a2f1d" rx="4"/>
+        <rect x="102" y="220" width="18" height="140" fill="#4a2f1d" rx="4"/>
+        <!-- линии-подписи -->
+        <line x1="40" y1="90" x2="20" y2="90" stroke="#6b2a2a" stroke-width="1.5"/>
+        <line x1="70" y1="220" x2="20" y2="220" stroke="#6b2a2a" stroke-width="1.5"/>
+        <line x1="100" y1="170" x2="20" y2="170" stroke="#6b2a2a" stroke-width="1.5"/>
+        <text x="14" y="86" font-size="11" fill="#6b2a2a" text-anchor="end">плечи широкие</text>
+        <text x="14" y="166" font-size="11" fill="#6b2a2a" text-anchor="end">талия узкая</text>
+        <text x="14" y="216" font-size="11" fill="#6b2a2a" text-anchor="end">бёдра узкие</text>
+        <!-- ягодицы намёк -->
+        <line x1="130" y1="225" x2="180" y2="225" stroke="#6b2a2a" stroke-width="1.5"/>
+        <text x="184" y="222" font-size="11" fill="#6b2a2a">подчеркнуть кроем</text>
+      </svg>
+    </div>
+    <ul class="fig-list">
+      <li><b>Плечи 120+ см</b> — широкие, массивные. Не добавлять ширину подплечниками.</li>
+      <li><b>Талия 86 см (W34)</b> — узкая. Это сильная сторона, обозначать заправкой, ремнями.</li>
+      <li><b>Бёдра 104 см</b> — у́же плеч на ~16 см. Природного объёма ягодицам не даёт — решает крой брюк.</li>
+      <li><b>Ноги длинные</b> — выигрывают в slim-straight, проигрывают в baggy.</li>
+      <li><b>Лёгкий живот внизу</b> — не обтягивать, не носить высокую посадку с прямой заправкой в обтяжку.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="trousers">
+  <h2>4. Брюки — главный приоритет</h2>
+  <p class="lede">Лёша хочет подчеркнуть попу. При узких бёдрах это делается кроем: mid-rise посадка по середине, маленький-средний задний карман на средней трети ягодицы, <b>straight</b> или <b>чуть свободный (relaxed)</b> силуэт. <b>Никаких skinny, slim-tapered с узкой щиколоткой, joggers с резинкой внизу</b> — это тренд 2010-х, в 2026 это старит и убивает «солидно».</p>
+
+  <div class="compare">
+    <div class="panel good">
+      <div class="label">✓ Да — straight, mid-rise, со складкой</div>
+      <div style="display:flex; justify-content:center; padding: 16px 0;">
+        <img src="photos/refs/fb-casual-2.jpg" style="height:200px; border-radius:8px;" alt=""/>
+      </div>
+      <h4>Прямые брюки от бедра до щиколотки, можно со складкой (pleated)</h4>
+      <p><b>Посадка mid-rise</b> — по середине таза, не низкая. Это поднимает попу визуально.</p>
+      <p><b>Облегание в бёдрах и заде, прямо вниз</b> — крой держит форму ягодиц, но не сжимает.</p>
+      <p><b>Складки у пояса (pleats)</b> — современный тренд 2024–2026, прибавляют объём и «дорогость», скрывают мягкий живот.</p>
+      <p><b>Карман</b>: средний, попадает на среднюю треть ягодицы.</p>
+      <p><b>Длина</b>: до подъёма стопы (no break) или с лёгкой подворотом.</p>
+      <p><b>Ткани</b>: шерсть, плотный хлопок-сатин, селвидж-деним 12+ oz, лён-смесь летом.</p>
+    </div>
+    <div class="panel bad">
+      <div class="label">✗ Нет — skinny, slim-tapered, baggy</div>
+      <div style="display:flex; justify-content:center; padding: 16px 0;">
+        <div class="bad-jeans"></div>
+      </div>
+      <h4>Что убивает образ «солидно и дорого»</h4>
+      <p><b>Skinny / slim-tapered с узкой щиколоткой</b> — тренд 2015 года, сейчас старит, делает ноги «колбасками» на плотных мышцах.</p>
+      <p><b>Joggers с резинкой внизу</b> — спорт-вайб, противоречит «солидно/дорого».</p>
+      <p><b>Низкая посадка</b> = удлиняет и без того длинный торс, ягодица «съезжает» вниз.</p>
+      <p><b>Огромный накладной карман</b> = попа уплощается.</p>
+      <p><b>Baggy с провисом сзади</b> = ягодицы пропадают.</p>
+      <p><b>Светлые потёртые джинсы с искусственными царапинами</b> = дешевит, рушит «солидно/дорого».</p>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:20px">
+    <div class="col card">
+      <b>Минимум на сезон — 3 пары рабочих брюк:</b>
+      <ol style="margin: 8px 0 0 16px; padding: 0;">
+        <li><b>Костюмные шерстяные</b> — антрацит или шоколад. На встречи и «солидный» режим.</li>
+        <li><b>Чино</b> — оливковый или верблюжий, плотный хлопок-сатин 300+ г/м². Универсал.</li>
+        <li><b>Джинсы</b> — тёмное индиго, селвидж, прямой или slim-straight. Без потёртостей.</li>
+      </ol>
+    </div>
+    <div class="col card">
+      <b>Бренды-ориентиры (любой сегмент):</b><br>
+      <span class="tag">Uniqlo</span><span class="tag">COS</span><span class="tag">Massimo Dutti</span><span class="tag">Sandro</span><span class="tag">12 STOREEZ</span><span class="tag">Lemaire</span><br>
+      <span style="font-size:13px; color:var(--muted);">В магазинах — мерить именно W34, и проверять посадку зада в зеркале.</span>
+    </div>
+  </div>
+</section>
+
+<section id="shoes">
+  <h2>5. Обувь — с учётом плоскостопия</h2>
+  <p class="lede">Плоская кожаная подошва без стельки — нет. Нужна поддержка свода стопы и амортизация. Это сужает выбор, но не убивает «дорого выглядеть».</p>
+
+  <div class="row">
+    <div class="col">
+      <h3 style="margin-top:0">✓ Что покупать</h3>
+      <div class="shoe-rule">
+        <div class="icon">✓</div>
+        <div class="txt"><b>Кроссовки с амортизацией</b>New Balance 990/991/2002R, Hoka, ASICS GT, Brooks. Стильно и комфортно для свода.</div>
+      </div>
+      <div class="shoe-rule">
+        <div class="icon">✓</div>
+        <div class="txt"><b>Дезерты и Wallabee</b>Clarks Desert Boot, Wallabee. Резиновая подошва, лёгкая амортизация, выглядят дорого.</div>
+      </div>
+      <div class="shoe-rule">
+        <div class="icon">✓</div>
+        <div class="txt"><b>Лоферы / дерби с ортостелькой</b>Кожаные, но внутрь — ортопедическая стелька. Каблук 2–3 см снимает нагрузку.</div>
+      </div>
+      <div class="shoe-rule">
+        <div class="icon">✓</div>
+        <div class="txt"><b>Челси на резиновой подошве</b>Кожаные ботинки с амортизирующей подошвой, не на тонкой кожаной.</div>
+      </div>
+      <div style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;">
+        <div class="item"><div class="sneaker"></div><span class="cap">Кроссовки с амортизацией</span></div>
+        <div class="item"><div class="loafer"></div><span class="cap">Лоферы с ортостелькой</span></div>
+      </div>
+    </div>
+    <div class="col">
+      <h3 style="margin-top:0">✗ Чего избегать</h3>
+      <div class="shoe-rule no">
+        <div class="icon">✗</div>
+        <div class="txt"><b>Converse / Vans / низкие кеды</b>Тонкая плоская резиновая подошва без поддержки свода — для плоскостопия плохо.</div>
+      </div>
+      <div class="shoe-rule no">
+        <div class="icon">✗</div>
+        <div class="txt"><b>Жёсткая плоская кожаная подошва</b>Дорогие итальянские лоферы «на кожаной подошве» без вкладок — нагрузка идёт прямо на свод.</div>
+      </div>
+      <div class="shoe-rule no">
+        <div class="icon">✗</div>
+        <div class="txt"><b>Шлёпки и плоские сандалии</b>Никакой поддержки. На лето — Birkenstock или Mephisto с супинатором.</div>
+      </div>
+      <div class="shoe-rule no">
+        <div class="icon">✗</div>
+        <div class="txt"><b>Туфли на скользкой кожаной подошве</b>Травмоопасно при плоскостопии — стопа «гуляет».</div>
+      </div>
+      <div style="display:flex; gap:16px; justify-content:center; margin-top:14px;">
+        <div class="item"><div class="bad-shoe"></div><span class="cap">Плоский кед без свода</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="yes">
+  <h2>6. Что носить — конкретные вещи</h2>
+  <p class="lede">Базовый набор «solid &amp; expensive» на сезон. Все вещи сочетаются друг с другом по цвету и стилю.</p>
+
+  <div class="lookboard">
+    <div class="item"><div class="oxford"></div><span class="cap">Оксфорд кремовый, заправляется</span></div>
+    <div class="item"><div class="merino"></div><span class="cap">Меринос оливковый, тонкий</span></div>
+    <div class="item"><div class="tshirt" style="background:#4a2f1d"></div><span class="cap">Футболка плотный хлопок, шоколад</span></div>
+    <div class="item"><div class="suit-pants"></div><span class="cap">Шерстяные брюки шоколад</span></div>
+    <div class="item"><div class="chinos"></div><span class="cap">Чино верблюжий</span></div>
+    <div class="item"><div class="jeans"></div><span class="cap">Джинсы тёмное индиго</span></div>
+    <div class="item"><div class="jacket"></div><span class="cap">Овершот / неструктурированный пиджак, бутылочный</span></div>
+    <div class="item"><div class="coat"></div><span class="cap">Лёгкое пальто-чессерфилд, верблюжий</span></div>
+    <div class="item"><div class="sneaker"></div><span class="cap">Кроссовки кремовые с амортизацией</span></div>
+  </div>
+
+  <div class="row" style="margin-top:18px">
+    <div class="col card">
+      <b>Принцип верхнего слоя:</b><br>
+      <span style="font-size:14px;">Плотный мускулистый торс в одной только облегающей футболке = «фитоняшка». Накинутый овершот / пиджак / кардиган = «солидно и дорого». Верхний слой почти всегда обязателен.</span>
+    </div>
+    <div class="col card">
+      <b>Принцип заправки:</b><br>
+      <span style="font-size:14px;">Front-tuck (только перед, зад снаружи) при лёгком животе — лучшее решение. Полная заправка только в брюки с правильной посадкой, не в обтяжку.</span>
+    </div>
+  </div>
+</section>
+
+<section id="no">
+  <h2>7. Что НЕ носить</h2>
+  <p class="lede">Самые типичные ошибки для V-силуэта на плотной мышечной базе. Каждая — с конкретной причиной.</p>
+
+  <div class="compare">
+    <div class="panel bad">
+      <div class="label">✗ Ошибка #1</div>
+      <h4>Oversize худи и свитеры</h4>
+      <p>Съедают V-силуэт. Плечи сравниваются с бёдрами, талия пропадает — превращает в «парня из ТЦ».</p>
+    </div>
+    <div class="panel bad">
+      <div class="label">✗ Ошибка #2</div>
+      <h4>Жёсткий чёрный костюм с подплечниками</h4>
+      <p>Плечи и так широкие. Подплечники + чёрный = «выпускной 2010». Берём мягкие неструктурированные пиджаки.</p>
+    </div>
+    <div class="panel bad">
+      <div class="label">✗ Ошибка #3</div>
+      <h4>Водолазки под горло</h4>
+      <p>Лицо вытянутое — водолазка удлиняет ещё больше. Вместо: тонкий джемпер с круглым или V-вырезом.</p>
+    </div>
+    <div class="panel bad">
+      <div class="label">✗ Ошибка #4</div>
+      <h4>Cargo-шорты и штаны с боковыми карманами</h4>
+      <p>Добавляют объём бёдрам, ломают V-пропорцию. Шорты — только обычные с боковым карманом, не «военно-полевые».</p>
+    </div>
+    <div class="panel bad">
+      <div class="label">✗ Ошибка #5</div>
+      <h4>Кислотные цвета и крупные логотипы</h4>
+      <p>Противоречат запросу «солидно/дорого». Логотип во всю грудь = «бренд-мания», не «солидный мужчина 30 лет».</p>
+    </div>
+    <div class="panel bad">
+      <div class="label">✗ Ошибка #6</div>
+      <h4>Чёрный у самого лица</h4>
+      <p>Тушит тёплый подтон, делает уставшим. Решение: чёрный низ + цветной верх. Или чёрный пиджак + светлая рубашка под ним.</p>
+    </div>
+  </div>
+</section>
+
+<section id="looks">
+  <h2>8. Готовые луки — 20 комплектов с разбором</h2>
+  <p class="lede">Каждый лук — flat lay из 3–5 вещей, контекст «куда надеть», и 3 пункта «почему работает». Все вещи в палитре Soft Autumn, под V-силуэт, под подчёркивание ягодиц и плоскостопие. <b>Палитра проверена:</b> везде только тёплые тона, никакого чёрного у лица и холодного серого. <b>Разные люди и контексты:</b> от утреннего кофе до зимнего пальто, от свадьбы гостем до субботнего бранча.</p>
+
+  <div class="looks-grid">
+
+    <!-- ЛУК 1 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-brown-garden.jpg" alt="Домашний кэжуал тотал-камел"/>
+      <div class="look-head">
+        <div class="ctx">Домашний рабочий</div>
+        <h4>Хенли + чино + кеды-кроссовки</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-henley" style="background:#6b2a2a"></div>
+        <div class="mini mini-chinos" style="background:#b18761"></div>
+        <div class="mini mini-sneaker" style="background:#efe3cd"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Хенли вместо футболки</b> — пуговицы у горла дают «выходной» оттенок даже дома, лицо смотрится не «спортсменом», а «человеком за столом».</li>
+          <li><b>Винный + верблюжий</b> — тёплая пара из палитры. Не яркая, но не скучная.</li>
+          <li><b>Чино с эластаном</b> — мягко облегают бедро и зад, при этом не мнутся весь день за компом. Удобно сесть на стул, но если откроется зум — выглядишь собранно.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 2 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-corduroy-jacket.jpg" alt="Корд-блейзер шоколад + paisley галстук + широкие брюки"/>
+      <div class="look-head">
+        <div class="ctx">Встреча с клиентом / коворкинг</div>
+        <h4>Корд-блейзер + рубашка + paisley галстук + широкие брюки + лоферы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-blazer" style="background:#6a3f1d"></div>
+        <div class="mini mini-oxford" style="background:#efe3cd"></div>
+        <div class="mini mini-tie" style="background:#6b2a2a; height:80px; width:24px; border-radius:4px"></div>
+        <div class="mini mini-suit-pants" style="background:#a9a06a"></div>
+        <div class="mini mini-loafer" style="background:#4a2f1d"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Шоколадный вельвет-блейзер</b> вместо шерсти — мягкий, текстурный, выглядит «дороже без понта». Читается как «человек со вкусом», не «офисный костюм».</li>
+          <li><b>Широкие брюки шалфейного/охра-оливкового тона</b> — современный силуэт, не slim. Контраст с тёмным верхом подчёркивает рост.</li>
+          <li><b>Paisley галстук бургунди</b> у горла — теплый цветовой акцент в палитре Autumn. Это «дорогая мелочь», на которой и держится солидность.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 3 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-checked-bridge.jpg" alt="Клетчатый овершот + светлые прямые брюки"/>
+      <div class="look-head">
+        <div class="ctx">Выход в город днём</div>
+        <h4>Футболка + овершот + джинсы + кроссы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-tshirt" style="background:#efe3cd"></div>
+        <div class="mini mini-overshirt" style="background:#2f4a36"></div>
+        <div class="mini mini-jeans" style="background:#2a4452"></div>
+        <div class="mini mini-sneaker" style="background:#efe3cd"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Овершот бутылочного зелёного</b> = верхний слой, который даёт «солидно». Без него белая футболка на плотном торсе = «фитоняшка», с ним = «человек со вкусом».</li>
+          <li><b>Тёмное индиго селвидж-деним</b> — выглядит дороже, чем дизайнерские «потёртые». Темнее = солиднее.</li>
+          <li><b>Кремовые кроссовки</b> вместо чёрных — снимают «спортивность», работают как лёгкая обувь, не убивая образ.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 4 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-earth-1.jpg" alt="Кремовый зип-свитер + шоколадные wide брюки на закате"/>
+      <div class="look-head">
+        <div class="ctx">Ужин / свидание вечером</div>
+        <h4>Зип-свитер кремовый + широкие шоколадные брюки + лоферы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-merino" style="background:#e9ddb5"></div>
+        <div class="mini mini-suit-pants" style="background:#4a2f1d"></div>
+        <div class="mini mini-loafer" style="background:#6a3f1d"></div>
+        <div class="mini mini-belt" style="margin-bottom:36px; background:#4a2f1d"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Тёплый монохром песок→шоколад</b> — закатная палитра. Кремовый верх ловит свет у лица, тёмный низ «приземляет». Romantic, не «офисно».</li>
+          <li><b>Зип на четверть</b> вместо водолазки — открывает горло, лицо не «коротится». Текстура трикотажа = осенний уют без свитерного «дедушки».</li>
+          <li><b>Wide брюки шоколадного тона</b> — НЕ чёрные. Палитра Autumn, силуэт современный, рост подчёркивается длиной штанины.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 5 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-brown-wide-1.jpg" alt="Тотал-шоколад: поло + широкие шоколадные брюки + лоферы"/>
+      <div class="look-head">
+        <div class="ctx">Деловое без галстука / вечерний выход</div>
+        <h4>Тотал-шоколад: поло + широкие брюки + лоферы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-tshirt" style="background:#4a2f1d"></div>
+        <div class="mini mini-suit-pants" style="background:#4a2f1d"></div>
+        <div class="mini mini-loafer" style="background:#2a1f17"></div>
+        <div class="mini mini-watch" style="margin-bottom:8px"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Тотал-лук в шоколадной палитре</b> — главный современный приём «солидно и дорого». Один цвет с разной фактурой (трикотаж + шёлк-шерсть) = глубина без пестроты.</li>
+          <li><b>Поло вместо рубашки</b> — для случаев «деловое без галстука». Открытое горло удлиняет шею, не «давит» как водолазка.</li>
+          <li><b>Wide брюки + лоферы</b> — НЕ slim. Прямая широкая штанина даёт рост и визуально не «сжимает» зад. Лоферы выходят из-под штанины ровно — стопа не «болтается» в воздухе как с укороченными slim.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 6 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-olive-2.jpg" alt="Оливковая пуховка + кремовая водолазка + верблюжьи карго + ботинки"/>
+      <div class="look-head">
+        <div class="ctx">Поездка / самолёт / зимний день</div>
+        <h4>Пуховка олива + водолазка + карго + ботинки + бини</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-coat" style="background:#3d4a2a"></div>
+        <div class="mini mini-turtleneck" style="background:#efe3cd; width:36px; height:60px; border-radius:6px"></div>
+        <div class="mini mini-chinos" style="background:#9d7a4d"></div>
+        <div class="mini mini-boot" style="background:#c9b08c"></div>
+        <div class="mini mini-beanie" style="background:#3d4a2a; width:50px; height:36px; border-radius:18px 18px 8px 8px"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Оливковая пуховка</b> — практично, тепло, и в палитре. НЕ чёрный «техно-пух», который превращает в курьера. Олива читается как «природный человек».</li>
+          <li><b>Кремовая водолазка + верблюжьи карго</b> — слои тёплых тонов, чтобы образ не потерял дороговизну под объёмной курткой.</li>
+          <li><b>Бежевые ботинки</b> вместо чёрных кроссов — снимают ощущение «спортсмена», добавляют ремесленный вайб. Шнуровка = поддержка стопы (плоскостопие).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 7 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-olive-3.jpg" alt="Зелёная парка + клетчатая рубашка + шоколадные брюки + ботинки"/>
+      <div class="look-head">
+        <div class="ctx">Прогулка по Питеру весной / outdoor</div>
+        <h4>Парка олива + клетчатая рубашка + шоколадные брюки + бутсы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-coat" style="background:#3d4a2a"></div>
+        <div class="mini mini-shirt" style="background:#7a4a32; width:46px; height:64px; border-radius:6px; position:relative; overflow:hidden"></div>
+        <div class="mini mini-chinos" style="background:#4a2f1d"></div>
+        <div class="mini mini-boot" style="background:#6a3f1d"></div>
+        <div class="mini mini-beanie" style="background:#3d4a2a; width:50px; height:36px; border-radius:18px 18px 8px 8px"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Парка тёмно-оливковая</b> с тёплым подкладом — функциональная вещь, которая держит линию V (плечи структурированы, не «балахон»).</li>
+          <li><b>Клетчатая рубашка-shacket</b> в красно-коричневых тонах под низ — мужественно, фактурно, в палитре. Поверх футболка/хенли = три слоя, всё в тепле.</li>
+          <li><b>Шоколадные плотные брюки</b> вместо джинс — для весеннего Петербурга солиднее, чем стираный деним. Прямой крой, не slim.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 8 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-casual-4.jpg" alt="Белая льняная рубашка + шоколадные wide брюки + дерби"/>
+      <div class="look-head">
+        <div class="ctx">Бранч в воскресенье / лето</div>
+        <h4>Льняная рубашка + широкие шоколадные брюки + дерби</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-oxford" style="background:#efe3cd"></div>
+        <div class="mini mini-suit-pants" style="background:#4a2f1d"></div>
+        <div class="mini mini-loafer" style="background:#2a1f17"></div>
+        <div class="mini mini-belt" style="margin-bottom:36px; background:#4a2f1d"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Кремовая льняная рубашка</b> на голое тело, расстёгнута на 2 пуговицы — итальянский летний классик. Светлый верх ловит свет у лица.</li>
+          <li><b>Pleated шоколадные wide брюки</b> с высокой посадкой — складки у пояса формально, ширина внизу неформально. Идеальный баланс.</li>
+          <li><b>Дерби тёмные</b> вместо кроссовок — это «бранч с друзьями», не «пробежка к метро». Кожа выглядит дороже текстиля.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 9 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/camel-coat-portrait.jpg" alt="Верблюжье пальто + бордовая водолазка + петроль брюки + лоферы"/>
+      <div class="look-head">
+        <div class="ctx">Зимний выход в Питере</div>
+        <h4>Камел пальто + водолазка бордо + петроль брюки + лоферы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-coat" style="background:#b18761"></div>
+        <div class="mini mini-turtleneck" style="background:#6b2a2a; width:36px; height:60px; border-radius:6px"></div>
+        <div class="mini mini-suit-pants" style="background:#2a4452"></div>
+        <div class="mini mini-loafer" style="background:#2a1f17"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Верблюжье пальто прямого кроя</b> длиной до колена — главная зимняя инвестиция. Тёплое, в палитре, делает любой образ под низом «дорогим».</li>
+          <li><b>Бордовая водолазка</b> — единственный случай, когда водолазка ок: под пальто закрытый воротник создаёт «треугольник» цветного акцента у горла, а лицо «вытягивается» вертикалью.</li>
+          <li><b>Петроль (тёплый navy) брюки</b> вместо чёрных. Соответствует Autumn, выглядит как европейская классика, а не «офисный клерк».</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 10 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-light-hoodie.jpg" alt="Бежевый трикотажный костюм + кремовые кроссы"/>
+      <div class="look-head">
+        <div class="ctx">Уютная пятница / дома но не пижама</div>
+        <h4>Тотал-беж: худи + штаны + кроссы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-tshirt" style="background:#d9c19a"></div>
+        <div class="mini mini-chinos" style="background:#d9c19a"></div>
+        <div class="mini mini-sneaker" style="background:#efe3cd"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Тотал-беж трикотаж</b> — это «домашка», которая не выглядит как домашка. Один тон верха и низа = силуэт читается «дорогим», а не «диванным».</li>
+          <li><b>Свободный крой штанин</b> с резинкой — комфорт без слишком-спорта. Не obegает зад, ягодицы видны естественно.</li>
+          <li><b>Кремовые кроссы</b> в тон костюму. Если выйти за хлебом или на zoom — лук собранный, не «вышел в пижаме».</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 11 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-turtleneck-beret.jpg" alt="Кремовая водолазка + берет + джинсовка"/>
+      <div class="look-head">
+        <div class="ctx">Кофе с другом / парижский вайб</div>
+        <h4>Кремовая фактурная водолазка + берет + джинсовка</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-turtleneck" style="background:#efe3cd; width:36px; height:60px; border-radius:6px"></div>
+        <div class="mini mini-beanie" style="background:#e9ddb5; width:50px; height:36px; border-radius:18px 18px 8px 8px"></div>
+        <div class="mini mini-jacket" style="background:#3a4c6a; width:50px; height:60px; border-radius:6px"></div>
+        <div class="mini mini-jeans" style="background:#2a4452"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Светлый берет</b> вместо бини — «европейская богемность», подходит к овальному лицу Лёши и его волнистым волосам.</li>
+          <li><b>Фактурная водолазка кремового цвета</b> — рельеф вязки даёт текстуру, не скучный flat-knit. Открытый овал лица в высоком вороте смотрится художественно.</li>
+          <li><b>Денимка как акцент</b> — наброшенная на плечо, не на нём. Это sprezzatura: «вещь между делом».</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 12 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-brown-wide-3.jpg" alt="Тотал-шоколад на каблуках старого Стамбула"/>
+      <div class="look-head">
+        <div class="ctx">Вечерний выход city / выставка</div>
+        <h4>Тонкое шоколадное поло + шёлковые шоколадные брюки + платформа</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-tshirt" style="background:#3a2415"></div>
+        <div class="mini mini-suit-pants" style="background:#4a2f1d"></div>
+        <div class="mini mini-loafer" style="background:#1c140d"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Тёмное поло-knit</b> с короткими рукавами — для тёплых вечеров, выглядит «архитектурно». Открытое горло снимает «офисность».</li>
+          <li><b>Шоколадные wide pleated</b> — главный современный мужской силуэт. Складка у пояса = инженерия кроя, а не «свободные штаны».</li>
+          <li><b>Лоферы на платформе или толстые dr.martens</b> — даёт основание силуэту. С Wide штаниной кроссовки бы «потерялись», а массивная подошва уравновешивает.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 13 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-casual-3.jpg" alt="Светлая рубашка + подтяжки + верблюжьи pleated брюки + шляпа"/>
+      <div class="look-head">
+        <div class="ctx">Свадьба гостем летом / праздник</div>
+        <h4>Рубашка + подтяжки + верблюжьи pleated брюки + шляпа</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-oxford" style="background:#dcd9cc"></div>
+        <div class="mini mini-beanie" style="background:#c9a677; width:60px; height:36px; border-radius:30px 30px 6px 6px"></div>
+        <div class="mini mini-suit-pants" style="background:#9d7a4d"></div>
+        <div class="mini mini-belt" style="background:#1c140d; margin-bottom:30px"></div>
+        <div class="mini mini-loafer" style="background:#1c140d"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Подтяжки вместо ремня</b> — старая школа, читается «гость со вкусом, а не клерк в костюме». Создают вертикаль на торсе, визуально удлиняют силуэт.</li>
+          <li><b>Pleated верблюжьи брюки</b> с высокой посадкой — формат «классической пиджачной пары без пиджака». Лёгкая шерсть на лето.</li>
+          <li><b>Светлая фетровая шляпа</b> — для свадьбы на воздухе. С его овальным лицом и волнами волос — идёт. Не кепка, не панама.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 14 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-earth-4.jpg" alt="Тотал-шоколад джинсовый комплект + бини"/>
+      <div class="look-head">
+        <div class="ctx">Уикенд расслабленный / съёмка</div>
+        <h4>Тотал-шоколад: рабочая рубашка + брюки-чоры + бини</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-shirt" style="background:#6a3f1d; width:46px; height:64px; border-radius:6px"></div>
+        <div class="mini mini-tshirt" style="background:#efe3cd"></div>
+        <div class="mini mini-chinos" style="background:#6a3f1d"></div>
+        <div class="mini mini-beanie" style="background:#7a2a14; width:50px; height:36px; border-radius:18px 18px 8px 8px"></div>
+        <div class="mini mini-boot" style="background:#2a1f17"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Тотал-шоколад workwear</b> — японский стиль ремесленника. Один цвет вверх-вниз даёт глубину, а текстура (плотный хлопок) держит силуэт.</li>
+          <li><b>Кремовая футболка под рубашкой</b> — V у горла. Это «дорогая мелочь», бесплатная.</li>
+          <li><b>Шоколадная бини с лёгким бордовым подтоном</b> — рамка для лица, прикрывает причёску в неаккуратный день. Не чёрная.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 15 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-checked-beanie.jpg" alt="Горчично-красный клетчатый shacket + джинсовка + бежевые брюки"/>
+      <div class="look-head">
+        <div class="ctx">Outdoor осенний / парк</div>
+        <h4>Клетчатый shacket + джинсовая рубашка + бежевые брюки + бутсы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-coat" style="background:#c08c2f"></div>
+        <div class="mini mini-shirt" style="background:#3a4c6a; width:46px; height:64px; border-radius:6px"></div>
+        <div class="mini mini-tshirt" style="background:#efe3cd"></div>
+        <div class="mini mini-chinos" style="background:#c9b08c"></div>
+        <div class="mini mini-boot" style="background:#4a2f1d"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Горчично-красный плед-shacket</b> = главный сезонный «вирусный» силуэт. Тяжёлая шерсть + clean клетка = осенне-зимний классик.</li>
+          <li><b>Тройной слой:</b> футболка + джинсовая рубашка + shacket — три температурных слоя без объёма. Снять верхний в кафе, остаться в красивом.</li>
+          <li><b>Бежевые тёплые брюки</b> и тёмные бутсы — тёплая база, ноги «приземлены». Шнуровка = поддержка стопы (плоскостопие).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 16 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/brown-jacket-road.jpg" alt="Замшевая шоколадная куртка + тёмная рубашка + кремовые чино + челси"/>
+      <div class="look-head">
+        <div class="ctx">Smart casual офис / показ работы</div>
+        <h4>Замшевая куртка + тёмная рубашка + кремовые чино + челси</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-jacket" style="background:#a45a2a; width:50px; height:60px; border-radius:6px"></div>
+        <div class="mini mini-shirt" style="background:#3a2415; width:46px; height:64px; border-radius:6px"></div>
+        <div class="mini mini-chinos" style="background:#efe3cd"></div>
+        <div class="mini mini-belt" style="background:#2a1f17; margin-bottom:30px"></div>
+        <div class="mini mini-boot" style="background:#6a3f1d"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Замшевая куртка</b> = фактура, которая делает простой комплект «дорогим». Не кожа (слишком байкер), не нейлон (слишком спорт).</li>
+          <li><b>Тёмная рубашка под светлый низ</b> — обратный контраст. Грудь «уходит назад», а кремовые брюки + светлая обувь = ноги «выходят вперёд», рост подчёркивается.</li>
+          <li><b>Замшевые челси в тон куртке</b> — правило «верх и низ перекликаются». Создаёт композицию, а не случайный комплект.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 17 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-beige-overcoat.jpg" alt="Бежевое двубортное пальто + рубашка + галстук"/>
+      <div class="look-head">
+        <div class="ctx">Тёплое пальто весной / на встречу</div>
+        <h4>Двубортное светлое пальто + рубашка + галстук + брюки</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-coat" style="background:#d6c9a3"></div>
+        <div class="mini mini-oxford" style="background:#efe3cd"></div>
+        <div class="mini mini-tie" style="background:#6a3f1d; height:80px; width:24px; border-radius:4px"></div>
+        <div class="mini mini-suit-pants" style="background:#7a6a4a"></div>
+        <div class="mini mini-loafer" style="background:#4a2f1d"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Светло-бежевое двубортное пальто</b> = верблюжье пальто 2.0. Двубортность даёт структуру плечу + талию визуально. Подходит к V-силуэту.</li>
+          <li><b>Шерстяной галстук землистого тона</b> вместо шёлкового — модно и не «офисно». Текстура важнее блеска.</li>
+          <li><b>Тёплая бежевая цветовая гамма» под пальто</b> — образ читается как один длинный мазок краски. Это итальянский приём «tono su tono».</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 18 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-corduroy-1.jpg" alt="Бежевый корд овершот + чёрная футболка + бирюзовый браслет"/>
+      <div class="look-head">
+        <div class="ctx">Весенняя прогулка / на велосипеде</div>
+        <h4>Корд-овершот песочный + футболка + джинсы + кроссы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-jacket" style="background:#d6c9a3; width:50px; height:60px; border-radius:6px"></div>
+        <div class="mini mini-tshirt" style="background:#3a2415"></div>
+        <div class="mini mini-jeans" style="background:#2a4452"></div>
+        <div class="mini mini-sneaker" style="background:#c9b08c"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Корд-овершот песочного цвета</b> — это «весенний свитер». Лёгкий, фактурный, в палитре. Открытая застёжка = расслабленность.</li>
+          <li><b>Тёмно-шоколадная футболка</b> вместо белой — снимает «больничный» вид светлого монохрома. Контраст тёплых тонов внутри одной семьи.</li>
+          <li><b>Тёплое индиго джинсы</b> и кремовые кроссы — практично для города, в палитре. Не серое, не чёрное.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 19 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/brown-blazer-confident.jpg" alt="Твидовый блейзер + оливковая рубашка"/>
+      <div class="look-head">
+        <div class="ctx">Старая школа / лекция / выставка</div>
+        <h4>Твидовый блейзер + оливковая рубашка + шерстяные брюки + лоферы</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-blazer" style="background:#5a3f1d"></div>
+        <div class="mini mini-oxford" style="background:#7a6a3d"></div>
+        <div class="mini mini-suit-pants" style="background:#3d2f1d"></div>
+        <div class="mini mini-loafer" style="background:#4a2f1d"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Твидовый блейзер шоколадно-горчичный</b> — это «университетский профессор». Тёплый твид, не серый. Хорошо переносит влагу.</li>
+          <li><b>Оливковая рубашка</b> внутри = принципиальный отказ от белого офисного. Создаёт «архитектурную» гамму: дерево + мох + камень.</li>
+          <li><b>Шерстяные брюки тёмно-шоколадные</b> и лоферы — стиль читается «академический», но не «дед». Никаких джинсов под этот блейзер.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ЛУК 20 -->
+    <div class="look">
+      <img class="ref-photo" src="photos/refs/fb-brown-water.jpg" alt="Длинное верблюжье пальто + бордовая водолазка + шарф"/>
+      <div class="look-head">
+        <div class="ctx">Мороз / арктическая зима</div>
+        <h4>Длинное пальто-халат + водолазка + плотные брюки + бутсы + шарф</h4>
+      </div>
+      <div class="flat">
+        <div class="mini mini-coat" style="background:#a45a2a"></div>
+        <div class="mini mini-turtleneck" style="background:#6b2a2a; width:36px; height:60px; border-radius:6px"></div>
+        <div class="mini mini-suit-pants" style="background:#3d2f1d"></div>
+        <div class="mini mini-boot" style="background:#2a1f17"></div>
+        <div class="mini mini-scarf" style="background:#7a6a3d; margin-bottom:24px"></div>
+      </div>
+      <div class="why">
+        <ul>
+          <li><b>Длинное пальто-халат с поясом</b> до щиколотки — настоящая зимняя «крепость». Пояс на талии = не балахон, силуэт сохраняется.</li>
+          <li><b>Бордовая или винная водолазка</b> = тёплый цветной акцент у горла + дополнительный термослой. Не чёрная и не серая.</li>
+          <li><b>Шарф горчично-оливковый</b> намотать вокруг — функция + цвет. Лучше работает чем чёрный/серый: фото в инстаграме потом не выглядит «угрюмо».</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="archetypes">
+  <h2>9. Четыре архетипа стиля — выбираем направление</h2>
+  <p class="lede">Под Лёшу подходят четыре крупных «школы» мужского стиля. Можно миксовать, можно выбрать одну как опорную. От выбора зависит шопинг: бренды, ткани, фактуры.</p>
+
+  <div class="arch-grid">
+
+    <div class="arch">
+      <img class="arch-photo" src="photos/refs/fb-casual-3.jpg" alt="Итальянский sprezzatura"/>
+      <div class="arch-body">
+        <div class="swatch-strip"><span style="background:#b18761"></span><span style="background:#4a2f1d"></span><span style="background:#efe3cd"></span><span style="background:#2a4452"></span></div>
+        <h4>1. Итальянский sprezzatura</h4>
+        <div class="sub">Флоренция, Pitti Uomo, Брунелло Кучинелли</div>
+        <p>Мягкие неструктурированные пиджаки, рубашки на голое тело или поверх футболки, замшевые лоферы, светлые брюки. «Дорогая небрежность».</p>
+        <div class="keys"><b>Бренды:</b> Brunello Cucinelli, Boglioli, Eleventy, Massimo Dutti (массмаркет-аналог), 12 STOREEZ.</div>
+      </div>
+    </div>
+
+    <div class="arch">
+      <img class="arch-photo" src="photos/refs/fb-brown-wide-1.jpg" alt="Тёплый монохром-минимализм"/>
+      <div class="arch-body">
+        <div class="swatch-strip"><span style="background:#4a2f1d"></span><span style="background:#b18761"></span><span style="background:#c9b08c"></span><span style="background:#efe3cd"></span></div>
+        <h4>2. Тёплый монохром-минимализм</h4>
+        <div class="sub">Lemaire, COS warm, Studio Nicholson — чистые линии в Autumn-палитре</div>
+        <p>Минимализм, но без холодного серо-чёрного. Тотал-лук в одной тёплой гамме: шоколадный поло + шоколадные wide брюки, или кремовый верх + верблюжий низ. Никаких принтов, никаких логотипов.</p>
+        <div class="keys"><b>Бренды:</b> Lemaire, Studio Nicholson, COS (тёплая линия), Arket, Margaret Howell, 12 STOREEZ, Uniqlo +J.</div>
+      </div>
+    </div>
+
+    <div class="arch">
+      <img class="arch-photo" src="photos/refs/fb-checked-bridge.jpg" alt="Японский селвидж-кэжуал"/>
+      <div class="arch-body">
+        <div class="swatch-strip"><span style="background:#2a4452"></span><span style="background:#efe3cd"></span><span style="background:#a45a2a"></span><span style="background:#2a1f17"></span></div>
+        <h4>3. Японский селвидж-кэжуал</h4>
+        <div class="sub">Visvim, Beams, тяжёлый деним и ремесленная фактура</div>
+        <p>Плотные ткани, грубоватая фактура, индиго-деним, рабочие куртки, кожа с патиной. Минимум блеска, всё «как ручная работа».</p>
+        <div class="keys"><b>Бренды:</b> Visvim, Beams, Engineered Garments, Margaret Howell, A Vontade, Jelado.</div>
+      </div>
+    </div>
+
+    <div class="arch">
+      <img class="arch-photo" src="photos/refs/fb-casual-2.jpg" alt="Британский tweed"/>
+      <div class="arch-body">
+        <div class="swatch-strip"><span style="background:#6b2a2a"></span><span style="background:#4a2f1d"></span><span style="background:#c08c2f"></span><span style="background:#2f4a36"></span></div>
+        <h4>4. Британский tweed-кэжуал</h4>
+        <div class="sub">Drake's, твид, шерсть, охотничьи мотивы</div>
+        <p>Твидовые пиджаки, кашемировые свитеры, шерстяные шарфы, ботинки на резиновой подошве. Прохладный английский деревенский шик.</p>
+        <div class="keys"><b>Бренды:</b> Drake's, Cordings, Private White VC, Barbour, Sunspel, Margaret Howell.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <b>Рекомендация под Лёшу:</b> опорный — <b>итальянский sprezzatura</b> + 30% <b>японский селвидж</b>. Sprezzatura даёт «солидно/дорого» с мягкостью под Soft Classic Кибби. Японский кэжуал — для будней (плотные ткани, селвидж-джинсы, рабочие куртки). Скандинавский подмешивается для базы (футболки, мериносы). Британский tweed — только осенью точечно (один пиджак, один шарф).
+  </div>
+</section>
+
+<section id="inspo">
+  <h2>10. Галерея вдохновения — реальные комплекты</h2>
+  <p class="lede">Фото мужчин в палитре Soft Autumn и smart casual. Сохраняй те, что цепляют — потом подберём конкретные модели на твой бюджет.</p>
+
+  <div class="gallery">
+    <figure>
+      <img src="photos/refs/fb-brown-garden.jpg" alt=""/>
+      <figcaption><b>Тотал-камел: куртка + брюки</b>Овершот-куртка + прямые брюки в тон. Чистая Autumn-палитра, workwear-вайб.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-brown-wide-1.jpg" alt=""/>
+      <figcaption><b>Тотал-шоколад: поло + широкие брюки</b>Минимализм в тёплой палитре. Главный приём «солидно через монохром».</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-corduroy-jacket.jpg" alt=""/>
+      <figcaption><b>Корд-блейзер + широкие брюки</b>Шоколадный вельвет + цветной paisley галстук. Эстетика 70-х, sprezzatura.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-shades-coat.jpg" alt=""/>
+      <figcaption><b>Верблюжье пальто + жилет + челси</b>Sprezzatura «солидно». Тёмные волосы и борода — близкий типаж.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-brown-water.jpg" alt=""/>
+      <figcaption><b>Длинное верблюжье пальто</b>До голени, с поясом. Прямые джинсы, бежевые челси. Эталон Autumn.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-olive-2.jpg" alt=""/>
+      <figcaption><b>Оливковая пуховка + верблюжий низ</b>Тёплая зимняя слоистость. Бини в тон куртке + кремовый трикотаж.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-olive-3.jpg" alt=""/>
+      <figcaption><b>Парка + клетка + шоколад</b>Outdoor-кэжуал в Autumn. Зелёная парка → клетчатая рубашка → шоколадные брюки.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-earth-1.jpg" alt=""/>
+      <figcaption><b>Кремовый свитер + шоколадные wide</b>Тёплый минимализм. Закатный свет даёт всю палитру Autumn.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-checked-bridge.jpg" alt=""/>
+      <figcaption><b>Клетчатый shacket + светлые брюки</b>Осенний кэжуал в горчично-охровой клетке. British tweed без «дедовщины».</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-casual-3.jpg" alt=""/>
+      <figcaption><b>Подтяжки + горчичные широкие брюки</b>Винтаж sprezzatura. Pleated wide-leg в охре — что нужно Лёше.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-casual-5.jpg" alt=""/>
+      <figcaption><b>Льняная рубашка + кремовые широкие</b>Лето / межсезонье. Свободный крой по всему силуэту, тёплые нейтрали.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-casual-2.jpg" alt=""/>
+      <figcaption><b>Клетчатый блейзер + кремовые брюки</b>Smart casual. Прямой широкий крой, лоферы на резиновой подошве.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/fb-trench-istanbul.jpg" alt=""/>
+      <figcaption><b>Бежевый тренч + дерби</b>Тренч у лица — тёплый бежевый. Низ можно затемнить. Питер весной.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/beige-coat-autumn.jpg" alt=""/>
+      <figcaption><b>Пальто в осеннем парке</b>Палитра совпадает с природой Soft Autumn. Сезонный лук.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/trench-forest.jpg" alt=""/>
+      <figcaption><b>Тренч + аналоговая камера</b>Аксессуар-якорь даёт характер. Бежевый тренч — must для весеннего Питера.</figcaption>
+    </figure>
+    <figure>
+      <img src="photos/refs/camel-coat-portrait.jpg" alt=""/>
+      <figcaption><b>Верблюжье пальто + бордо</b>Учебник Autumn: пальто + винная водолазка. Лоферы с амортизирующей подошвой.</figcaption>
+    </figure>
+  </div>
+
+  <div class="card" style="margin-top:14px; background: #fff7ea; border-left: 4px solid var(--olive);">
+    <b>Правило цвета в галерее:</b> каждое фото проверено на попадание в палитру Soft Autumn — никакого чистого чёрного у лица, серо-стального, ледяного голубого. Если видишь чёрный — он только как нижний слой или акцент обуви, у лица тёплый цвет.
+  </div>
+
+  <div class="card" style="margin-top:16px; font-size:14px;">
+    <b>Как пользоваться галереей:</b> листай → отмечай в голове или говори вслух «вот это да, вот это нет». По избранному я пойму, в каком направлении конкретно тебе нравится — sprezzatura, минимализм, tweed или микс. Все фото — Pexels, открытая лицензия.
+  </div>
+</section>
+
+<section id="icons">
+  <h2>11. Иконы стиля для референса</h2>
+  <p class="lede">Реальные люди с похожим типажом или стилем, которые удобно гуглить в Pinterest для насмотренности. Не «копировать», а ловить настроение.</p>
+
+  <div class="icons-grid">
+
+    <div class="icon-card">
+      <img class="icon-photo" src="photos/refs/icon-oscar-isaac.jpg" alt="Оскар Айзек"/>
+      <div class="icon-body">
+        <div class="role">Близкий типаж</div>
+        <h4>Оскар Айзек</h4>
+        <p>Тёмные волнистые волосы, тёплый цветотип, мягкие черты. Smart casual в палитре Autumn. Сериал «Scenes from a Marriage» — учебник кэжуала на 40+.</p>
+        <div class="search">Pinterest: «Oscar Isaac off-duty», «Oscar Isaac Scenes from a Marriage»</div>
+      </div>
+    </div>
+
+    <div class="icon-card">
+      <img class="icon-photo" src="photos/refs/icon-adam-driver.jpg" alt="Адам Драйвер"/>
+      <div class="icon-body">
+        <div class="role">Кэжуал-богема</div>
+        <h4>Адам Драйвер</h4>
+        <p>Длинные волосы, неструктурированные пиджаки, кардиганы, кашемир. Богемно-художественный вайб — напрямую то, что Лёше близко.</p>
+        <div class="search">Pinterest: «Adam Driver street style», «Adam Driver casual»</div>
+      </div>
+    </div>
+
+    <div class="icon-card">
+      <img class="icon-photo" src="photos/refs/icon-jake-gyllenhaal.jpg" alt="Джейк Джилленхол"/>
+      <div class="icon-body">
+        <div class="role">V-силуэт + плотный торс</div>
+        <h4>Джейк Джилленхол</h4>
+        <p>Тот же V-силуэт на мускулах. Носит овершоты, шерстяные пальто, тёмное индиго. Как одевать широкие плечи без жёсткой структуры.</p>
+        <div class="search">Pinterest: «Jake Gyllenhaal street style», «Jake Gyllenhaal off-duty»</div>
+      </div>
+    </div>
+
+    <div class="icon-card">
+      <img class="icon-photo" src="photos/refs/icon-pedro-pascal.jpg" alt="Педро Паскаль"/>
+      <div class="icon-body">
+        <div class="role">«Зрелый дорогой» 40+</div>
+        <h4>Педро Паскаль</h4>
+        <p>Эталон «солидно и дорого» без занудства. Часто в верблюжьем, шоколадном, петроле. Cмесь sprezzatura и минимализма.</p>
+        <div class="search">Pinterest: «Pedro Pascal street style», «Pedro Pascal suit»</div>
+      </div>
+    </div>
+
+    <div class="icon-card">
+      <img class="icon-photo" src="photos/refs/icon-joel-edgerton.jpg" alt="Джоэл Эджертон"/>
+      <div class="icon-body">
+        <div class="role">Крупный + тёплый</div>
+        <h4>Джоэл Эджертон</h4>
+        <p>Крепкое сложение как у Лёши, тёплая палитра. Smart casual без жёсткой формальности. Хороший пример для плотных мужчин.</p>
+        <div class="search">Pinterest: «Joel Edgerton casual», «Joel Edgerton red carpet»</div>
+      </div>
+    </div>
+
+    <div class="icon-card">
+      <img class="icon-photo" src="photos/refs/icon-jose-gonzalez.jpg" alt="Хосе Гонсалес"/>
+      <div class="icon-body">
+        <div class="role">Длинные волосы + борода</div>
+        <h4>Хосе Гонсалес</h4>
+        <p>Шведский певец. Длинные тёмные волны, борода, базовая палитра. Тихий «художник, который выглядит спокойно и дорого».</p>
+        <div class="search">Pinterest: «José González musician style»</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <b>Что искать в Pinterest и Google Images:</b> «Pitti Uomo street style men», «smart casual men 2026», «brunello cucinelli lookbook», «sprezzatura men», «soft autumn men palette», «menswear pleated trousers», «men casual wide leg trousers». Сохраняй то, что цепляет — потом разберём, что именно из этого Лёше пойдёт.
+  </div>
+</section>
+
+<section id="plan">
+  <h2>12. План — что ещё добавим на сайт</h2>
+  <p class="lede">Что уже есть, что в работе, что впереди.</p>
+
+  <ul class="plan-list">
+    <li class="done"><div class="num">1</div><div><h5>Цветотип + палитра ✓</h5><p>Soft Autumn, 10 цветов «носить», 6 «избегать».</p></div></li>
+    <li class="done"><div class="num">2</div><div><h5>Сравнение Уля vs Лёша ✓</h5><p>Один сезон, разный уклон, общие цвета.</p></div></li>
+    <li class="done"><div class="num">3</div><div><h5>Фигура и пропорции ✓</h5><p>V-shape, мерки, что подчёркивать.</p></div></li>
+    <li class="done"><div class="num">4</div><div><h5>Брюки правильно vs неправильно ✓</h5><p>Mid-rise slim-straight vs baggy с накладными карманами.</p></div></li>
+    <li class="done"><div class="num">5</div><div><h5>Обувь при плоскостопии ✓</h5><p>Что брать, чего избегать, конкретные бренды.</p></div></li>
+    <li class="done"><div class="num">6</div><div><h5>Готовые луки ×8 ✓</h5><p>Дом, встреча, выход, вечер, деловое, поездка, прогулка, выходные.</p></div></li>
+    <li class="done"><div class="num">7</div><div><h5>Архетипы стиля ×4 ✓</h5><p>Итальянский / скандинавский / японский / британский.</p></div></li>
+    <li class="done"><div class="num">8</div><div><h5>Иконы для референса ✓</h5><p>6 имён + что искать в Pinterest.</p></div></li>
+
+    <li class="next"><div class="num">9</div><div><h5>Стрижка и борода под форму лица 🔜</h5><p>Что подходит к овально-вытянутому лицу: длина волос, форма бороды, идеи для барбера. С картинками.</p></div></li>
+    <li class="next"><div class="num">10</div><div><h5>Аксессуары 🔜</h5><p>Ремни, часы, сумка-портфель, шарфы, очки. Что докупить чтобы «дорого» поднялось ещё на ступень.</p></div></li>
+    <li class="next"><div class="num">11</div><div><h5>Гид по примерке в магазине 🔜</h5><p>Чек-лист: что проверять у брюк (посадка зада, длина, карман), у рубашки (плечи, длина рукава), у пиджака (плечевой шов, длина).</p></div></li>
+    <li class="next"><div class="num">12</div><div><h5>Капсула на сезон ×4 🔜</h5><p>Дом / встречи / выход / поездка. После разбора текущего гардероба — что комбинируем, что докупаем.</p></div></li>
+    <li class="next"><div class="num">13</div><div><h5>Шопинг-лист с приоритетами 🔜</h5><p>Что докупить в первую очередь, во вторую, в третью. С бюджетом по уровням (массмаркет / средний / премиум).</p></div></li>
+
+    <li><div class="num">14</div><div><h5>Уход и грумминг (опционально)</h5><p>Парфюм в палитре Autumn (древесные, табачные, кожаные), уход за волосами, маслом для бороды.</p></div></li>
+    <li><div class="num">15</div><div><h5>Чек-лист поездки (опционально)</h5><p>Как упаковать капсулу на 5 дней так, чтобы из 6 вещей собиралось 8 образов.</p></div></li>
+    <li><div class="num">16</div><div><h5>Связка с гардеробом Ули (опционально)</h5><p>Образы для совместных фоток. Какие ваши вещи отлично работают в паре по цвету и стилю.</p></div></li>
+  </ul>
+
+  <div class="card" style="margin-top:16px">
+    <b>Что мы можем подключить дополнительно:</b><br>
+    <ul style="margin: 6px 0 0 18px; padding: 0; font-size: 14px;">
+      <li><b>Pinterest-доска</b> — могу сгенерировать список поисковых запросов под каждый лук, ты сохранишь визуальные референсы в одно место.</li>
+      <li><b>Реальные фото-референсы</b> — могу подтянуть через веб-поиск (Pitti Uomo street style, Soft Autumn men, конкретные комплекты) и встроить картинки прямо в сайт.</li>
+      <li><b>Калькулятор шопинга</b> — простая страница, где отмечаешь что куплено, и видишь как капсула закрывается процентами.</li>
+      <li><b>PDF-версия сайта</b> — могу выгрузить для печати или отправки Лёше.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>13. Что дальше — следующие шаги</h2>
+  <p class="lede">Это база. Дальше — точные мерки → разбор гардероба → капсулы под контексты → шопинг-лист с конкретными моделями.</p>
+  <div class="row">
+    <div class="col card"><b>Шаг 1</b><br><span style="font-size:14px;">✅ Диагностика — готово</span></div>
+    <div class="col card"><b>Шаг 2</b><br><span style="font-size:14px;">🔄 Мерки: W34 / 86 см талия / 104 см бёдра. Длина шагового шва и обувь — ещё уточнить.</span></div>
+    <div class="col card"><b>Шаг 3</b><br><span style="font-size:14px;">⏳ Фото гардероба → разбор по вещам</span></div>
+  </div>
+</section>
+
+<footer>
+  Стиль Лёши · Style-Lesha · обновлено 2026-05-14
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <rect width="200" height="250" fill="#1c1c1c"/>
+  <!-- неоновое сияние сзади -->
+  <circle cx="100" cy="125" r="80" fill="#b8431f" opacity="0.22"/>
+  <circle cx="100" cy="125" r="50" fill="#f4d3a5" opacity="0.18"/>
+
+  <!-- центральная фигура — робот -->
+  <g stroke="#f7eedf" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- голова -->
+    <rect x="86" y="62" width="28" height="24" rx="3" fill="#f4d3a5"/>
+    <!-- глаза -->
+    <circle cx="94" cy="74" r="2" fill="#1c1c1c"/>
+    <circle cx="106" cy="74" r="2" fill="#1c1c1c"/>
+    <!-- усики -->
+    <line x1="92" y1="62" x2="90" y2="54"/>
+    <line x1="108" y1="62" x2="110" y2="54"/>
+    <circle cx="90" cy="52" r="2" fill="#b8431f" stroke="none"/>
+    <circle cx="110" cy="52" r="2" fill="#b8431f" stroke="none"/>
+
+    <!-- тело -->
+    <rect x="86" y="86" width="28" height="36" rx="2" fill="#f4d3a5"/>
+
+    <!-- 6 паучьих лап-рук, расходятся в стороны под углами «робот»-движения -->
+    <!-- верхние руки вверх и в стороны -->
+    <path d="M 86 94 L 60 70 L 50 78" />
+    <path d="M 114 94 L 140 70 L 150 78" />
+    <!-- средние руки изломанные -->
+    <path d="M 86 108 L 50 110 L 36 96" />
+    <path d="M 114 108 L 150 110 L 164 96" />
+
+    <!-- ноги — стойка как у диско, согнутые -->
+    <path d="M 94 122 L 80 150 L 90 180 L 70 195" />
+    <path d="M 106 122 L 120 150 L 110 180 L 130 195" />
+
+    <!-- стопы -->
+    <line x1="64" y1="195" x2="78" y2="195"/>
+    <line x1="124" y1="195" x2="138" y2="195"/>
+  </g>
+
+  <!-- движение — линии «свиста» -->
+  <g stroke="#f4d3a5" stroke-width="1.5" opacity="0.6" stroke-linecap="round" fill="none">
+    <path d="M 24 130 Q 30 134 24 138"/>
+    <path d="M 18 124 Q 24 130 18 136"/>
+    <path d="M 176 130 Q 170 134 176 138"/>
+    <path d="M 182 124 Q 176 130 182 136"/>
+  </g>
+
+  <!-- подпись -->
+  <text x="100" y="225" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="16" fill="#f7eedf">робот-паук</text>
+</svg>

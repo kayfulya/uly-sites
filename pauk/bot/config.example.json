@@ -1,0 +1,10 @@
+{
+  "bot_token": "ВСТАВЬ_ТОКЕН_ОТ_BOTFATHER",
+  "allowed": {
+    "ulya": "@username_uli",
+    "tanya": "@username_tani",
+    "tolya": "@username_toli"
+  },
+  "cap": 10000,
+  "_help": "значения allowed могут быть либо @username (строка), либо числовой user_id"
+}

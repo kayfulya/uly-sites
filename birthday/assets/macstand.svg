@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <rect width="200" height="250" fill="#efe7d4"/>
+
+  <!-- тень -->
+  <ellipse cx="100" cy="220" rx="76" ry="6" fill="#1c1c1c" opacity="0.1"/>
+
+  <g stroke="#1c1c1c" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+
+    <!-- подставка Curve: изогнутая дуга -->
+    <path d="M 40 215 Q 50 205 75 200 L 75 130 Q 75 110 100 100 Q 125 110 125 130 L 125 200 Q 150 205 160 215 Z"
+          fill="#f7eedf"/>
+    <!-- прорезь для шнура -->
+    <path d="M 95 132 L 105 132 L 100 138 Z" fill="#1c1c1c"/>
+
+    <!-- ноутбук открытый сверху -->
+    <!-- основание клавиатуры -->
+    <path d="M 48 86 L 152 86 L 158 100 L 42 100 Z" fill="#5d6b5b"/>
+    <!-- экран -->
+    <rect x="56" y="32" width="88" height="56" fill="#1c1c1c"/>
+    <!-- свет на экране -->
+    <rect x="62" y="38" width="76" height="44" fill="#f4d3a5"/>
+    <!-- содержимое экрана: пара строк-окошек -->
+    <rect x="68" y="44" width="32" height="6" fill="#b8431f" stroke="none"/>
+    <rect x="68" y="54" width="56" height="3" fill="#1c1c1c" stroke="none" opacity="0.5"/>
+    <rect x="68" y="60" width="48" height="3" fill="#1c1c1c" stroke="none" opacity="0.5"/>
+    <rect x="68" y="66" width="40" height="3" fill="#1c1c1c" stroke="none" opacity="0.5"/>
+    <rect x="68" y="72" width="52" height="3" fill="#1c1c1c" stroke="none" opacity="0.5"/>
+
+    <!-- надкусанный кружок логотипа на крышке (просвечивает сверху) -->
+    <circle cx="100" cy="22" r="5" fill="#f7eedf"/>
+  </g>
+</svg>

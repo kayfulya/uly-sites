@@ -1,0 +1,2763 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Трекер Ули</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10b981">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Трекер">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<script src="lib/chart.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    background: #f6f4ed;
+    color: #1c1c1c;
+    min-height: 100vh;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #efece4; }
+  ::-webkit-scrollbar-thumb { background: #c9c7bf; border-radius: 4px; }
+
+  .wrap { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media(min-width: 1100px) {
+    .wrap { grid-template-columns: 420px 1fr; }
+    .span2 { grid-column: 1 / -1; }
+  }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid #e7e5dd;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .card h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #6b7280;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card h2 .meta { color: #9ca3af; font-weight: normal; letter-spacing: 0.5px; }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: center; padding: 0 4px 4px; }
+  .header .date { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  .header .date .day { color: #6b7280; font-weight: 400; font-size: 16px; margin-left: 8px; }
+  .header .quote { color: #6b7280; font-size: 12px; font-style: italic; max-width: 260px; text-align: right; }
+
+  /* Donut */
+  .donut-wrap { display: flex; align-items: center; gap: 18px; }
+  .donut-canvas { width: 140px; height: 140px; position: relative; flex-shrink: 0; }
+  .donut-canvas .center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .donut-canvas .pct { font-size: 32px; font-weight: 700; color: #16a34a; }
+  .donut-canvas .lbl { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; }
+  .stats-mini { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-mini { background: #faf8f3; border-radius: 10px; padding: 10px 12px; }
+  .stat-mini .v { font-size: 20px; font-weight: 700; color: #1c1c1c; }
+  .stat-mini .v.cyan { color: #0891b2; }
+  .stat-mini .v.lime { color: #16a34a; }
+  .stat-mini .v.magenta { color: #c026d3; }
+  .stat-mini .v.orange { color: #ea580c; }
+  .stat-mini .l { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
+
+  /* Habits */
+  .habit {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 4px; border-bottom: 1px solid #ececea;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .habit:last-child { border-bottom: none; }
+  .habit:hover { background: rgba(0,0,0,0.025); }
+  .habit .emoji { font-size: 20px; width: 28px; text-align: center; }
+  .habit .name { flex: 1; font-size: 14px; }
+  .habit .pct { font-size: 11px; color: #6b7280; min-width: 36px; text-align: right; }
+  .check {
+    width: 22px; height: 22px; border: 2px solid #d4d4d0; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; flex-shrink: 0;
+  }
+  .check.on { background: #16a34a; border-color: #16a34a; }
+  .check.on::after { content: "✓"; color: #ffffff; font-weight: 900; font-size: 14px; }
+  .habit.done .name { color: #6b7280; text-decoration: line-through; }
+  .habit.done .emoji { opacity: 0.5; }
+
+  /* Counters */
+  .counter {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 4px; border-bottom: 1px solid #ececea;
+  }
+  .counter:last-child { border-bottom: none; }
+  .counter .emoji { font-size: 20px; width: 28px; text-align: center; }
+  .counter .name { flex: 1; font-size: 14px; }
+  .counter .name .target { font-size: 11px; color: #6b7280; display: block; }
+  .counter .ctrl { display: flex; align-items: center; gap: 8px; }
+  .counter button {
+    width: 28px; height: 28px; border-radius: 8px; border: 1px solid #d4d4d0;
+    background: #faf8f3; color: #1c1c1c; font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .counter button:hover { background: #ececea; }
+  .counter .val { font-size: 18px; font-weight: 700; min-width: 36px; text-align: center; }
+  .counter .val.warn { color: #ea580c; }
+  .counter .val.bad { color: #dc2626; }
+  .counter .val.good { color: #16a34a; }
+
+  /* Tasks */
+  .task {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 4px; border-bottom: 1px solid #ececea;
+    cursor: pointer;
+  }
+  .task:last-child { border-bottom: none; }
+  .task .pri { width: 4px; align-self: stretch; border-radius: 2px; flex-shrink: 0; }
+  .task .pri.urgent { background: #dc2626; }
+  .task .pri.high { background: #ea580c; }
+  .task .pri.medium { background: #eab308; }
+  .task .pri.low { background: #6b7280; }
+  .task .body { flex: 1; }
+  .task .text { font-size: 13px; }
+  .task .meta-row { font-size: 11px; color: #6b7280; margin-top: 2px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .task .meta-row .deadline { color: #ea580c; }
+  .task .meta-row .deadline.urgent { color: #dc2626; font-weight: 700; }
+  .task .meta-row .project { background: #ececea; padding: 1px 6px; border-radius: 4px; }
+  .task.done { opacity: 0.4; }
+  .task.done .text { text-decoration: line-through; }
+  .task .check { width: 18px; height: 18px; }
+  .task .check.on::after { font-size: 11px; }
+
+  /* Task groups (треки) */
+  .task-group { margin-bottom: 14px; }
+  .task-group:last-child { margin-bottom: 0; }
+  .task-group .grp-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 8px; margin-bottom: 4px;
+    background: #faf8f3; border-radius: 6px;
+    font-size: 12px; font-weight: 700; color: #1c1c1c;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .task-group .grp-head .count {
+    background: #ececea; color: #6b7280; font-weight: 600;
+    padding: 1px 7px; border-radius: 999px; font-size: 11px;
+    letter-spacing: 0;
+  }
+  .task-group .grp-head .lock {
+    margin-left: auto; font-size: 10px; color: #dc2626; font-weight: 600;
+    text-transform: none; letter-spacing: 0;
+  }
+  .task-group.work .grp-head { background: #fef3e7; color: #92400e; }
+  .task-group.birthday .grp-head { background: #fce7f3; color: #9d174d; }
+  .task-group.trip .grp-head { background: #e0f2fe; color: #075985; }
+  .task-group.personal .grp-head { background: #ede9fe; color: #5b21b6; }
+  .task-group.household .grp-head { background: #f1f5f9; color: #475569; }
+  .task-group.dimmed { opacity: 0.5; }
+  .task-group.dimmed:hover { opacity: 0.9; }
+
+  /* Filters */
+  .filters { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+  .filter {
+    padding: 4px 10px; border-radius: 999px;
+    background: #faf8f3; border: 1px solid #e5e5e0;
+    font-size: 11px; color: #9ca3af; cursor: pointer;
+  }
+  .filter.on { background: #16a34a; color: #ffffff; border-color: #16a34a; font-weight: 700; }
+
+  /* Week grid — единая сетка привычек */
+  .week {
+    display: grid;
+    grid-template-columns: 1fr repeat(6, 28px) 52px 44px;
+    gap: 4px;
+    font-size: 11px;
+    align-items: center;
+  }
+  .week .hd { color: #6b7280; text-align: center; padding: 4px 0; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .week .hd.today { color: #16a34a; font-weight: 800; font-size: 11px; }
+  .week .hd.pct-hd { color: #92400e; font-weight: 700; }
+  .week .row-name { padding: 6px 0; display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .week .cell {
+    height: 26px; border-radius: 4px; background: #faf8f3;
+    border: 1px solid #ececea; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .week .cell.on { background: #84cc16; border-color: #84cc16; }
+  .week .cell.on::after { content: "✓"; color: #ffffff; font-weight: 900; font-size: 11px; }
+  .week .cell.future { opacity: 0.3; cursor: not-allowed; }
+  .week .cell.today-col {
+    height: 44px; background: #ffffff; border: 2px solid #16a34a;
+    box-shadow: 0 2px 6px rgba(22,163,74,0.18);
+    border-radius: 6px;
+  }
+  .week .cell.today-col.on { background: #16a34a; }
+  .week .cell.today-col.on::after { content: "✓"; font-size: 18px; }
+  .week .pct-cell {
+    text-align: center; font-weight: 700; font-size: 11px;
+    color: #6b7280; background: #faf8f3; border-radius: 4px;
+    padding: 6px 0;
+  }
+  .week .pct-cell.full { color: #16a34a; background: #ecfdf5; }
+  .week .pct-cell.half { color: #92400e; background: #fef3e7; }
+  .week .pct-cell.low { color: #9ca3af; }
+
+  /* Week summary (низ) */
+  .week-summary-card { background: #fefce8; border-color: #fde68a; }
+  .ws-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 900px) { .ws-grid { grid-template-columns: repeat(2, 1fr); } }
+  .ws-stat {
+    background: #ffffff; border-radius: 8px; padding: 12px;
+    border: 1px solid #fef3c7;
+  }
+  .ws-stat .lbl { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .ws-stat .val { font-size: 24px; font-weight: 800; color: #1c1c1c; line-height: 1; }
+  .ws-stat .delta { font-size: 11px; margin-top: 4px; font-weight: 600; }
+  .ws-stat .delta.up { color: #16a34a; }
+  .ws-stat .delta.down { color: #dc2626; }
+  .ws-stat .delta.same { color: #9ca3af; }
+  .ws-streaks { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ws-streak {
+    background: #ffffff; border: 1px solid #fde68a;
+    padding: 4px 10px; border-radius: 999px; font-size: 12px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .ws-streak b { color: #92400e; }
+
+  /* Events */
+  .event {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; border-radius: 10px;
+    background: #faf8f3; margin-bottom: 8px;
+    border-left: 3px solid;
+  }
+  .event.cyan { border-color: #0891b2; }
+  .event.magenta { border-color: #c026d3; }
+  .event.orange { border-color: #ea580c; }
+  .event.lime { border-color: #16a34a; }
+  .event .dates { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
+  .event .title { font-size: 14px; font-weight: 600; margin-top: 2px; }
+  .event .countdown { margin-left: auto; font-size: 12px; color: #9ca3af; }
+  .event .countdown.soon { color: #ea580c; font-weight: 700; }
+  .event .countdown.now { color: #16a34a; font-weight: 700; }
+
+  /* Today (главный блок наверху) */
+  .today-card {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfccb 100%);
+    border: 2px solid #16a34a;
+    box-shadow: 0 6px 20px rgba(22,163,74,0.12);
+  }
+  .today-card h2 { color: #166534; font-size: 18px; }
+  .today-focus {
+    font-size: 14px; color: #0891b2; font-weight: 600;
+    margin: 4px 0 14px;
+  }
+  .today-sec-title {
+    font-size: 11px; color: #6b7280;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin: 14px 0 8px; font-weight: 700;
+  }
+  .today-sec-title:first-child { margin-top: 0; }
+  .today-block {
+    display: grid; grid-template-columns: 48px 1fr; gap: 10px;
+    padding: 7px 0; font-size: 13px;
+    border-bottom: 1px dashed #d1fae5;
+    align-items: baseline;
+  }
+  .today-block:last-child { border-bottom: none; }
+  .today-block .t { color: #6b7280; font-variant-numeric: tabular-nums; font-size: 12px; }
+  .today-block .w { color: #1c1c1c; line-height: 1.35; }
+  .today-block.routine .w { color: #16a34a; font-weight: 600; }
+  .today-block.urgent .w { color: #dc2626; font-weight: 600; }
+  .today-task {
+    display: flex; gap: 10px; align-items: center;
+    padding: 8px 10px; margin: 6px 0;
+    background: #fff; border-radius: 8px;
+    border-left: 3px solid #dc2626; cursor: pointer;
+    font-size: 13px;
+  }
+  .today-task.overdue { border-left-color: #b91c1c; background: #fef2f2; }
+  .today-task .pri-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    background: #dc2626;
+  }
+  .today-task .pri-dot.high { background: #ea580c; }
+  .today-task .pri-dot.medium { background: #eab308; }
+  .today-task .pri-dot.low { background: #16a34a; }
+  .today-task .check {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1.5px solid #c2c2bd; flex-shrink: 0;
+  }
+  .today-task .text { flex: 1; }
+  .today-task .badge {
+    font-size: 10px; color: #b91c1c; font-weight: 700;
+    background: #fee2e2; padding: 2px 6px; border-radius: 4px;
+  }
+  .today-empty { color: #9ca3af; font-size: 12px; font-style: italic; padding: 8px 0; }
+
+  .course-task {
+    display: flex; gap: 10px; align-items: center;
+    padding: 9px 12px; margin: 6px 0;
+    background: #fff; border-radius: 8px;
+    border-left: 3px solid #c026d3; cursor: pointer;
+    font-size: 13px; user-select: none;
+  }
+  .course-task.done { opacity: 0.55; background: #faf5ff; }
+  .course-task .emoji { font-size: 18px; flex-shrink: 0; }
+  .course-task .name { flex: 1; }
+  .course-task.done .name { text-decoration: line-through; color: #71717a; }
+  .course-task .check {
+    width: 22px; height: 22px; border-radius: 6px;
+    border: 1.5px solid #c2c2bd; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: transparent;
+  }
+  .course-task.done .check {
+    background: #16a34a; border-color: #16a34a; color: #fff;
+  }
+  .course-task.done .check::after { content: '✓'; }
+
+  .today-score-line {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    font-size: 12px; color: #71717a;
+    padding: 8px 12px; margin-bottom: 14px;
+    background: #fff; border-radius: 8px;
+  }
+  .today-score-line b { color: #16a34a; font-size: 14px; font-weight: 800; }
+
+  .today-main-item {
+    display: flex; gap: 12px; align-items: center;
+    padding: 10px 14px; margin: 6px 0;
+    background: #fff; border-radius: 8px;
+    border-left: 4px solid #0891b2;
+    cursor: pointer; user-select: none;
+    font-size: 14px;
+  }
+  .today-main-item.done { opacity: 0.55; background: #f0f9ff; }
+  .today-main-item .time { font-weight: 700; color: #0891b2; min-width: 50px; }
+  .today-main-item.done .what { text-decoration: line-through; color: #71717a; }
+  .today-main-item .what { flex: 1; font-weight: 600; }
+  .today-main-item .check {
+    width: 22px; height: 22px; border-radius: 6px;
+    border: 1.5px solid #c2c2bd; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: transparent; font-size: 14px;
+  }
+  .today-main-item.done .check {
+    background: #16a34a; border-color: #16a34a; color: #fff;
+  }
+  .today-main-item.done .check::after { content: '✓'; }
+
+  /* Routine (deprecated, used elsewhere) */
+  .routine {
+    display: grid; grid-template-columns: 60px 1fr auto; gap: 10px;
+    padding: 8px 4px; border-bottom: 1px solid #ececea;
+    align-items: center; font-size: 13px;
+  }
+  .routine:last-child { border-bottom: none; }
+  .routine .day { font-weight: 700; color: #0891b2; font-size: 12px; text-transform: uppercase; }
+  .routine .when { color: #6b7280; font-size: 11px; }
+
+  /* Chart container */
+  .chart-box { height: 180px; position: relative; }
+
+  /* Section toggle */
+  .toggle { font-size: 11px; color: #0891b2; cursor: pointer; user-select: none; }
+
+  /* Add task */
+  .add-row { display: flex; gap: 6px; margin-top: 10px; }
+  .add-row input, .add-row select {
+    background: #faf8f3; border: 1px solid #e5e5e0; color: #1c1c1c;
+    padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: inherit;
+  }
+  .add-row input { flex: 1; }
+  .add-row button {
+    background: #16a34a; border: none; color: #ffffff;
+    padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 12px;
+  }
+
+  /* Trip card */
+  .trip-card {
+    background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+    border-color: #a5f3fc;
+  }
+  .trip-head {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .trip-head .big {
+    font-size: 36px; font-weight: 800;
+    color: #0891b2; letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .trip-head .lbl { font-size: 13px; color: #155e75; flex: 1; }
+  .trip-period {
+    font-size: 12px; color: #155e75;
+    background: #f0f9ff; border-radius: 6px;
+    padding: 8px 12px; margin: 8px 0 12px;
+  }
+  .trip-progress {
+    height: 8px; background: #cffafe; border-radius: 4px; overflow: hidden;
+    margin: 10px 0 14px;
+  }
+  .trip-progress .bar {
+    height: 100%; background: linear-gradient(90deg, #0891b2, #06b6d4);
+    transition: width 0.4s ease;
+  }
+  .trip-stats { font-size: 11px; color: #155e75; margin-bottom: 8px; }
+
+  /* Birthday card */
+  .bday-card {
+    background: linear-gradient(135deg, #fdf4ff 0%, #fce7f3 100%);
+    border-color: #f5d0fe;
+  }
+  .bday-head {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .bday-head .big {
+    font-size: 36px; font-weight: 800;
+    color: #c026d3; letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .bday-head .lbl { font-size: 13px; color: #86198f; flex: 1; }
+  .bday-progress {
+    height: 8px; background: #fae8ff; border-radius: 4px; overflow: hidden;
+    margin: 10px 0 14px;
+  }
+  .bday-progress .bar {
+    height: 100%; background: linear-gradient(90deg, #c026d3, #e11d48);
+    transition: width 0.4s ease;
+  }
+  .bday-stats { font-size: 11px; color: #86198f; margin-bottom: 8px; }
+
+  /* Achievements */
+  .ach-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .ach {
+    background: #faf8f3; border: 1px solid #ececea;
+    border-radius: 10px; padding: 10px;
+    display: flex; gap: 10px; align-items: center;
+    opacity: 0.45; filter: grayscale(0.7);
+    transition: all 0.3s;
+  }
+  .ach.unlocked {
+    opacity: 1; filter: none;
+    background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+    border-color: #fde68a;
+  }
+  .ach .emoji { font-size: 24px; flex-shrink: 0; }
+  .ach .body { flex: 1; min-width: 0; }
+  .ach .title { font-size: 12px; font-weight: 700; color: #1c1c1c; }
+  .ach .desc { font-size: 10px; color: #71717a; margin-top: 2px; line-height: 1.3; }
+  .ach.unlocked .title { color: #92400e; }
+
+  /* Score */
+  .score-big {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfccb 100%);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    border: 1px solid #d1fae5;
+  }
+  .score-big.neg {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-color: #fecaca;
+  }
+  .score-big .num {
+    font-size: 38px; font-weight: 800;
+    color: #16a34a; letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .score-big.neg .num { color: #dc2626; }
+  .score-big .lbl {
+    flex: 1;
+    font-size: 11px; color: #71717a;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .score-big .week-pts {
+    font-size: 13px; color: #71717a;
+    text-align: right;
+  }
+  .score-big .week-pts b { color: #1c1c1c; font-size: 16px; display: block; }
+
+  /* Flash popup */
+  .flash {
+    position: fixed;
+    top: 30%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 84px; font-weight: 900;
+    pointer-events: none;
+    z-index: 9999;
+    animation: flashAnim 1.4s ease-out forwards;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    font-variant-numeric: tabular-nums;
+  }
+  .flash.plus { color: #16a34a; }
+  .flash.minus { color: #dc2626; }
+  @keyframes flashAnim {
+    0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+    15%  { transform: translate(-50%, -65%) scale(1.3); opacity: 1; }
+    70%  { transform: translate(-50%, -120%) scale(1.1); opacity: 1; }
+    100% { transform: translate(-50%, -180%) scale(0.9); opacity: 0; }
+  }
+
+  /* Today done summary */
+  .done-summary {
+    margin-top: 10px; padding: 8px 12px;
+    background: #f0fdf4; border-radius: 8px;
+    font-size: 12px; color: #166534;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .done-summary b { color: #16a34a; font-size: 14px; }
+
+  /* Tabs for sections */
+  .tabs { display: flex; gap: 4px; margin-bottom: 12px; border-bottom: 1px solid #ececea; }
+  .tab {
+    padding: 8px 14px; cursor: pointer; font-size: 12px; color: #6b7280;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tab.on { color: #16a34a; border-color: #16a34a; }
+
+  /* Week plan */
+  .week-plan { background: #fffdf7; }
+  .week-days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 10px;
+  }
+  @media (max-width: 1100px) {
+    .week-days { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .week-days { grid-template-columns: 1fr; }
+  }
+  .day-col {
+    background: #faf8f3;
+    border-radius: 10px;
+    padding: 12px;
+    border-top: 3px solid #d4d4d0;
+    min-width: 0;
+  }
+  .day-col.today {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 1px #16a34a inset, 0 4px 16px rgba(22,163,74,0.10);
+    background: #f0fdf4;
+  }
+  .day-col.past { opacity: 0.4; }
+  .day-head { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #ececea; }
+  .day-head .dow-row { display: flex; align-items: baseline; gap: 8px; }
+  .day-head .dow { font-size: 15px; font-weight: 700; color: #1c1c1c; letter-spacing: 0.5px; }
+  .day-head .date { font-size: 11px; color: #6b7280; }
+  .day-head .focus { font-size: 11px; color: #0891b2; margin-top: 4px; font-style: italic; line-height: 1.3; }
+  .day-col.today .day-head .dow { color: #16a34a; }
+
+  .block {
+    display: flex; gap: 8px; padding: 6px 0;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .block + .block { border-top: 1px dashed #ececea; }
+  .block .time {
+    color: #6b7280; min-width: 38px; flex-shrink: 0;
+    font-variant-numeric: tabular-nums; font-size: 10px; padding-top: 1px;
+  }
+  .block .what { flex: 1; word-break: break-word; }
+  .block.urgent .what { color: #dc2626; font-weight: 600; }
+  .block.course .what { color: #c026d3; font-weight: 700; }
+  .block.routine .what { color: #16a34a; font-weight: 600; }
+  .block.work .what { color: #0891b2; }
+  .block.meal .what { color: #ea580c; }
+  .block.self .what { color: #9ca3af; }
+  .block.recovery .what { color: #9333ea; }
+  .block.love .what { color: #e11d48; font-weight: 600; }
+
+  .week-divider {
+    grid-column: 1 / -1;
+    padding: 14px 4px 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #71717a;
+    font-weight: 700;
+    border-top: 1px dashed #d4d4d0;
+    margin-top: 4px;
+  }
+  .week-divider:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+  /* Минимум недели — кружочки внизу */
+  .min-week-card { background: #fffdf7; }
+  .min-week-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px 16px;
+  }
+  .min-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px;
+    background: #faf8f3;
+    border-radius: 10px;
+    border: 1px solid #ececea;
+  }
+  .min-row.done { background: #f0fdf4; border-color: #bbf7d0; }
+  .min-row.overdone { background: #fef2f2; border-color: #fecaca; }
+  .min-row .emoji { font-size: 18px; }
+  .min-row .name { flex: 1; font-size: 12px; color: #1c1c1c; }
+  .min-row .name .sub { display: block; font-size: 10px; color: #9ca3af; }
+  .min-row.done .name { color: #166534; font-weight: 700; }
+  .min-row.overdone .name { color: #991b1b; font-weight: 700; }
+  .min-dots { display: flex; gap: 4px; flex-shrink: 0; }
+  .min-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #e5e5e0; border: 1px solid #d4d4d0;
+  }
+  .min-dot.on { background: #16a34a; border-color: #16a34a; }
+  .min-dot.bad { background: #dc2626; border-color: #dc2626; }
+  .min-row .count {
+    font-size: 11px; color: #6b7280; min-width: 28px; text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .min-row.done .count { color: #16a34a; font-weight: 700; }
+  .min-row.overdone .count { color: #dc2626; font-weight: 700; }
+
+  /* Notes */
+  .notes-card { background: #fdfcf7; }
+  .note-item {
+    padding: 10px 14px; border-radius: 8px;
+    background: #faf8f3; border: 1px solid #ececea;
+    margin-bottom: 8px; font-size: 13px;
+    line-height: 1.45;
+  }
+  .note-item .note-meta {
+    font-size: 10px; color: #9ca3af;
+    margin-bottom: 4px; display: flex; gap: 8px;
+  }
+  .note-item .note-meta .voice-badge {
+    background: #dbeafe; color: #1e40af;
+    padding: 1px 6px; border-radius: 3px;
+    font-weight: 700; font-size: 9px;
+    text-transform: uppercase;
+  }
+  .note-item.voice { background: #eff6ff; border-color: #dbeafe; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- LEFT COLUMN -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+
+    <!-- TODAY: главный блок «что делать сегодня» -->
+    <div class="card today-card">
+      <h2>📌 <span id="today-date">—</span> <span class="meta" id="today-dow">—</span></h2>
+      <div class="today-focus" id="today-focus">—</div>
+
+      <div class="today-score-line">
+        <span><b id="score-num">+0</b> очков сегодня</span>
+        <span>·</span>
+        <span><b id="m-done">0</b> привычек</span>
+        <span>·</span>
+        <span><b id="m-tasks">0</b> горят</span>
+        <span>·</span>
+        <span><b id="m-events">0</b> до ДР</span>
+      </div>
+
+      <div id="today-main-wrap" style="display:none">
+        <div class="today-sec-title">🔥 Главное (созвоны, курс, терапевт)</div>
+        <div id="today-main"></div>
+      </div>
+
+      <div id="today-course-wrap" style="display:none">
+        <div class="today-sec-title">🎓 Задачи курса</div>
+        <div id="today-course"></div>
+      </div>
+
+      <div class="today-sec-title">⚡ Горят (дедлайн)</div>
+      <div id="today-urgent"></div>
+
+      <div class="today-sec-title">🕐 Распорядок дня <span class="toggle" onclick="togglePlan()" id="plan-toggle">скрыть</span></div>
+      <div id="today-plan"></div>
+    </div>
+
+    <!-- скрытые ноды для совместимости со старыми обработчиками -->
+    <div style="display:none">
+      <div id="today-meta"></div><div id="quote"></div>
+      <canvas id="donut" width="1" height="1"></canvas>
+      <div id="donut-pct"></div><div id="m-week"></div>
+      <div id="today-streak"></div><div id="score-week"></div>
+      <div id="score-big"></div>
+    </div>
+
+    <!-- Habits — единая сетка: сегодня крупно + история 6 дней + % недели -->
+    <div class="card">
+      <h2>Привычки <span class="meta">сегодня + 6 дней истории</span> <span class="toggle" onclick="resetDay()">сбросить день</span></h2>
+      <div class="week" id="week-grid"></div>
+    </div>
+
+    <!-- Counters -->
+    <div class="card">
+      <h2>Счётчики</h2>
+      <div id="counters-list"></div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+
+    <!-- Birthday countdown -->
+    <div class="card bday-card" id="bday-card">
+      <h2>До дня рождения <span class="meta" id="bday-date">27 мая</span></h2>
+      <div class="bday-head">
+        <div class="big" id="bday-days">—</div>
+        <div class="lbl">дней<br>осталось</div>
+      </div>
+      <div class="bday-progress"><div class="bar" id="bday-bar" style="width:0%"></div></div>
+      <div class="bday-stats" id="bday-stats">—</div>
+      <div id="bday-tasks"></div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="card">
+      <h2>Разовые дела <span class="meta" id="tasks-count">—</span></h2>
+      <div class="filters" id="task-filters">
+        <div class="filter on" data-f="all">Все</div>
+        <div class="filter" data-f="urgent">🔴 Горит</div>
+        <div class="filter" data-f="high">🟠 Важно</div>
+        <div class="filter" data-f="medium">🟡 Средне</div>
+        <div class="filter" data-f="low">🟢 Можно потом</div>
+        <div class="filter" data-f="done">✓ Сделано</div>
+      </div>
+      <div id="tasks-list"></div>
+      <div class="add-row">
+        <input id="add-text" placeholder="Добавить дело…" />
+        <select id="add-pri">
+          <option value="urgent">🔴 Горит</option>
+          <option value="high">🟠 Важно</option>
+          <option value="medium" selected>🟡 Средне</option>
+          <option value="low">🟢 Потом</option>
+        </select>
+        <input id="add-deadline" type="date" style="width: 140px;" />
+        <button onclick="addTask()">+</button>
+      </div>
+    </div>
+
+    <!-- Week summary — авто-обновляется при кликах -->
+    <div class="card week-summary-card">
+      <h2>Сводка недели <span class="meta" id="ws-range">—</span></h2>
+      <div id="week-summary"></div>
+    </div>
+
+  </div>
+
+  <!-- WEEK PLAN — span full width -->
+  <div class="card span2 week-plan">
+    <h2>План недели <span class="meta" id="week-range">—</span></h2>
+    <div class="week-days" id="week-days"></div>
+  </div>
+
+  <!-- МИНИМУМ НЕДЕЛИ — кружочки. Внизу, чтобы не мешал -->
+  <div class="card span2 min-week-card">
+    <h2>Минимум недели <span class="meta">кружочки = база, на которой держусь</span></h2>
+    <div class="min-week-grid" id="min-week"></div>
+  </div>
+
+  <!-- ЗАМЕТКИ — расшифровки голосовых, записи из бота -->
+  <div class="card span2 notes-card">
+    <h2>Заметки <span class="meta" id="notes-count">—</span></h2>
+    <div id="notes-list"></div>
+  </div>
+
+</div>
+
+<script>
+// ============ DATA MODEL ============
+// days: дни недели где привычка «по плану» (0=Вс, 1=Пн, 2=Вт, 3=Ср, 4=Чт, 5=Пт, 6=Сб)
+// weeklyGoal: минимум раз в неделю
+const SEED_HABITS = [
+  { id: 'meditation', emoji: '🧘', name: 'Медитация (каждый день)',    group: 'morning', points: 30, weeklyGoal: 7, days: [1,2,3,4,5,6,0] },
+  { id: 'zaryadka',   emoji: '💪', name: 'Зарядка 10 мин (3/нед)',      group: 'body',    points: 30, weeklyGoal: 3 },
+  { id: 'walk',       emoji: '🚶', name: 'Прогулка (3/нед мин.)',       group: 'body',    points: 20, weeklyGoal: 3 },
+  { id: 'bath',       emoji: '🛁', name: 'Ванна (4/нед)',                group: 'evening', points: 10, weeklyGoal: 4 },
+  { id: 'reading',    emoji: '📖', name: 'Чтение 15 мин',                group: 'evening', points: 15 },
+  { id: 'client_reel',emoji: '🎬', name: 'Ролик клиентке (ПН-ЧТ, 4/нед)',group: 'work',    points: 40, weeklyGoal: 4, days: [1,2,3,4] },
+  { id: 'own_reel',   emoji: '🎥', name: 'Свой ролик (ПН/СР/ПТ, 3/нед)', group: 'work',    points: 50, weeklyGoal: 3, days: [1,3,5] },
+  { id: 'vibe',       emoji: '💻', name: 'Вайбкодинг сам',               group: 'learn',   points: 30 },
+  { id: 'homework',   emoji: '🎓', name: 'Учёба + ДЗ (СР 16-19)',        group: 'learn',   points: 30, weeklyGoal: 1, days: [3] },
+  { id: 'lyosha',     emoji: '💑', name: 'Время с Лёшей',                group: 'love',    points: 25 },
+];
+
+// COURSE_TASKS — пустой массив. VIP-курс не продался (отменён 25.05.2026).
+// Структура оставлена на случай если появится следующий курс.
+const COURSE_TASKS = [];
+
+const SEED_COUNTERS = [
+  { id: 'cigarettes', emoji: '🚬', name: 'Сигареты',       target: 'не больше 2/нед', invert: true, pointsPer: -50, weeklyLimit: 2 },
+  { id: 'teeth',      emoji: '🦷', name: 'Зубы почистила', target: '2 раза/день',     goal: 2,      pointsPer: 12  },
+];
+
+const TASK_POINTS = { urgent: 40, high: 25, medium: 15, low: 8 };
+
+const SEED_TASKS = [
+  // ДР — только то что делает САМА Уля (организацией занимается Лёша)
+  { id: 't1',   text: 'Вишлист на ДР — допилить kayfulya.github.io/birthday', priority: 'urgent', deadline: '2026-05-22', project: 'birthday', done: false },
+  { id: 't2',   text: 'Найти темные очки (в вишлист)',                       priority: 'urgent', deadline: '2026-05-22', project: 'birthday', done: false },
+  { id: 't1d',  text: 'Разослать вишлист гостям (не WhatsApp)',              priority: 'high',   deadline: '2026-05-24', project: 'birthday', done: false },
+  { id: 't3',  text: 'Купить билеты в Грузию',                              priority: 'urgent', deadline: '2026-05-18', project: 'trip',     done: false },
+  { id: 't4',  text: 'Разобраться с подпиской Claude — какой тариф',        priority: 'urgent', deadline: '2026-05-18', project: 'general', done: false },
+  { id: 't5',  text: 'Спросить Лёшу про даты отпуска',                      priority: 'urgent', deadline: '2026-05-18', project: 'general', done: false },
+  { id: 't7',  text: 'Постирать',                                            priority: 'urgent', deadline: '2026-05-18', project: 'general', done: false },
+  { id: 't8',  text: 'Сдать вещь на ВБ/Озон',                                priority: 'high', deadline: '2026-05-20', project: 'general', done: false },
+
+  // HIGH — горит, но без точной даты
+  { id: 't9',  text: '🦷 Зубной — ВТ 26 мая',                                priority: 'urgent', deadline: '2026-05-26', project: 'health',  done: false },
+  { id: 't10', text: 'Выбрать дни реабилитации (отложено — нет времени)',     priority: 'low',    deadline: null,         project: 'health',  done: false },
+  { id: 't11', text: 'Найти удобную обувь — себе',                           priority: 'high', deadline: '2026-06-10', project: 'style',   done: false },
+  { id: 't12', text: 'Найти удобную обувь — Лёше',                           priority: 'high', deadline: '2026-06-10', project: 'style',   done: false },
+  { id: 't13', text: 'Расписать пайплайн с монтажёркой (4 ролика/нед)',      priority: 'urgent', deadline: '2026-05-22', project: 'general', done: false },
+
+  // MEDIUM
+  { id: 't14', text: 'Вывести пятна с платья',                               priority: 'medium', deadline: '2026-05-25', project: 'general', done: false },
+  { id: 't15', text: 'Ботокс в лоб — записаться',                            priority: 'medium', deadline: '2026-06-10', project: 'style',   done: false },
+  { id: 't16', text: 'Ортопед',                                              priority: 'medium', deadline: '2026-06-10', project: 'health',  done: false },
+  { id: 't17', text: 'Прививка от клещей',                                   priority: 'medium', deadline: '2026-06-05', project: 'health',  done: false },
+  { id: 't18', text: 'Решить где жить после 31 мая',                         priority: 'medium', deadline: '2026-05-28', project: 'general', done: false },
+
+  // LOW
+  { id: 't19', text: 'Зашить вещи',                                          priority: 'medium', deadline: '2026-06-10', project: 'general', done: false },
+  { id: 't20', text: 'Портфолио-сайт допилить',                              priority: 'low', deadline: null, project: 'portfolio', done: false },
+  { id: 't21', text: 'Стиль-приложение (отдых-формат)',                      priority: 'low', deadline: null, project: 'style',   done: false },
+
+  // СЕГОДНЯ (18 мая) — добавлено вручную
+  { id: 't40', text: '💰 Проверить свои налоги — оплатить за апрель',         priority: 'urgent', deadline: '2026-05-18', project: 'general', done: false },
+  { id: 't41', text: '✍️ Сценарии для Ольги',                                  priority: 'urgent', deadline: '2026-05-18', project: 'olga',    done: false },
+  { id: 't42', text: '☎️ Написать Наталье-гольфистке',                         priority: 'urgent', deadline: '2026-05-18', project: 'natalya', done: false },
+
+  // ЗАВТРА (19 мая)
+  { id: 't45', text: '⚖️ Идеи для Адвоката (новый клиент) — подготовить',      priority: 'urgent', deadline: '2026-05-19', project: 'general', done: false },
+
+  // СЕГОДНЯ (20 мая) — рабочий блок «ролики»
+  { id: 't50', text: '🎬 Смонтировать 2 ролика клиенткам',                    priority: 'urgent', deadline: '2026-05-20', project: 'general', done: false },
+  { id: 't51', text: '🖼️ Сделать обложки к этим 2 роликам',                   priority: 'urgent', deadline: '2026-05-20', project: 'general', done: false },
+  { id: 't52', text: '📨 Отправить 2 ролика клиенткам на согласование',       priority: 'urgent', deadline: '2026-05-20', project: 'general', done: false },
+  { id: 't53', text: '📤 Выложить 3 ролика (свой + клиенток)',                priority: 'urgent', deadline: '2026-05-20', project: 'general', done: false },
+  { id: 't54', text: '📨 Отправить 1 ролик другой клиентке',                  priority: 'urgent', deadline: '2026-05-20', project: 'general', done: false },
+  { id: 't55', text: '👨‍💻 Отправить Васе ссылку на трекер — посмотреть код', priority: 'high',   deadline: '2026-05-21', project: 'general', done: false },
+
+  // ПОКУПКИ
+  { id: 't56', text: '💻 Купить подставку под ноутбук',                       priority: 'medium', deadline: '2026-05-27', project: 'general', done: false },
+  { id: 't57', text: '👗 Купить зелёный костюмчик',                           priority: 'medium', deadline: '2026-05-27', project: 'style',   done: false },
+  { id: 't59', text: '🎁 Купить подарок Айсель',                              priority: 'high',   deadline: '2026-05-27', project: 'general', done: false },
+  { id: 't60', text: '🎬 Правило: каждый ролик монтировать отдельно (не пачкой) перед выкладкой', priority: 'high', deadline: null, project: 'general', done: false },
+  { id: 't61', text: '💳 Оплатить подписку Google',                           priority: 'urgent', deadline: '2026-05-25', project: 'general', done: false },
+  { id: 't62', text: '🐙 Залить трекер на GitHub (публичный репо)',           priority: 'medium', deadline: '2026-05-28', project: 'general', done: false },
+  { id: 't63', text: '🎢 Сходить в Мазапарк по скидке на ДР',                 priority: 'high',   deadline: '2026-05-27', project: 'birthday', done: false },
+  { id: 't64', text: '🎟️ Поискать развлечения со скидками в ДР',              priority: 'urgent', deadline: '2026-05-22', project: 'birthday', done: false },
+  { id: 't65', text: '🏆 Обновить очки уважения в реестре',                   priority: 'medium', deadline: '2026-05-28', project: 'general', done: false },
+  { id: 't66', text: '⚖️ Созвон Адвокат+Данис — 29 мая в 14:30 (после команды Reels-клуба)', priority: 'urgent', deadline: '2026-05-29', project: 'danil',   done: false },
+  { id: 't67', text: '📋 Подготовиться к созвону Адвокат+Данис (вопросы, кейсы)', priority: 'urgent', deadline: '2026-05-28', project: 'danil', done: false },
+  { id: 't68', text: '📱 Установить трекер на iPhone (Add to Home Screen)',    priority: 'urgent', deadline: '2026-05-22', project: 'general', done: false },
+  { id: 't69', text: '❓ Уточнить: что/когда учёба с Максом — вписать в расписание', priority: 'high',   deadline: '2026-05-25', project: 'general', done: false },
+
+  // СЕГОДНЯ (22 мая)
+  { id: 't70', text: '📤 Выложить свой ролик',                                 priority: 'urgent', deadline: '2026-05-22', project: 'club',    done: false },
+  { id: 't71', text: '💡 Написать идеи для Натальи (гольф)',                  priority: 'urgent', deadline: '2026-05-22', project: 'natalya', done: false },
+  { id: 't72', text: '🎬 Отправить максимум своих роликов на монтаж',          priority: 'urgent', deadline: '2026-05-22', project: 'club',    done: false },
+  { id: 't74', text: '👟 Заказать кроссовки',                                  priority: 'urgent', deadline: '2026-05-22', project: 'style',   done: false },
+
+  // 🎯 Свой аккаунт — цепочка работы над экспертностью и стратегией
+  { id: 't75', text: '🎙️ Сделать расшифровку всего накопленного аудио',          priority: 'high',   deadline: null, project: 'club',    done: false },
+  { id: 't76', text: '📚 Разобрать урок Миланы',                                priority: 'high',   deadline: null, project: 'club',    done: false },
+  { id: 't77', text: '🧠 Разобрать свою экспертность',                          priority: 'high',   deadline: null, project: 'club',    done: false },
+  { id: 't78', text: '🎯 Сделать себе стратегию аккаунта',                      priority: 'high',   deadline: null, project: 'club',    done: false },
+  { id: 't79', text: '🎬 Разложить стратегию на примере моих Reels и референсов', priority: 'high', deadline: null, project: 'club',    done: false },
+
+  // 🛀 Личное
+  { id: 't80', text: '🔥 Баню натопить',                                        priority: 'medium', deadline: null, project: 'general', done: false },
+  { id: 't81', text: '🎧 Поднять аудиокнижный сервер (AudioBookshelf) для офлайн на телефоне', priority: 'high', deadline: null, project: 'general', done: false },
+
+  // БОЛЬШИЕ (обсудить, что внутри)
+  { id: 't58', text: '📊 Настроить аналитику по поиску Reels (декомпозировать)', priority: 'high', deadline: '2026-05-31', project: 'general', done: false },
+
+  // ГРУЗИЯ — сборы (project='trip', все к 13.06)
+  { id: 't43', text: '☎️ Спросить Алену материалы для «Я лид заботы»',         priority: 'urgent', deadline: '2026-05-19', project: 'trip', done: false },
+  { id: 't44', text: '📚 Подготовиться к роли «Я лид заботы» в Грузии',        priority: 'high',   deadline: '2026-06-12', project: 'trip', done: false },
+  { id: 't30', text: '🧳 Документы — паспорт, страховка',                     priority: 'medium', deadline: '2026-06-13', project: 'trip', done: false },
+  { id: 't31', text: '🧳 Деньги — карты для Грузии + наличные',               priority: 'medium', deadline: '2026-06-12', project: 'trip', done: false },
+  { id: 't32', text: '🧳 Аптечка',                                            priority: 'medium', deadline: '2026-06-13', project: 'trip', done: false },
+  { id: 't33', text: '🧳 Собрать чемодан',                                    priority: 'high',   deadline: '2026-06-13', project: 'trip', done: false },
+  { id: 't34', text: '🧳 Техника + переходники',                              priority: 'medium', deadline: '2026-06-13', project: 'trip', done: false },
+  { id: 't35', text: '🎬 Контент-заготовки на 2 недели вперёд',               priority: 'urgent', deadline: '2026-06-12', project: 'trip', done: false },
+  { id: 't36', text: '📅 Раскладка публикаций на время Грузии',               priority: 'urgent', deadline: '2026-06-13', project: 'trip', done: false },
+  { id: 't37', text: '☎️ Договориться с монтажёркой про работу из Грузии',    priority: 'high',   deadline: '2026-06-08', project: 'trip', done: false },
+  { id: 't38', text: '🏨 Подтвердить жильё',                                  priority: 'medium', deadline: '2026-06-10', project: 'trip', done: false },
+
+  // 8 июня — из голосового
+  { id: 't82', text: '🦷 Разобраться с зубным',                            priority: 'high',   deadline: '2026-06-09', project: 'health',  done: false },
+  { id: 't83', text: '📱 Выложить Кассинку',                               priority: 'urgent', deadline: '2026-06-08', project: 'club',    done: false },
+  { id: 't84', text: '✍️ Сценарий для Ольги по вчерашнему созвону',        priority: 'urgent', deadline: '2026-06-08', project: 'olga',    done: false },
+  { id: 't85', text: '☎️ Договориться о созвоне с Натальей-гольфисткой',   priority: 'urgent', deadline: '2026-06-08', project: 'natalya', done: false },
+  { id: 't86', text: '📊 Презентация для нутрициолога',                    priority: 'urgent', deadline: '2026-06-09', project: 'general',  done: false },
+  { id: 't87', text: '⚖️ Сценарий для адвоката Данила',                    priority: 'high',   deadline: '2026-06-12', project: 'danil',   done: false },
+  { id: 't88', text: '✍️ Сценарий про Лёшу — как делаю ему сайт',          priority: 'medium', deadline: null,         project: 'club',    done: false },
+  { id: 't89', text: '👔 Сценарий про стилиста — как круто оформила',       priority: 'medium', deadline: null,         project: 'club',    done: false },
+  { id: 't90', text: '🎬 Записать ролик с Лёшей «я его бизнес-тренер»',    priority: 'medium', deadline: null,         project: 'club',    done: false },
+  { id: 't91', text: '❤️ Записать ролик «как сильно люблю Лёшу»',          priority: 'medium', deadline: null,         project: 'club',    done: false },
+  { id: 't92', text: '🎬 Смонтировать ролик (не срочно)',                   priority: 'low',    deadline: null,         project: 'club',    done: false },
+];
+
+const SEED_EVENTS = [
+  { id: 'birthday', title: '🎂 Мой день рождения', start: '2026-05-27', end: '2026-05-27', color: 'magenta' },
+  // { id: 'rehab', ... } — реабилитация отложена (24 мая), вернуться когда появится окно
+  { id: 'georgia',  title: '🇬🇪 Грузия', start: '2026-06-14', end: '2026-06-25', color: 'cyan' },
+  { id: 'festival', title: '🔥 Огонёк', start: '2026-08-03', end: '2026-08-11', color: 'orange' },
+  { id: 'lesha-vac-aug', title: '🌴 Отпуск Лёши', start: '2026-08-22', end: '2026-08-30', color: 'lime' },
+  { id: 'lesha-vac-nov', title: '🌴 Отпуск Лёши', start: '2026-11-04', end: '2026-11-08', color: 'lime' },
+];
+
+const WEEK_PLAN = {
+  '2026-05-18': {
+    dow: 'ПН', focus: '🔴 День решений',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация 10 мин',                       type: 'self' },
+      { time: '09:30', what: 'Завтрак + аудиокнига',                     type: 'self' },
+      { time: '10:30', what: '🚶 Прогулка 45 мин',                        type: 'self' },
+      { time: '11:30', what: '🧺 Запустить стирку',                       type: 'urgent' },
+      { time: '12:00', what: '✈️ Купить билеты в Грузию',                 type: 'urgent' },
+      { time: '13:00', what: '▶ СТАРТ РАБОТЫ',                            type: 'work' },
+      { time: '13:00', what: '⚙ Подписка Claude — выбрать тариф',        type: 'urgent' },
+      { time: '14:00', what: '🎥 Свой ролик опубликовать',                type: 'work' },
+      { time: '15:00', what: '🎬 Клиентский ролик',                       type: 'work' },
+      { time: '17:00', what: '💬 Лёша: отпуск',                            type: 'urgent' },
+      { time: '18:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '19:00', what: '🍽 Обед',                            type: 'meal' },
+      { time: '20:30', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '22:00', what: '📖 Чтение',                                 type: 'recovery' },
+      { time: '23:30', what: 'Сон',                                       type: 'self' },
+    ]
+  },
+  '2026-05-19': {
+    dow: 'ВТ', focus: '🟣 Ольга',
+    blocks: [
+      { time: '08:30', what: 'Подъём пораньше',                          type: 'self' },
+      { time: '09:00', what: '🧘 Медитация',                              type: 'self' },
+      { time: '09:30', what: 'Завтрак',                                  type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '11:00', what: '📋 Подготовка к Ольге',                     type: 'work' },
+      { time: '12:00', what: '☎️ ОЛЬГА — налоги',                         type: 'routine' },
+      { time: '13:00', what: 'Обед',                                     type: 'meal' },
+      { time: '14:00', what: '🎬 Контент / сценарии',                     type: 'work' },
+      { time: '18:00', what: 'Перекус',                                  type: 'meal' },
+      { time: '22:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-20': {
+    dow: 'СР', focus: '🟢 Учёба + моторы',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка + аудиокнига',                  type: 'self' },
+      { time: '12:30', what: 'Обед',                                     type: 'meal' },
+      { time: '13:00', what: '▶ Работа: ролики, обложки',                type: 'work' },
+      { time: '16:00', what: '🎓 Учёба + ДЗ (до 19:00)',                  type: 'course' },
+      { time: '19:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '20:00', what: '🤖 МОТОРЫ с Лёшей (Pauk)',                 type: 'routine' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-21': {
+    dow: 'ЧТ', focus: '🟣 Работа',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '💪 Зарядка',                                type: 'self' },
+      { time: '10:30', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '12:00', what: 'Обед',                                     type: 'meal' },
+      { time: '13:00', what: '▶ Работа: клиентский ролик',               type: 'work' },
+      { time: '17:00', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '18:30', what: 'Перекус',                                  type: 'meal' },
+      { time: '22:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-22': {
+    dow: 'ПТ', focus: '🟠 Команда Reels-клуба + очки',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🕶 Поиск тёмных очков',                     type: 'urgent' },
+      { time: '11:30', what: '📦 Сдать ВБ/Озон (заодно прогулка)',        type: 'urgent' },
+      { time: '12:30', what: '📋 Подготовка к команде',                   type: 'work' },
+      { time: '13:00', what: '🎬 КОМАНДА Reels-клуба',                    type: 'routine' },
+      { time: '14:30', what: 'Обед',                                     type: 'meal' },
+      { time: '15:00', what: '🎬 Контент: 2 ролика',                      type: 'work' },
+      { time: '19:00', what: '🎁 Допилить вишлист (вкл. очки)',           type: 'urgent' },
+      { time: '21:00', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '23:00', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-23': {
+    dow: 'СБ', focus: '🩷 Мягкий день + свидание',
+    blocks: [
+      { time: '10:00', what: 'Подъём попозже',                           type: 'self' },
+      { time: '10:30', what: '🧘 Медитация',                              type: 'self' },
+      { time: '11:00', what: '🚶 Длинная прогулка',                       type: 'self' },
+      { time: '13:00', what: '🍽 Обед',                            type: 'meal' },
+      { time: '14:00', what: '💻 Опц. стиль-приложение (отдых)',          type: 'work' },
+      { time: '17:00', what: '💑 Свидание с Лёшей',                       type: 'love' },
+      { time: '23:00', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-24': {
+    dow: 'ВС', focus: '🖥 Вайбкодинг',
+    blocks: [
+      { time: '10:00', what: 'Подъём',                                   type: 'self' },
+      { time: '11:00', what: '🧘 Медитация',                              type: 'self' },
+      { time: '12:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '14:00', what: 'Обед',                                     type: 'meal' },
+      { time: '15:00', what: '🖥 ВАЙБКОДИНГ (до 22)',                     type: 'routine' },
+      { time: '22:00', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '23:00', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-25': {
+    dow: 'ПН', focus: '🟣 Работа',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '12:00', what: 'Обед',                                     type: 'meal' },
+      { time: '13:00', what: '▶ Работа: контент',                        type: 'work' },
+      { time: '17:00', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '18:30', what: 'Перекус',                                  type: 'meal' },
+      { time: '22:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-26': {
+    dow: 'ВТ', focus: '🟢 Ольга + готовлюсь к ДР',
+    blocks: [
+      { time: '08:30', what: 'Подъём',                                   type: 'self' },
+      { time: '09:00', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '11:00', what: '📋 Подготовка к Ольге',                     type: 'work' },
+      { time: '12:00', what: '☎️ ОЛЬГА — налоги',                         type: 'routine' },
+      { time: '13:00', what: 'Обед',                                     type: 'meal' },
+      { time: '14:00', what: '🎂 Подготовка к ДР: стол, напоминания',     type: 'urgent' },
+      { time: '16:00', what: '🎬 Контент',                                type: 'work' },
+      { time: '18:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '19:00', what: '🎁 Финальный вишлист — закрыть',            type: 'urgent' },
+      { time: '21:00', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '23:00', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-27': {
+    dow: 'СР 🎂', focus: '🎉 МОЙ ДЕНЬ РОЖДЕНИЯ',
+    blocks: [
+      { time: '09:00', what: '🎂 Подъём! ДР!',                            type: 'love' },
+      { time: '09:30', what: '🧘 Медитация — настройка дня',              type: 'self' },
+      { time: '10:00', what: 'Завтрак — побаловать себя',                type: 'love' },
+      { time: '11:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '12:00', what: '🏥 Реабилитация (старт — день 1)',          type: 'routine' },
+      { time: '14:00', what: '💆 Что-то приятное (салон/массаж)',         type: 'love' },
+      { time: '17:00', what: '🎉 Празднование — Лёша, близкие',           type: 'love' },
+      { time: '23:30', what: '— моторы перенесла на ЧТ или ПТ —',        type: 'self' },
+    ]
+  },
+  '2026-05-28': {
+    dow: 'ЧТ', focus: '🧠 Терапевт + после-ДР',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '11:00', what: '📋 Подготовка к терапевту',                 type: 'work' },
+      { time: '12:10', what: '🧠 ПСИХОТЕРАПЕВТ',                          type: 'routine' },
+      { time: '13:30', what: 'Обед',                                     type: 'meal' },
+      { time: '14:00', what: '▶ Контент',                                type: 'work' },
+      { time: '17:00', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '18:30', what: 'Ужин',                                     type: 'meal' },
+      { time: '20:00', what: '🤖 Моторы (перенос со среды)',              type: 'routine' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-29': {
+    dow: 'ПТ', focus: '🎬 Команда + ⚖️ Адвокат+Данис',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '10:30', what: '🏥 Реабилитация (день 2)',                  type: 'routine' },
+      { time: '12:00', what: '📋 Подготовка к команде + Адвокату',        type: 'urgent' },
+      { time: '13:00', what: '🎬 КОМАНДА Reels-клуба',                    type: 'routine' },
+      { time: '14:30', what: '⚖️ СОЗВОН: Адвокат + Данис',                type: 'routine' },
+      { time: '16:00', what: 'Обед',                                     type: 'meal' },
+      { time: '16:30', what: '🎬 Контент: 1 ролик',                       type: 'work' },
+      { time: '18:30', what: 'Ужин',                                     type: 'meal' },
+      { time: '21:30', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-30': {
+    dow: 'СБ', focus: '🩷 Отдых + свидание',
+    blocks: [
+      { time: '10:00', what: 'Подъём',                                   type: 'self' },
+      { time: '10:30', what: '🧘 Медитация',                              type: 'self' },
+      { time: '11:00', what: '🚶 Длинная прогулка',                       type: 'self' },
+      { time: '13:00', what: 'Обед',                              type: 'meal' },
+      { time: '14:00', what: '💻 Опц. портфолио / стиль',                 type: 'work' },
+      { time: '17:00', what: '💑 Свидание с Лёшей',                       type: 'love' },
+      { time: '23:00', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-05-31': {
+    dow: 'ВС', focus: '🏠 Жильё + вайбкодинг',
+    blocks: [
+      { time: '10:00', what: 'Подъём',                                   type: 'self' },
+      { time: '11:00', what: '🧘 Медитация',                              type: 'self' },
+      { time: '12:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '13:00', what: '🏠 Решить: где живу с июня',                type: 'urgent' },
+      { time: '14:00', what: 'Обед',                                     type: 'meal' },
+      { time: '15:00', what: '🖥 ВАЙБКОДИНГ (до 22)',                     type: 'routine' },
+      { time: '22:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-01': {
+    dow: 'ПН', focus: '🟢 Обычный понедельник',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '13:00', what: '▶ Работа',                                 type: 'work' },
+      { time: '17:00', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '19:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-02': {
+    dow: 'ВТ', focus: '🟣 Ольга',
+    blocks: [
+      { time: '08:30', what: 'Подъём',                                   type: 'self' },
+      { time: '09:00', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '11:00', what: '📋 Подготовка к Ольге',                     type: 'work' },
+      { time: '12:00', what: '☎️ ОЛЬГА — налоги',                         type: 'routine' },
+      { time: '13:00', what: 'Обед',                                     type: 'meal' },
+      { time: '14:00', what: '🎬 Контент',                                type: 'work' },
+      { time: '22:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-03': {
+    dow: 'СР', focus: '🟢 Реабилитация + учёба + моторы',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '12:00', what: '🏥 Реабилитация',                           type: 'routine' },
+      { time: '14:00', what: 'Обед',                                     type: 'meal' },
+      { time: '16:00', what: '🎓 Учёба + ДЗ (до 19:00)',                  type: 'course' },
+      { time: '19:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '20:00', what: '🤖 МОТОРЫ с Лёшей',                         type: 'routine' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-04': {
+    dow: 'ЧТ', focus: '🟣 Работа',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '💪 Зарядка',                                type: 'self' },
+      { time: '10:30', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '13:00', what: '▶ Работа: ролики',                         type: 'work' },
+      { time: '17:00', what: '🛁 Ванна',                                  type: 'recovery' },
+      { time: '22:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-05': {
+    dow: 'ПТ', focus: '🎬 Команда + реабилитация',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '10:30', what: '🏥 Реабилитация',                           type: 'routine' },
+      { time: '12:30', what: '📋 Подготовка к команде',                   type: 'work' },
+      { time: '13:00', what: '🎬 КОМАНДА Reels-клуба',                    type: 'routine' },
+      { time: '14:30', what: 'Обед',                                     type: 'meal' },
+      { time: '15:00', what: '🎬 Контент: 2 ролика',                      type: 'work' },
+      { time: '18:30', what: 'Ужин',                                     type: 'meal' },
+      { time: '21:00', what: '📖 Чтение',                                 type: 'recovery' },
+      { time: '23:00', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-06': {
+    dow: 'СБ', focus: '🩷 Мягкий + свидание',
+    blocks: [
+      { time: '10:00', what: 'Подъём',                                   type: 'self' },
+      { time: '11:00', what: '🚶 Длинная прогулка',                       type: 'self' },
+      { time: '13:00', what: 'Обед',                              type: 'meal' },
+      { time: '14:00', what: '💻 Опц. портфолио / стиль',                 type: 'work' },
+      { time: '17:00', what: '💑 Свидание с Лёшей',                       type: 'love' },
+      { time: '23:00', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-07': {
+    dow: 'ВС', focus: '🖥 Вайбкодинг',
+    blocks: [
+      { time: '10:00', what: 'Подъём',                                   type: 'self' },
+      { time: '11:00', what: '🧘 Медитация',                              type: 'self' },
+      { time: '12:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '15:00', what: '🖥 ВАЙБКОДИНГ (до 22)',                     type: 'routine' },
+      { time: '22:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-08': {
+    dow: 'ПН', focus: '🟣 Ольга (созвон) + десятка + моторы',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:00', what: '🚶 Прогулка',                               type: 'self' },
+      { time: '11:00', what: '✍️ Сценарий для Ольги по вчерашнему созвону', type: 'urgent' },
+      { time: '13:00', what: '☎️ СОЗВОН с Ольгой (налоги)',                type: 'routine' },
+      { time: '14:30', what: '📱 Выложить Кассинку',                      type: 'urgent' },
+      { time: '15:30', what: '📊 Презентация для нутрициолога',           type: 'work' },
+      { time: '16:00', what: '🎬 СБОР ДЕСЯТКИ (Reels-клуб)',              type: 'routine' },
+      { time: '17:00', what: '☎️ Договориться с монтажёркой про Грузию',  type: 'urgent' },
+      { time: '17:30', what: '☎️ Написать Наталье-гольфистке про созвон',  type: 'urgent' },
+      { time: '20:00', what: '🤖 МОТОРЫ с Лёшей',                         type: 'routine' },
+      { time: '22:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-09': {
+    dow: 'ВТ', focus: '🧳 Ольга + старт сборов',
+    blocks: [
+      { time: '08:30', what: 'Подъём',                                   type: 'self' },
+      { time: '09:00', what: '🧘 Медитация',                              type: 'self' },
+      { time: '12:00', what: '☎️ ОЛЬГА',                                  type: 'routine' },
+      { time: '13:00', what: 'Обед',                                     type: 'meal' },
+      { time: '14:00', what: '🧳 Документы + деньги для Грузии',          type: 'urgent' },
+      { time: '16:00', what: '🎬 Контент-заготовки на 2 недели',          type: 'urgent' },
+      { time: '20:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-10': {
+    dow: 'СР', focus: '🟣 Реабилитация + учёба',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '12:00', what: '🏥 Реабилитация',                           type: 'routine' },
+      { time: '14:00', what: 'Обед',                                     type: 'meal' },
+      { time: '16:00', what: '🎓 Учёба + ДЗ (до 19:00)',                  type: 'course' },
+      { time: '22:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: '— моторы перенос на ЧТ —',                 type: 'self' },
+    ]
+  },
+  '2026-06-11': {
+    dow: 'ЧТ', focus: '🧠 Терапевт + сборы',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '11:00', what: '📋 Подготовка к терапевту',                 type: 'work' },
+      { time: '12:10', what: '🧠 ПСИХОТЕРАПЕВТ',                          type: 'routine' },
+      { time: '13:30', what: 'Обед',                                     type: 'meal' },
+      { time: '14:00', what: '🧳 Аптечка + техника + переходники',        type: 'urgent' },
+      { time: '17:00', what: 'Перекус',                                  type: 'meal' },
+      { time: '20:00', what: '🤖 Моторы (перенос со среды)',              type: 'routine' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-12': {
+    dow: 'ПТ', focus: '🎬 Команда + 🎓 ФИНАЛ КУРСА + сборы',
+    blocks: [
+      { time: '09:00', what: 'Подъём',                                   type: 'self' },
+      { time: '09:15', what: '🧘 Медитация',                              type: 'self' },
+      { time: '10:30', what: '🏥 Реабилитация (последний день)',          type: 'routine' },
+      { time: '12:30', what: '📋 Подготовка к команде',                   type: 'work' },
+      { time: '13:00', what: '🎬 КОМАНДА Reels-клуба',                    type: 'routine' },
+      { time: '14:30', what: '🧳 Собрать чемодан',                        type: 'urgent' },
+      { time: '16:30', what: '📅 Раскладка публикаций на Грузию',         type: 'urgent' },
+      { time: '18:30', what: 'Перекус',                                  type: 'meal' },
+      { time: '22:00', what: 'Ужин',                                     type: 'meal' },
+      { time: '23:30', what: 'Сон',                                      type: 'self' },
+    ]
+  },
+  '2026-06-13': {
+    dow: 'СБ', focus: '🧳 Финальные сборы',
+    blocks: [
+      { time: '10:00', what: 'Подъём',                                   type: 'self' },
+      { time: '11:00', what: '✅ Проверить чек-лист сборов',              type: 'urgent' },
+      { time: '13:00', what: 'Обед',                              type: 'meal' },
+      { time: '14:00', what: '💼 Закрыть рабочие хвосты',                 type: 'work' },
+      { time: '17:00', what: '💑 Свидание / отдых перед поездкой',        type: 'love' },
+      { time: '21:00', what: 'Спать пораньше — завтра вылет',            type: 'self' },
+    ]
+  },
+};
+
+const SEED_ROUTINE = [
+  { day: 'ВТ',     when: '12:00',  what: 'Созвон с Ольгой (налоги)' },
+  { day: 'СР',     when: '16:00→', what: 'Учёба + ДЗ (до 19:00)' },
+  { day: 'СР',     when: '20:00→', what: 'Моторы — собираем робота-паука с Лёшей' },
+  { day: 'ЧТ',     when: '12:10',  what: 'Психотерапевт (раз в 2 нед: 28 мая, 11 июня)' },
+  { day: 'ПТ',     when: '13:00',  what: '🎬 Команда Reels-клуба (каждую неделю)' },
+  { day: 'ВС',     when: '15:00→', what: 'Вайбкодинг с группой' },
+  { day: 'каждый', when: '13:00',  what: 'Старт рабочего дня после медитации' },
+  { day: '2/нед',  when: '+30 мин','what': 'Реабилитация (с 27 мая)' },
+  { day: '2/нед',  when: '~14дн',  what: 'Книга — закончить раз в 2 недели' },
+  { day: 'регул.', when: 'вместе', what: 'Терапия с Лёшей' },
+  { day: '1×мес',  when: 'до 25',  what: '💰 Свои налоги — проверить и оплатить' },
+];
+
+const QUOTES = [
+  'Каждое новое действие — это махина. Поэтому одно за раз.',
+  'Скорость мысли быстрая. Скорость тела — нет. И это нормально.',
+  'Не «просто попробуй». Сделай маленький шаг.',
+  'Завязла — это значит надо упростить, а не больше тащить.',
+  'Тревога любит хаос. Поэтому план.',
+];
+
+// ============ STATE ============
+const KEY = 'tracker_v1';
+let state = load();
+
+function load() {
+  const raw = localStorage.getItem(KEY);
+  let s = null;
+  if (raw) {
+    try { s = JSON.parse(raw); } catch(e) {}
+  }
+  if (!s) {
+    s = {
+      habits: SEED_HABITS,
+      counters: SEED_COUNTERS,
+      tasks: SEED_TASKS,
+      events: SEED_EVENTS,
+      routine: SEED_ROUTINE,
+      log: {},
+      nextId: 100,
+    };
+  }
+  // Migration: всегда синхронизируем events и routine из SEED, чтобы правки в коде доезжали
+  if (!s.events) s.events = [];
+  SEED_EVENTS.forEach(seed => {
+    const ex = s.events.find(e => e.id === seed.id);
+    if (ex) Object.assign(ex, seed);
+    else s.events.push(seed);
+  });
+  s.routine = SEED_ROUTINE;
+  // Migration: добавляем НОВЫЕ задачи из SEED (по id), не трогая уже отмеченные
+  if (!s.tasks) s.tasks = [];
+  SEED_TASKS.forEach(seed => {
+    const ex = s.tasks.find(t => t.id === seed.id);
+    if (!ex) s.tasks.push({...seed});
+  });
+  // Sync points в habits/counters (баллы — новая фича, могут отсутствовать в старом state)
+  SEED_HABITS.forEach(seed => {
+    const ex = (s.habits || []).find(h => h.id === seed.id);
+    if (ex) {
+      ex.points = seed.points;
+      ex.emoji = seed.emoji;
+      ex.name = seed.name;
+      ex.weeklyGoal = seed.weeklyGoal;
+      ex.days = seed.days;
+    } else {
+      (s.habits = s.habits || []).push({...seed});
+    }
+  });
+  SEED_COUNTERS.forEach(seed => {
+    const ex = (s.counters || []).find(c => c.id === seed.id);
+    if (ex) {
+      ex.pointsPer = seed.pointsPer;
+      ex.weeklyLimit = seed.weeklyLimit;
+      ex.target = seed.target;
+      ex.name = seed.name;
+    }
+  });
+  // Задачам, отмеченным до появления баллов — поставить сегодня, чтобы посчитались
+  const today = (function(){
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  })();
+  if (!s.tasks) s.tasks = [];
+  (s.tasks).forEach(t => {
+    if (t.done && !t.completedDate) t.completedDate = today;
+  });
+  // Удаляем задачи которые оказались лишними (придуманы AI, отозвано пользователем)
+  const REMOVE_IDS = ['t1b', 't1c', 't1e', 't1f', 't1g', 't1h'];
+  s.tasks = s.tasks.filter(t => !REMOVE_IDS.includes(t.id));
+  // Удаляем привычки и счётчики которые убраны из SEED (например, вода)
+  const REMOVE_HABIT_IDS = ['water', 'eat'];
+  const REMOVE_COUNTER_IDS = ['water_cups'];
+  s.habits = s.habits.filter(h => !REMOVE_HABIT_IDS.includes(h.id));
+  s.counters = s.counters.filter(c => !REMOVE_COUNTER_IDS.includes(c.id));
+  // Подгружаем новые SEED-задачи и обновляем priority/deadline/text у существующих
+  SEED_TASKS.forEach(seed => {
+    const ex = s.tasks.find(t => t.id === seed.id);
+    if (!ex) {
+      s.tasks.push({...seed});
+    } else {
+      // Обновляем содержимое и приоритеты, но НЕ трогаем done/completedDate
+      ex.text = seed.text;
+      ex.priority = seed.priority;
+      ex.deadline = seed.deadline;
+      ex.project = seed.project;
+    }
+  });
+  return s;
+}
+function save() {
+  localStorage.setItem(KEY, JSON.stringify(state));
+  // Push на сервер только когда трекер открыт через http(s) — это «правильный» режим.
+  // На file:// мы не пушим: иначе случайный клик мог бы отправить локальный SEED
+  // и затереть данные, которые ты уже сливала из другого браузера.
+  if (location.protocol === 'http:' || location.protocol === 'https:') {
+    pushToServer();
+  }
+}
+
+// ============ SYNC: общий data.json через локальный сервер бота ============
+// Работает и через http://localhost:8765/, и через file:// (двойной клик)
+const SYNC_BASE = (location.protocol === 'http:' || location.protocol === 'https:')
+  ? location.origin
+  : 'http://localhost:8765';
+const SYNC_URL = SYNC_BASE + '/api/state';
+const MERGE_URL = SYNC_BASE + '/api/merge';
+
+async function mergeMyDataIntoServer() {
+  // Слияние без потерь: серверный data.json + текущий state
+  try {
+    const r = await fetch(MERGE_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(state),
+    });
+    if (!r.ok) throw new Error('merge failed: ' + r.status);
+    const result = await r.json();
+    alert('Готово! Все данные слиты на сервер бота. Задач: ' + (result.tasksCount || '?') + '. Можешь теперь открыть http://localhost:8765/ — там всё будет.');
+    // После слияния — подтянем итог и перерисуем
+    await pullFromServer();
+  } catch (e) {
+    alert('Не получилось — проверь что бот запущен. ' + e.message);
+  }
+}
+
+function showMergeBannerIfNeeded() {
+  // Кнопка появляется только когда file:// — там твои данные за неделю
+  if (location.protocol !== 'file:') return;
+  const banner = document.createElement('div');
+  banner.style.cssText = 'position:fixed; top:0; left:0; right:0; background:#fff5e6; border-bottom:2px solid #d99836; padding:12px 16px; z-index:9999; font:14px/1.4 -apple-system,sans-serif; display:flex; gap:12px; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.08);';
+  banner.innerHTML = '<div style="flex:1"><b>Это старый адрес трекера (file://).</b><br>Твои данные за неделю — здесь. Нажми чтобы перенести их в общий файл, где их видит бот. Делается один раз.</div>';
+  const btn = document.createElement('button');
+  btn.textContent = 'Перенести на сервер бота';
+  btn.style.cssText = 'padding:10px 16px; background:#d99836; color:#fff; border:none; border-radius:6px; font-weight:600; cursor:pointer;';
+  btn.onclick = () => { btn.disabled = true; btn.textContent = 'Сливаю...'; mergeMyDataIntoServer(); };
+  banner.appendChild(btn);
+  document.body.appendChild(banner);
+  document.body.style.paddingTop = '90px';
+}
+let _pushTimer = null;
+function pushToServer() {
+  if (!SYNC_URL) return;
+  // дебаунс — не больше 1 PUT в 500мс
+  if (_pushTimer) clearTimeout(_pushTimer);
+  _pushTimer = setTimeout(() => {
+    fetch(SYNC_URL, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(state),
+    }).catch(() => {});
+  }, 500);
+}
+async function pullFromServer() {
+  if (!SYNC_URL) return;
+  try {
+    const r = await fetch(SYNC_URL);
+    if (!r.ok) return;
+    const data = await r.json();
+    if (!data || typeof data !== 'object') return;
+    const serverHas = Object.keys(data).length > 0 && (data.log || data.habits || data.tasks);
+    if (serverHas) {
+      // На сервере есть данные — берём оттуда (с миграцией поверх SEED)
+      state = data;
+      // прогоняем те же миграции что в load() — чтобы новые SEED-задачи/события доехали
+      const reloaded = JSON.parse(JSON.stringify(state));
+      Object.assign(state, reloaded);
+      localStorage.setItem(KEY, JSON.stringify(state));
+      if (typeof renderAll === 'function') renderAll();
+    } else {
+      // На сервере пусто — пушим текущий localStorage туда
+      fetch(SYNC_URL, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(state),
+      }).catch(() => {});
+    }
+  } catch (e) {
+    // сервер недоступен — работаем как раньше, через localStorage
+  }
+}
+
+// ============ HELPERS ============
+const DOW_RU = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+const MONTH_RU = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+
+function todayStr() {
+  const d = new Date();
+  return ymd(d);
+}
+function ymd(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function daysBetween(a, b) {
+  const d1 = new Date(a), d2 = new Date(b);
+  return Math.round((d2 - d1) / 86400000);
+}
+function ensureDay(date) {
+  if (!state.log[date]) state.log[date] = {};
+  return state.log[date];
+}
+
+// ============ BIRTHDAY ============
+const BDAY = '2026-05-27';
+
+function renderBday() {
+  const card = document.getElementById('bday-card');
+  const today = todayStr();
+  const days = daysBetween(today, BDAY);
+  if (days < 0) { card.style.display = 'none'; return; }
+  document.getElementById('bday-days').textContent = days === 0 ? '🎂' : days;
+
+  const bdayTasks = state.tasks.filter(t => t.project === 'birthday');
+  const done = bdayTasks.filter(t => t.done).length;
+  const pct = bdayTasks.length ? Math.round(done / bdayTasks.length * 100) : 0;
+  document.getElementById('bday-bar').style.width = pct + '%';
+  document.getElementById('bday-stats').textContent = `подготовка: ${done}/${bdayTasks.length} (${pct}%)`;
+
+  const wrap = document.getElementById('bday-tasks');
+  wrap.innerHTML = '';
+  const sorted = bdayTasks.slice().sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    if (a.deadline && b.deadline) return a.deadline.localeCompare(b.deadline);
+    return 0;
+  });
+  sorted.forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'task' + (t.done ? ' done' : '');
+    let dStr = '';
+    if (t.deadline) {
+      const dd = new Date(t.deadline);
+      const dleft = daysBetween(today, t.deadline);
+      const fmt = `${dd.getDate()} ${MONTH_RU[dd.getMonth()].slice(0,3)}`;
+      dStr = dleft < 0 ? `<span class="deadline urgent">просрочено</span>` :
+             dleft === 0 ? `<span class="deadline urgent">сегодня</span>` :
+             dleft <= 3 ? `<span class="deadline urgent">${fmt}</span>` :
+             `<span class="deadline">${fmt}</span>`;
+    }
+    row.innerHTML = `
+      <div class="pri ${t.priority}"></div>
+      <div class="check ${t.done ? 'on' : ''}"></div>
+      <div class="body">
+        <div class="text">${t.text}</div>
+        <div class="meta-row">${dStr}</div>
+      </div>
+    `;
+    row.onclick = () => {
+      const was = t.done;
+      t.done = !was;
+      if (t.done) { t.completedDate = todayStr(); flash(taskPoints(t)); }
+      else { flash(-taskPoints(t)); delete t.completedDate; }
+      save();
+      renderAll();
+    };
+    wrap.appendChild(row);
+  });
+}
+
+// ============ TRIP ============
+const TRIP_START = '2026-06-14';
+const TRIP_END = '2026-06-25';
+
+function renderTrip() {
+  const card = document.getElementById('trip-card');
+  const today = todayStr();
+  const days = daysBetween(today, TRIP_START);
+  if (days < -12) { card.style.display = 'none'; return; }
+  card.style.display = '';
+  document.getElementById('trip-days').textContent =
+    days > 0 ? days :
+    days === 0 ? '✈️' :
+    `−${-days}`;
+
+  const tripTasks = state.tasks.filter(t => t.project === 'trip');
+  const done = tripTasks.filter(t => t.done).length;
+  const pct = tripTasks.length ? Math.round(done / tripTasks.length * 100) : 0;
+  document.getElementById('trip-bar').style.width = pct + '%';
+  document.getElementById('trip-stats').textContent = `сборы: ${done}/${tripTasks.length} (${pct}%)`;
+
+  const wrap = document.getElementById('trip-tasks');
+  wrap.innerHTML = '';
+  const sorted = tripTasks.slice().sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    const pri = { urgent: 0, high: 1, medium: 2, low: 3 };
+    if (pri[a.priority] !== pri[b.priority]) return pri[a.priority] - pri[b.priority];
+    if (a.deadline && b.deadline) return a.deadline.localeCompare(b.deadline);
+    return 0;
+  });
+  sorted.forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'task' + (t.done ? ' done' : '');
+    let dStr = '';
+    if (t.deadline) {
+      const dd = new Date(t.deadline);
+      const dleft = daysBetween(today, t.deadline);
+      const fmt = `${dd.getDate()} ${MONTH_RU[dd.getMonth()].slice(0,3)}`;
+      dStr = dleft < 0 ? `<span class="deadline urgent">просрочено</span>` :
+             dleft <= 3 ? `<span class="deadline urgent">${fmt}</span>` :
+             `<span class="deadline">${fmt}</span>`;
+    }
+    row.innerHTML = `
+      <div class="pri ${t.priority}"></div>
+      <div class="check ${t.done ? 'on' : ''}"></div>
+      <div class="body">
+        <div class="text">${t.text}</div>
+        <div class="meta-row">${dStr}</div>
+      </div>
+    `;
+    row.onclick = () => {
+      const was = t.done;
+      t.done = !was;
+      if (t.done) { t.completedDate = todayStr(); flash(taskPoints(t)); }
+      else { flash(-taskPoints(t)); delete t.completedDate; }
+      save();
+      renderAll();
+    };
+    wrap.appendChild(row);
+  });
+}
+
+// ============ ACHIEVEMENTS ============
+function streakHabit(habitId, n) {
+  let s = 0;
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const log = state.log[ymd(d)] || {};
+    if (log[habitId]) s++; else break;
+    if (s >= n) return true;
+  }
+  return s >= n;
+}
+function zeroSigStreak() {
+  let s = 0;
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const log = state.log[ymd(d)] || {};
+    const sig = log['cigarettes'] || 0;
+    const hasAnyEntry = Object.keys(log).length > 0;
+    if (hasAnyEntry && sig === 0) s++; else break;
+  }
+  return s;
+}
+function hasZeroSigDay() {
+  for (const date in state.log) {
+    const log = state.log[date];
+    if (Object.keys(log).length > 0 && (log['cigarettes'] || 0) === 0) return true;
+  }
+  return false;
+}
+function contentWeek() {
+  let c = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const log = state.log[ymd(d)] || {};
+    if (log['own_reel']) c++;
+    if (log['client_reel']) c++;
+  }
+  return c;
+}
+function maxDayPoints() {
+  let m = 0;
+  for (const date in state.log) {
+    const p = dayPoints(date);
+    if (p > m) m = p;
+  }
+  return m;
+}
+function plusStreak(threshold, n) {
+  let s = 0;
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    if (dayPoints(ymd(d)) >= threshold) s++; else break;
+    if (s >= n) return true;
+  }
+  return s >= n;
+}
+
+const ACHIEVEMENTS = [
+  { id: 'first',     emoji: '🌅', title: 'Первый шаг',     desc: 'Открыла трекер и начала',           test: () => Object.keys(state.log).length >= 1 },
+  { id: 'plus_3',    emoji: '🔥', title: '3 дня в плюсе',  desc: '3 дня подряд счёт ≥ 100',           test: () => plusStreak(100, 3) },
+  { id: 'meditation',emoji: '🧘', title: 'Внутри себя',    desc: '7 дней подряд медитация',           test: () => streakHabit('meditation', 7) },
+  { id: 'no_smoke',  emoji: '🚭', title: 'Чистый день',    desc: 'День без сигарет',                  test: () => hasZeroSigDay() },
+  { id: 'no_smoke3', emoji: '💨', title: '3 дня без дыма', desc: '3 дня подряд без сигарет',          test: () => zeroSigStreak() >= 3 },
+  { id: 'content',   emoji: '🎬', title: 'Контент-машина', desc: '7+ роликов за неделю',              test: () => contentWeek() >= 7 },
+  { id: 'water',     emoji: '💦', title: 'Гидратация',     desc: '8 стаканов воды за день',           test: () => (state.log[todayStr()] || {})['water_cups'] >= 8 },
+  { id: 'pts_300',   emoji: '🏆', title: '300 за день',    desc: 'День с 300+ очков',                 test: () => maxDayPoints() >= 300 },
+];
+
+function renderAchievements() {
+  const wrap = document.getElementById('ach-grid');
+  wrap.innerHTML = '';
+  let unlocked = 0;
+  ACHIEVEMENTS.forEach(a => {
+    const isOn = !!a.test();
+    if (isOn) unlocked++;
+    const el = document.createElement('div');
+    el.className = 'ach' + (isOn ? ' unlocked' : '');
+    el.innerHTML = `
+      <div class="emoji">${a.emoji}</div>
+      <div class="body">
+        <div class="title">${a.title}</div>
+        <div class="desc">${a.desc}</div>
+      </div>
+    `;
+    wrap.appendChild(el);
+  });
+  document.getElementById('ach-count').textContent = `${unlocked}/${ACHIEVEMENTS.length}`;
+}
+
+// ============ POINTS ============
+function taskPoints(t) { return TASK_POINTS[t.priority] || 15; }
+
+function dayPoints(date) {
+  const log = state.log[date] || {};
+  let pts = 0;
+  state.habits.forEach(h => {
+    if (log[h.id]) pts += (h.points || 0);
+  });
+  state.counters.forEach(c => {
+    const v = log[c.id] || 0;
+    if (c.pointsPer) {
+      if (c.goal) pts += Math.min(v, c.goal) * c.pointsPer;
+      else pts += v * c.pointsPer;
+    }
+  });
+  state.tasks.forEach(t => {
+    if (t.done && t.completedDate === date) pts += taskPoints(t);
+  });
+  COURSE_TASKS.forEach(ct => {
+    if (log[ct.id]) pts += (ct.points || 0);
+  });
+  Object.keys(log).forEach(k => {
+    if (k.startsWith('main_') && log[k]) pts += 20;
+  });
+  return pts;
+}
+
+function weekPoints() {
+  let total = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    total += dayPoints(ymd(d));
+  }
+  return total;
+}
+
+function todayDoneTasks() {
+  const today = todayStr();
+  return state.tasks.filter(t => t.done && t.completedDate === today);
+}
+
+// ============ FLASH ============
+function flash(amount) {
+  if (!amount) return;
+  const el = document.createElement('div');
+  el.className = 'flash ' + (amount > 0 ? 'plus' : 'minus');
+  el.textContent = (amount > 0 ? '+' : '') + amount;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1400);
+}
+
+function renderScore() {
+  const pts = dayPoints(todayStr());
+  const wpts = weekPoints();
+  const box = document.getElementById('score-big');
+  const num = document.getElementById('score-num');
+  num.textContent = (pts > 0 ? '+' : '') + pts;
+  if (pts < 0) box.classList.add('neg'); else box.classList.remove('neg');
+  document.getElementById('score-week').textContent = (wpts > 0 ? '+' : '') + wpts;
+}
+
+// ============ RENDER HEADER ============
+function renderHeader() {
+  const d = new Date();
+  const dateEl = document.getElementById('today-date');
+  const metaEl = document.getElementById('today-meta');
+  dateEl.innerHTML = `${d.getDate()} ${MONTH_RU[d.getMonth()]} <span class="day">${DOW_RU[d.getDay()]}</span>`;
+
+  const toDR = daysBetween(todayStr(), '2026-05-27');
+  const toGE = daysBetween(todayStr(), '2026-06-14');
+  let bits = [];
+  if (toDR > 0) bits.push(`до ДР ${toDR} дн.`);
+  else if (toDR === 0) bits.push(`🎂 СЕГОДНЯ ДР`);
+  if (toGE > 0) bits.push(`до Грузии ${toGE} дн.`);
+  metaEl.textContent = bits.join('  ·  ');
+
+  const qIdx = d.getDate() % QUOTES.length;
+  document.getElementById('quote').textContent = QUOTES[qIdx];
+
+  document.getElementById('m-events').textContent = toDR > 0 ? toDR : 0;
+}
+
+// ============ HABITS STATS (без отдельного блока — он объединён с недельной сеткой) ============
+function renderHabits() {
+  const day = ensureDay(todayStr());
+  let done = 0;
+  state.habits.forEach(h => { if (day[h.id]) done++; });
+
+  const total = state.habits.length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const donutEl = document.getElementById('donut-pct');
+  if (donutEl) donutEl.textContent = pct + '%';
+  const mDoneEl = document.getElementById('m-done');
+  if (mDoneEl) mDoneEl.textContent = `${done}/${total}`;
+  const mWeekEl = document.getElementById('m-week');
+  if (mWeekEl) mWeekEl.textContent = weekPct() + '%';
+  drawDonut(pct);
+
+  const streakEl = document.getElementById('today-streak');
+  if (streakEl) streakEl.textContent = streakDays() > 0 ? `серия: ${streakDays()} дн.` : '';
+}
+
+function habitWeekCount(habitId) {
+  let hits = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const log = state.log[ymd(d)] || {};
+    if (log[habitId]) hits++;
+  }
+  return hits;
+}
+function counterWeekTotal(counterId) {
+  let total = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const log = state.log[ymd(d)] || {};
+    total += (log[counterId] || 0);
+  }
+  return total;
+}
+function habitWeekPct(habitId) {
+  let hits = 0, days = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = ymd(d);
+    if (state.log[key] !== undefined) days++;
+    if (state.log[key] && state.log[key][habitId]) hits++;
+  }
+  return days ? Math.round(hits / 7 * 100) : 0;
+}
+function weekPct() {
+  const total = state.habits.length * 7;
+  let hits = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = ymd(d);
+    const log = state.log[key] || {};
+    state.habits.forEach(h => { if (log[h.id]) hits++; });
+  }
+  return Math.round(hits / total * 100);
+}
+function streakDays() {
+  let s = 0;
+  for (let i = 0; i < 60; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const log = state.log[ymd(d)] || {};
+    const hits = state.habits.filter(h => log[h.id]).length;
+    if (hits >= state.habits.length * 0.5) s++; else break;
+  }
+  return s;
+}
+
+// ============ RENDER COUNTERS ============
+function renderCounters() {
+  const wrap = document.getElementById('counters-list');
+  wrap.innerHTML = '';
+  const day = ensureDay(todayStr());
+
+  state.counters.forEach(c => {
+    const val = day[c.id] || 0;
+    let cls = '';
+    let extraNote = '';
+    if (c.invert) {
+      if (val >= 10) cls = 'bad';
+      else if (val >= 5) cls = 'warn';
+      else if (val > 0) cls = 'warn';
+      if (c.weeklyLimit !== undefined) {
+        const wk = counterWeekTotal(c.id);
+        if (wk >= c.weeklyLimit) {
+          extraNote = `<span style="display:block;color:#dc2626;font-size:10px;font-weight:700;">⚠ ${wk}/${c.weeklyLimit} за нед — превышено</span>`;
+          cls = 'bad';
+        } else {
+          extraNote = `<span style="display:block;color:#9ca3af;font-size:10px;">${wk}/${c.weeklyLimit} за нед</span>`;
+        }
+      }
+    } else if (c.goal) {
+      if (val >= c.goal) cls = 'good';
+      else if (val >= c.goal/2) cls = 'warn';
+    }
+    const row = document.createElement('div');
+    row.className = 'counter';
+    row.innerHTML = `
+      <div class="emoji">${c.emoji}</div>
+      <div class="name">${c.name}<span class="target">${c.target}</span>${extraNote}</div>
+      <div class="ctrl">
+        <button data-act="minus">−</button>
+        <div class="val ${cls}">${val}</div>
+        <button data-act="plus">+</button>
+      </div>
+    `;
+    row.querySelector('[data-act="plus"]').onclick = () => {
+      const cur = day[c.id] || 0;
+      day[c.id] = cur + 1;
+      let delta = c.pointsPer || 0;
+      if (c.goal && cur >= c.goal) delta = 0; // выше потолка — нет очков
+      flash(delta);
+      save(); renderAll();
+    };
+    row.querySelector('[data-act="minus"]').onclick = () => {
+      const cur = day[c.id] || 0;
+      if (cur === 0) return;
+      day[c.id] = cur - 1;
+      let delta = c.pointsPer || 0;
+      if (c.goal && cur > c.goal) delta = 0;
+      flash(-delta);
+      save(); renderAll();
+    };
+    wrap.appendChild(row);
+  });
+}
+
+// ============ RENDER TASKS ============
+let taskFilter = 'all';
+document.getElementById('task-filters').onclick = (e) => {
+  if (e.target.classList.contains('filter')) {
+    taskFilter = e.target.dataset.f;
+    document.querySelectorAll('#task-filters .filter').forEach(f => f.classList.remove('on'));
+    e.target.classList.add('on');
+    renderTasks();
+  }
+};
+
+// Классификация задач по трекам (контурам жизни Ули)
+const WORK_PROJECTS = ['olga','natalya','irina','tsolo','olina','lazur','nko','danis','danil','club','reels'];
+const PERSONAL_PROJECTS = ['health','style','portfolio'];
+const WORK_EMOJI_HINTS = ['🎬','🖼️','📨','📤','✍️','☎️','⚖️','📊','👨‍💻','🐙','💰'];
+
+function taskTrack(t) {
+  if (t.track) return t.track;
+  const p = t.project;
+  if (p === 'birthday') return 'birthday';
+  if (p === 'trip') return 'trip';
+  if (PERSONAL_PROJECTS.includes(p)) return 'personal';
+  if (WORK_PROJECTS.includes(p)) return 'work';
+  // general — по эмодзи в тексте (рабочее vs бытовое)
+  if (WORK_EMOJI_HINTS.some(e => (t.text || '').includes(e))) return 'work';
+  return 'household';
+}
+
+const TRACK_ORDER = ['work','trip','birthday','personal','household'];
+const TRACK_META = {
+  work:      { emoji: '💼', label: 'Рабочее' },
+  trip:      { emoji: '🧳', label: 'Грузия' },
+  birthday:  { emoji: '🎂', label: 'ДР' },
+  personal:  { emoji: '🌿', label: 'Личное' },
+  household: { emoji: '🏠', label: 'Быт' },
+};
+
+function renderTasks() {
+  const wrap = document.getElementById('tasks-list');
+  wrap.innerHTML = '';
+  const today = todayStr();
+  const pri = { urgent: 0, high: 1, medium: 2, low: 3 };
+
+  // Считаем горящие urgent в работе — это "ворота" для приглушения ДР/быта
+  const workUrgentOpen = state.tasks.filter(t =>
+    !t.done && t.priority === 'urgent' && taskTrack(t) === 'work'
+  ).length;
+
+  // Фильтр по приоритету
+  let tasks = state.tasks.slice();
+  if (taskFilter === 'done') tasks = tasks.filter(t => t.done);
+  else if (taskFilter !== 'all') tasks = tasks.filter(t => !t.done && t.priority === taskFilter);
+  else tasks = tasks.filter(t => !t.done);
+
+  // Группируем по трекам
+  const groups = {};
+  TRACK_ORDER.forEach(k => groups[k] = []);
+  tasks.forEach(t => {
+    const tr = taskTrack(t);
+    (groups[tr] || groups.household).push(t);
+  });
+
+  // Сортировка внутри группы: приоритет → дедлайн
+  Object.keys(groups).forEach(k => {
+    groups[k].sort((a, b) => {
+      if (a.done !== b.done) return a.done ? 1 : -1;
+      if (pri[a.priority] !== pri[b.priority]) return pri[a.priority] - pri[b.priority];
+      if (a.deadline && b.deadline) return a.deadline.localeCompare(b.deadline);
+      if (a.deadline) return -1;
+      if (b.deadline) return 1;
+      return 0;
+    });
+  });
+
+  // Рендер групп в фиксированном порядке
+  TRACK_ORDER.forEach(track => {
+    const list = groups[track];
+    if (!list.length) return;
+    const meta = TRACK_META[track];
+    const isDimmed = track !== 'work' && track !== 'trip' && workUrgentOpen > 0 && taskFilter === 'all';
+    const grp = document.createElement('div');
+    grp.className = 'task-group ' + track + (isDimmed ? ' dimmed' : '');
+    const head = document.createElement('div');
+    head.className = 'grp-head';
+    head.innerHTML = `
+      <span>${meta.emoji} ${meta.label}</span>
+      <span class="count">${list.length}</span>
+      ${isDimmed ? `<span class="lock">🔒 сначала ${workUrgentOpen} горящих в работе</span>` : ''}
+    `;
+    grp.appendChild(head);
+
+    list.forEach(t => {
+      const row = document.createElement('div');
+      row.className = 'task' + (t.done ? ' done' : '');
+      let dStr = '';
+      if (t.deadline) {
+        const days = daysBetween(today, t.deadline);
+        const ddate = new Date(t.deadline);
+        const fmt = `${ddate.getDate()} ${MONTH_RU[ddate.getMonth()].slice(0,3)}`;
+        if (days < 0) dStr = `<span class="deadline urgent">просрочено ${-days} дн</span>`;
+        else if (days === 0) dStr = `<span class="deadline urgent">сегодня ${fmt}</span>`;
+        else if (days === 1) dStr = `<span class="deadline urgent">завтра ${fmt}</span>`;
+        else if (days <= 3) dStr = `<span class="deadline urgent">${fmt} (через ${days} дн)</span>`;
+        else if (days <= 14) dStr = `<span class="deadline">${fmt} (через ${days} дн)</span>`;
+        else dStr = `<span class="deadline">${fmt}</span>`;
+      }
+      const projLabel = t.project && t.project !== 'general' ? `<span class="project">${t.project}</span>` : '';
+      row.innerHTML = `
+        <div class="pri ${t.priority}"></div>
+        <div class="check ${t.done ? 'on' : ''}"></div>
+        <div class="body">
+          <div class="text">${t.text}</div>
+          <div class="meta-row">${dStr}${projLabel}</div>
+        </div>
+      `;
+      row.onclick = () => {
+        const wasDone = t.done;
+        t.done = !wasDone;
+        if (t.done) {
+          t.completedDate = todayStr();
+          flash(taskPoints(t));
+        } else {
+          flash(-taskPoints(t));
+          delete t.completedDate;
+        }
+        save();
+        renderAll();
+      };
+      grp.appendChild(row);
+    });
+    wrap.appendChild(grp);
+  });
+
+  // Сводка выполненного сегодня
+  const doneToday = todayDoneTasks();
+  if (doneToday.length) {
+    const doneSum = doneToday.reduce((s, t) => s + taskPoints(t), 0);
+    const sum = document.createElement('div');
+    sum.className = 'done-summary';
+    sum.innerHTML = `Сегодня закрыто: <b>${doneToday.length} задач</b><span>+${doneSum} очков</span>`;
+    wrap.appendChild(sum);
+  }
+
+  let urgent = 0;
+  state.tasks.forEach(t => { if (!t.done && t.priority === 'urgent') urgent++; });
+  document.getElementById('m-tasks').textContent = urgent;
+  const total = state.tasks.filter(t => !t.done).length;
+  document.getElementById('tasks-count').textContent = `${total} активных · ${urgent} горят`;
+}
+
+function addTask() {
+  const t = document.getElementById('add-text').value.trim();
+  if (!t) return;
+  state.tasks.push({
+    id: 't' + (state.nextId++),
+    text: t,
+    priority: document.getElementById('add-pri').value,
+    deadline: document.getElementById('add-deadline').value || null,
+    project: 'general',
+    done: false,
+  });
+  document.getElementById('add-text').value = '';
+  document.getElementById('add-deadline').value = '';
+  save();
+  renderTasks();
+}
+
+// ============ EVENTS ============
+function renderEvents() {
+  const wrap = document.getElementById('events-list');
+  wrap.innerHTML = '';
+  const today = todayStr();
+  state.events
+    .filter(e => e.end >= today)
+    .sort((a,b) => a.start.localeCompare(b.start))
+    .forEach(e => {
+      const startD = new Date(e.start);
+      const endD = new Date(e.end);
+      const dStart = `${startD.getDate()} ${MONTH_RU[startD.getMonth()].slice(0,3)}`;
+      const dEnd = `${endD.getDate()} ${MONTH_RU[endD.getMonth()].slice(0,3)}`;
+      const datesStr = e.start === e.end ? dStart : `${dStart} — ${dEnd}`;
+      const days = daysBetween(today, e.start);
+      let cd = '';
+      if (days < 0) cd = `<span class="countdown now">идёт</span>`;
+      else if (days === 0) cd = `<span class="countdown now">сегодня</span>`;
+      else if (days <= 7) cd = `<span class="countdown soon">через ${days} дн</span>`;
+      else cd = `<span class="countdown">через ${days} дн</span>`;
+      const row = document.createElement('div');
+      row.className = 'event ' + e.color;
+      row.innerHTML = `
+        <div>
+          <div class="dates">${datesStr}</div>
+          <div class="title">${e.title}</div>
+        </div>
+        ${cd}
+      `;
+      wrap.appendChild(row);
+    });
+}
+
+// ============ ROUTINE ============
+function renderRoutine() {
+  const wrap = document.getElementById('routine-list');
+  wrap.innerHTML = '';
+  state.routine.forEach(r => {
+    const row = document.createElement('div');
+    row.className = 'routine';
+    row.innerHTML = `
+      <div class="day">${r.day}</div>
+      <div>${r.what}</div>
+      <div class="when">${r.when}</div>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+// ============ WEEK GRID ============
+function renderWeek() {
+  const wrap = document.getElementById('week-grid');
+  wrap.innerHTML = '';
+  const today = new Date();
+  const todayKey = todayStr();
+  // 6 дней назад → ... → вчера → СЕГОДНЯ (последняя колонка)
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    days.push(d);
+  }
+
+  // Шапка: пусто | 6 коротких дней | СЕГОДНЯ | % нед.
+  wrap.appendChild(cell('', 'hd'));
+  days.forEach((d, idx) => {
+    const isToday = ymd(d) === todayKey;
+    const dow = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()];
+    const txt = isToday
+      ? `<b>${dow}</b><br><span style="font-size:10px;">сегодня</span>`
+      : `${dow}<br><span style="font-size:9px;">${d.getDate()}</span>`;
+    wrap.appendChild(cell(txt, 'hd' + (isToday ? ' today' : ''), true));
+  });
+  wrap.appendChild(cell('% нед.', 'hd pct-hd', true));
+
+  state.habits.forEach(h => {
+    wrap.appendChild(cell(`<span style="font-size:14px;">${h.emoji}</span> <span>${h.name.split('(')[0].trim()}</span>`, 'row-name', true));
+    days.forEach(d => {
+      const key = ymd(d);
+      const log = state.log[key] || {};
+      const isOn = !!log[h.id];
+      const isFuture = d > today;
+      const isToday = key === todayKey;
+      let cls = 'cell' + (isOn ? ' on' : '') + (isFuture ? ' future' : '') + (isToday ? ' today-col' : '');
+      const c = cell('', cls);
+      if (!isFuture) {
+        c.onclick = () => {
+          ensureDay(key);
+          const wasOn = !!state.log[key][h.id];
+          state.log[key][h.id] = !wasOn;
+          if (key === todayKey) flash(wasOn ? -(h.points || 0) : (h.points || 0));
+          save();
+          renderAll();
+        };
+      }
+      wrap.appendChild(c);
+    });
+    // Столбец % за неделю
+    const pct = habitWeekPct(h.id);
+    let pCls = 'pct-cell';
+    if (pct >= 75) pCls += ' full';
+    else if (pct >= 40) pCls += ' half';
+    else pCls += ' low';
+    wrap.appendChild(cell(pct + '%', pCls, true));
+  });
+}
+function cell(html, cls, allowHtml) {
+  const d = document.createElement('div');
+  d.className = cls;
+  if (allowHtml) d.innerHTML = html; else d.innerHTML = html;
+  return d;
+}
+
+// ============ CHARTS ============
+let donutChart, trendChart;
+function drawDonut(pct) {
+  const ctx = document.getElementById('donut').getContext('2d');
+  if (donutChart) donutChart.destroy();
+  donutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [pct, 100 - pct],
+        backgroundColor: ['#16a34a', '#ececea'],
+        borderWidth: 0,
+      }]
+    },
+    options: {
+      cutout: '75%',
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      animation: { duration: 500 },
+    }
+  });
+}
+function drawTrend() {
+  const labels = [];
+  const data = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = ymd(d);
+    const pts = dayPoints(key);
+    labels.push(`${d.getDate()}.${String(d.getMonth()+1).padStart(2,'0')}`);
+    data.push(pts);
+  }
+  const ctx = document.getElementById('trend').getContext('2d');
+  if (trendChart) trendChart.destroy();
+  trendChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: data.map(v =>
+          v >= 200 ? '#16a34a' :
+          v >= 100 ? '#84cc16' :
+          v >= 1   ? '#eab308' :
+          v < 0    ? '#dc2626' :
+                     '#ececea'),
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: { label: (ctx) => (ctx.parsed.y > 0 ? '+' : '') + ctx.parsed.y + ' очков' }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#71717a', font: { size: 10 } } },
+        y: { grid: { color: '#ececea' }, ticks: { color: '#71717a', font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+// ============ RESET ============
+function resetDay() {
+  if (!confirm('Сбросить отметки за сегодня?')) return;
+  state.log[todayStr()] = {};
+  save();
+  renderAll();
+}
+
+// ============ WEEK SUMMARY (auto) ============
+function renderWeekSummary() {
+  const wrap = document.getElementById('week-summary');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  // Подсчёты по двум 7-дневным окнам: текущее и предыдущее
+  function rangeStats(daysBack) {
+    let habitHits = 0, habitTotal = 0, points = 0;
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(); d.setDate(d.getDate() - daysBack - i);
+      const key = ymd(d);
+      const log = state.log[key] || {};
+      state.habits.forEach(h => {
+        habitTotal++;
+        if (log[h.id]) habitHits++;
+      });
+      points += dayPoints(key);
+    }
+    return { habitPct: habitTotal ? Math.round(habitHits / habitTotal * 100) : 0, points };
+  }
+
+  const cur = rangeStats(0);
+  const prev = rangeStats(7);
+
+  // Задачи: закрыто за неделю, просрочено сейчас
+  const today = todayStr();
+  const weekAgo = ymd(new Date(Date.now() - 7 * 86400000));
+  const doneWeek = state.tasks.filter(t => t.done && t.completedDate && t.completedDate >= weekAgo).length;
+  const overdue = state.tasks.filter(t => !t.done && t.deadline && t.deadline < today).length;
+
+  // Диапазон дат
+  const startD = new Date(); startD.setDate(startD.getDate() - 6);
+  const endD = new Date();
+  document.getElementById('ws-range').textContent =
+    `${startD.getDate()} ${MONTH_RU[startD.getMonth()].slice(0,3)} — ${endD.getDate()} ${MONTH_RU[endD.getMonth()].slice(0,3)}`;
+
+  function deltaHTML(curV, prevV, suffix) {
+    const d = curV - prevV;
+    if (prevV === 0 && curV === 0) return '<div class="delta same">нет данных</div>';
+    if (d > 0) return `<div class="delta up">↑ +${d}${suffix||''} к прошлой неделе</div>`;
+    if (d < 0) return `<div class="delta down">↓ ${d}${suffix||''} к прошлой неделе</div>`;
+    return `<div class="delta same">= как на прошлой</div>`;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'ws-grid';
+  grid.innerHTML = `
+    <div class="ws-stat">
+      <div class="lbl">Привычки</div>
+      <div class="val">${cur.habitPct}%</div>
+      ${deltaHTML(cur.habitPct, prev.habitPct, '%')}
+    </div>
+    <div class="ws-stat">
+      <div class="lbl">Очки уважения</div>
+      <div class="val">${cur.points >= 0 ? '+' : ''}${cur.points}</div>
+      ${deltaHTML(cur.points, prev.points, '')}
+    </div>
+    <div class="ws-stat">
+      <div class="lbl">Задач закрыто</div>
+      <div class="val">${doneWeek}</div>
+      <div class="delta same">за 7 дней</div>
+    </div>
+    <div class="ws-stat">
+      <div class="lbl">Просрочено</div>
+      <div class="val" style="color:${overdue ? '#dc2626' : '#16a34a'}">${overdue}</div>
+      <div class="delta ${overdue ? 'down' : 'up'}">${overdue ? 'хвосты на сейчас' : 'чисто'}</div>
+    </div>
+  `;
+  wrap.appendChild(grid);
+
+  // Топ-3 привычки по успеху недели
+  const top = state.habits
+    .map(h => ({ h, pct: habitWeekPct(h.id) }))
+    .sort((a, b) => b.pct - a.pct)
+    .slice(0, 3);
+  const bot = state.habits
+    .map(h => ({ h, pct: habitWeekPct(h.id) }))
+    .sort((a, b) => a.pct - b.pct)
+    .slice(0, 2);
+
+  const streaks = document.createElement('div');
+  streaks.className = 'ws-streaks';
+  streaks.style.marginBottom = '8px';
+  streaks.innerHTML = '<span style="font-size:11px; color:#6b7280; align-self:center;">ТОП привычек:</span>';
+  top.forEach(({ h, pct }) => {
+    if (pct === 0) return;
+    const el = document.createElement('span');
+    el.className = 'ws-streak';
+    el.innerHTML = `${h.emoji} ${h.name.split('(')[0].trim()} <b>${pct}%</b>`;
+    streaks.appendChild(el);
+  });
+  wrap.appendChild(streaks);
+
+  if (bot.length && bot[0].pct < 50) {
+    const weak = document.createElement('div');
+    weak.className = 'ws-streaks';
+    weak.innerHTML = '<span style="font-size:11px; color:#dc2626; align-self:center;">ПРОВИСАЕТ:</span>';
+    bot.forEach(({ h, pct }) => {
+      if (pct >= 50) return;
+      const el = document.createElement('span');
+      el.className = 'ws-streak';
+      el.style.borderColor = '#fecaca';
+      el.innerHTML = `${h.emoji} ${h.name.split('(')[0].trim()} <b style="color:#dc2626;">${pct}%</b>`;
+      weak.appendChild(el);
+    });
+    wrap.appendChild(weak);
+  }
+}
+
+// ============ WEEK PLAN ============
+function renderWeekPlan() {
+  const wrap = document.getElementById('week-days');
+  wrap.innerHTML = '';
+  const today = todayStr();
+
+  const dates = Object.keys(WEEK_PLAN).sort();
+  if (dates.length) {
+    const first = new Date(dates[0]);
+    const last = new Date(dates[dates.length - 1]);
+    document.getElementById('week-range').textContent =
+      `${first.getDate()} ${MONTH_RU[first.getMonth()].slice(0,3)} — ${last.getDate()} ${MONTH_RU[last.getMonth()].slice(0,3)}`;
+  }
+
+  let curWeek = null;
+  dates.forEach(date => {
+    const day = WEEK_PLAN[date];
+    const isToday = date === today;
+    const isPast = date < today;
+    const d0 = new Date(date);
+    const dayOfWeek = (d0.getDay() + 6) % 7;
+    const monday = new Date(d0); monday.setDate(d0.getDate() - dayOfWeek);
+    const weekKey = ymd(monday);
+    if (weekKey !== curWeek) {
+      curWeek = weekKey;
+      const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
+      const hdr = document.createElement('div');
+      hdr.className = 'week-divider';
+      hdr.textContent = `Неделя ${monday.getDate()} ${MONTH_RU[monday.getMonth()].slice(0,3)} — ${sunday.getDate()} ${MONTH_RU[sunday.getMonth()].slice(0,3)}`;
+      wrap.appendChild(hdr);
+    }
+    const col = document.createElement('div');
+    col.className = 'day-col' + (isToday ? ' today' : '') + (isPast ? ' past' : '');
+    const d = new Date(date);
+    col.innerHTML = `
+      <div class="day-head">
+        <div class="dow-row">
+          <div class="dow">${day.dow}</div>
+          <div class="date">${d.getDate()} ${MONTH_RU[d.getMonth()].slice(0,3)}</div>
+        </div>
+        <div class="focus">${day.focus}</div>
+      </div>
+      ${day.blocks.map(b => `
+        <div class="block ${b.type || ''}">
+          <div class="time">${b.time}</div>
+          <div class="what">${b.what}</div>
+        </div>
+      `).join('')}
+    `;
+    wrap.appendChild(col);
+  });
+}
+
+// ============ TODAY (главный блок) ============
+let planCollapsed = false;
+function togglePlan() {
+  planCollapsed = !planCollapsed;
+  document.getElementById('today-plan').style.display = planCollapsed ? 'none' : '';
+  document.getElementById('plan-toggle').textContent = planCollapsed ? 'показать' : 'скрыть';
+}
+
+function renderToday() {
+  const today = todayStr();
+  const dayPlan = WEEK_PLAN[today];
+  const d = new Date(today);
+
+  // Дни до ДР для строки очков
+  const toDR = daysBetween(today, '2026-05-27');
+  document.getElementById('m-events').textContent = toDR > 0 ? toDR : 0;
+
+  // Дата + день недели
+  document.getElementById('today-date').textContent =
+    `${d.getDate()} ${MONTH_RU[d.getMonth()]}`;
+  if (dayPlan) {
+    document.getElementById('today-dow').textContent = dayPlan.dow;
+    document.getElementById('today-focus').textContent = dayPlan.focus || '';
+  } else {
+    document.getElementById('today-dow').textContent = DOW_RU[d.getDay()];
+    document.getElementById('today-focus').textContent = 'На сегодня план не задан';
+  }
+
+  // 🔥 ГЛАВНОЕ — routine-блоки (созвоны, курс, терапевт, реабилитация) с чекбоксами
+  const mainWrap = document.getElementById('today-main-wrap');
+  const mainList = document.getElementById('today-main');
+  const day = ensureDay(today);
+  const mainBlocks = (dayPlan && dayPlan.blocks)
+    ? dayPlan.blocks.filter(b => b.type === 'routine' || b.type === 'course' || b.type === 'urgent')
+    : [];
+
+  if (mainBlocks.length) {
+    mainWrap.style.display = '';
+    mainList.innerHTML = '';
+    mainBlocks.forEach(b => {
+      const key = 'main_' + b.time.replace(':','') + '_' + b.what.slice(0, 20);
+      const isOn = !!day[key];
+      const row = document.createElement('div');
+      row.className = 'today-main-item' + (isOn ? ' done' : '');
+      row.innerHTML = `
+        <div class="time">${b.time}</div>
+        <div class="what">${b.what}</div>
+        <div class="check"></div>
+      `;
+      row.onclick = () => {
+        day[key] = !day[key];
+        if (day[key]) flash(20); else flash(-20);
+        save();
+        renderAll();
+      };
+      mainList.appendChild(row);
+    });
+  } else {
+    mainWrap.style.display = 'none';
+  }
+
+  // Задачи курса — показываем только в дни, где в плане есть блок type='course'
+  const courseWrap = document.getElementById('today-course-wrap');
+  const courseList = document.getElementById('today-course');
+  const isCourseDay = dayPlan && dayPlan.blocks &&
+    dayPlan.blocks.some(b => b.type === 'course');
+
+  if (isCourseDay) {
+    courseWrap.style.display = '';
+    courseList.innerHTML = '';
+    COURSE_TASKS.forEach(ct => {
+      const isOn = !!day[ct.id];
+      const row = document.createElement('div');
+      row.className = 'course-task' + (isOn ? ' done' : '');
+      row.innerHTML = `
+        <div class="emoji">${ct.emoji}</div>
+        <div class="name">${ct.name}</div>
+        <div class="check"></div>
+      `;
+      row.onclick = () => {
+        const wasOn = !!day[ct.id];
+        day[ct.id] = !wasOn;
+        if (day[ct.id]) flash(ct.points);
+        else flash(-ct.points);
+        save();
+        renderAll();
+      };
+      courseList.appendChild(row);
+    });
+  } else {
+    courseWrap.style.display = 'none';
+  }
+
+  // Горящие задачи: deadline ≤ сегодня и !done
+  const urgentWrap = document.getElementById('today-urgent');
+  urgentWrap.innerHTML = '';
+  const burning = state.tasks
+    .filter(t => !t.done && t.deadline && t.deadline <= today)
+    .sort((a,b) => a.deadline.localeCompare(b.deadline));
+
+  if (!burning.length) {
+    urgentWrap.innerHTML = '<div class="today-empty">Ничего не горит ✨</div>';
+  } else {
+    burning.forEach(t => {
+      const days = daysBetween(today, t.deadline);
+      const overdue = days < 0;
+      const row = document.createElement('div');
+      row.className = 'today-task' + (overdue ? ' overdue' : '');
+      const badge = overdue
+        ? `<span class="badge">просрочено ${-days} дн</span>`
+        : `<span class="badge">сегодня</span>`;
+      row.innerHTML = `
+        <div class="pri-dot ${t.priority}"></div>
+        <div class="check"></div>
+        <div class="text">${t.text}</div>
+        ${badge}
+      `;
+      row.onclick = () => {
+        t.done = true;
+        t.completedDate = todayStr();
+        flash(taskPoints(t));
+        save();
+        renderAll();
+      };
+      urgentWrap.appendChild(row);
+    });
+  }
+
+  // План дня — блоки из WEEK_PLAN
+  const planWrap = document.getElementById('today-plan');
+  planWrap.innerHTML = '';
+  if (dayPlan && dayPlan.blocks && dayPlan.blocks.length) {
+    dayPlan.blocks.forEach(b => {
+      const row = document.createElement('div');
+      row.className = 'today-block ' + (b.type || '');
+      row.innerHTML = `<div class="t">${b.time}</div><div class="w">${b.what}</div>`;
+      planWrap.appendChild(row);
+    });
+  } else {
+    planWrap.innerHTML = '<div class="today-empty">План дня не задан</div>';
+  }
+}
+
+// ============ МИНИМУМ НЕДЕЛИ (кружочки) ============
+const DOW_SHORT = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+
+function renderMinWeek() {
+  const wrap = document.getElementById('min-week');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  // 1) Привычки с weeklyGoal
+  state.habits.forEach(h => {
+    if (!h.weeklyGoal) return;
+    const done = habitWeekCount(h.id);
+    const goal = h.weeklyGoal;
+    const isDone = done >= goal;
+    const row = document.createElement('div');
+    row.className = 'min-row' + (isDone ? ' done' : '');
+    let dots = '';
+    const totalDots = Math.max(goal, done);
+    for (let i = 0; i < totalDots; i++) {
+      dots += `<div class="min-dot ${i < done ? 'on' : ''}"></div>`;
+    }
+    const subDays = h.days ? '· ' + h.days.map(d => DOW_SHORT[d]).join('/') : '';
+    row.innerHTML = `
+      <div class="emoji">${h.emoji}</div>
+      <div class="name">${h.name.split('(')[0].trim()}
+        <span class="sub">мин. ${goal}/нед ${subDays}</span>
+      </div>
+      <div class="min-dots">${dots}</div>
+      <div class="count">${done}/${goal}</div>
+    `;
+    wrap.appendChild(row);
+  });
+
+  // 2) Счётчики с weeklyLimit (сигареты) — done только если 0; нейтрально 1-limit; overdone если > limit
+  state.counters.forEach(c => {
+    if (c.weeklyLimit === undefined) return;
+    const total = counterWeekTotal(c.id);
+    const limit = c.weeklyLimit;
+    const over = total > limit;
+    const zero = total === 0;
+    const row = document.createElement('div');
+    row.className = 'min-row' + (over ? ' overdone' : (zero ? ' done' : ''));
+    let dots = '';
+    const totalDots = Math.max(limit, total);
+    for (let i = 0; i < totalDots; i++) {
+      const cls = i < total ? (i >= limit ? 'bad' : 'on') : '';
+      dots += `<div class="min-dot ${cls}"></div>`;
+    }
+    row.innerHTML = `
+      <div class="emoji">${c.emoji}</div>
+      <div class="name">${c.name}
+        <span class="sub">лимит ${limit}/нед${zero ? ' — чисто 🌿' : ''}</span>
+      </div>
+      <div class="min-dots">${dots}</div>
+      <div class="count">${total}/${limit}</div>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+// ============ ЗАМЕТКИ ============
+function renderNotes() {
+  const wrap = document.getElementById('notes-list');
+  if (!wrap) return;
+  const notes = state.notes || [];
+  const countLabel = document.getElementById('notes-count');
+  if (countLabel) countLabel.textContent = notes.length ? `последние ${notes.length}` : '—';
+  if (!notes.length) {
+    wrap.innerHTML = '<div style="color:#9ca3af;font-size:12px;font-style:italic;padding:8px 0;">Пока нет заметок. Голосовые из Telegram появятся здесь.</div>';
+    return;
+  }
+  wrap.innerHTML = notes.slice(0, 50).map(n => {
+    const isVoice = n.source === 'voice';
+    const cls = isVoice ? 'note-item voice' : 'note-item';
+    const time = n.ts ? n.ts.slice(11, 16) : '';
+    const date = n.date || '';
+    const badge = isVoice ? '<span class="voice-badge">голос</span>' : '';
+    return `<div class="${cls}">
+      <div class="note-meta"><span>${date} ${time}</span>${badge}</div>
+      <div>${escapeHtml(n.text)}</div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+function addNote(text, source) {
+  if (!SYNC_URL) return;
+  fetch(SYNC_URL.replace('/api/state', '/api/note'), {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({text: text, source: source || 'manual', date: todayStr()}),
+  }).then(() => pullFromServer()).catch(() => {});
+}
+
+// ============ RENDER ALL ============
+function renderAll() {
+  renderToday();
+  renderHabits();
+  renderCounters();
+  renderTasks();
+  renderScore();
+  renderBday();
+  renderWeek();
+  renderWeekSummary();
+  renderWeekPlan();
+  renderMinWeek();
+  renderNotes();
+}
+
+renderAll();
+
+// Синхронизация с сервером бота:
+// - http://localhost:* — двусторонний синк (pull + push)
+// - file://             — НЕ пуллим (иначе чистый SEED с сервера затрёт твою неделю),
+//                          только показываем кнопку «перенести на сервер»
+if (location.protocol === 'http:' || location.protocol === 'https:') {
+  pullFromServer();
+  setInterval(pullFromServer, 30000);
+}
+showMergeBannerIfNeeded();
+
+// expose for debug
+window.tracker = { state, save, load, pullFromServer, pushToServer };
+
+// ============ PWA: service worker для офлайна и установки на iPhone/Dock ============
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(err => console.warn('SW reg failed', err));
+  });
+}
+</script>
+
+</body>
+</html>

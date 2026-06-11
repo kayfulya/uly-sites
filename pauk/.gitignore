@@ -1,0 +1,8 @@
+*.backup-*
+bot/venv/
+bot/config.json
+bot/pending.json
+bot/pending_entities.json
+bot/import_pending.md
+__pycache__/
+*.tmp

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <rect width="200" height="250" fill="#f0e9d8"/>
+  <!-- коврик -->
+  <rect x="20" y="170" width="160" height="10" fill="#b8431f" stroke="#1c1c1c" stroke-width="2"/>
+  <rect x="170" y="160" width="14" height="22" rx="2" fill="#b8431f" stroke="#1c1c1c" stroke-width="2"/>
+  <!-- человек в позе ребёнка -->
+  <g stroke="#1c1c1c" stroke-width="2.5" fill="#f7eedf" stroke-linejoin="round" stroke-linecap="round">
+    <!-- бёдра/попа -->
+    <ellipse cx="140" cy="148" rx="22" ry="18" fill="#5d6b5b"/>
+    <!-- спина выгнута вперёд -->
+    <path d="M 140 148 Q 110 120 78 138 Q 62 148 62 162" fill="none"/>
+    <!-- голова -->
+    <circle cx="62" cy="170" r="10" fill="#5d6b5b"/>
+    <!-- руки вытянуты -->
+    <path d="M 62 168 L 38 170" fill="none"/>
+    <path d="M 78 138 L 60 130" fill="none"/>
+    <!-- ноги под собой -->
+    <path d="M 158 158 Q 168 168 162 178" fill="none"/>
+  </g>
+  <!-- стрелка вверх -->
+  <g stroke="#1c1c1c" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M 100 80 L 100 50"/>
+    <path d="M 92 58 L 100 50 L 108 58"/>
+  </g>
+  <text x="100" y="36" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="16" fill="#1c1c1c">встать ровно</text>
+</svg>

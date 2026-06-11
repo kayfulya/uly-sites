@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <rect width="200" height="250" fill="#efe7d4"/>
+  <!-- земля -->
+  <rect x="0" y="220" width="200" height="30" fill="#cbc1ad"/>
+  <!-- деревья (стволы) -->
+  <g stroke="#1c1c1c" stroke-width="2.5">
+    <rect x="22" y="100" width="16" height="120" fill="#7a5234"/>
+    <rect x="162" y="100" width="16" height="120" fill="#7a5234"/>
+    <!-- кроны -->
+    <circle cx="30" cy="80" r="32" fill="#5d6b5b"/>
+    <circle cx="170" cy="80" r="32" fill="#5d6b5b"/>
+    <circle cx="14" cy="92" r="18" fill="#5d6b5b"/>
+    <circle cx="186" cy="92" r="18" fill="#5d6b5b"/>
+  </g>
+  <!-- верёвка с провисом -->
+  <path d="M 38 138 Q 100 188 162 138" stroke="#1c1c1c" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- узлы -->
+  <circle cx="68" cy="164" r="3" fill="#1c1c1c"/>
+  <circle cx="100" cy="172" r="3" fill="#1c1c1c"/>
+  <circle cx="132" cy="164" r="3" fill="#1c1c1c"/>
+  <!-- карабин -->
+  <g stroke="#1c1c1c" stroke-width="2" fill="none">
+    <path d="M 96 138 Q 92 132 96 126 Q 104 122 108 128 Q 112 134 108 138" />
+    <line x1="100" y1="138" x2="100" y2="150"/>
+  </g>
+</svg>

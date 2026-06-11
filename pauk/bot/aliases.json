@@ -1,0 +1,74 @@
+{
+  "лёша": "ambig:lesha,kravchenko",
+  "лёше": "ambig:lesha,kravchenko",
+  "лёшу": "ambig:lesha,kravchenko",
+  "лёш": "ambig:lesha,kravchenko",
+  "леша": "ambig:lesha,kravchenko",
+  "леше": "ambig:lesha,kravchenko",
+  "лешу": "ambig:lesha,kravchenko",
+  "леш": "ambig:lesha,kravchenko",
+  "алексей": "ambig:lesha,kravchenko",
+  "алексею": "ambig:lesha,kravchenko",
+  "алексея": "ambig:lesha,kravchenko",
+  "любимка": "lesha", "любимке": "lesha", "любимку": "lesha",
+
+  "вася": "vasya", "васе": "vasya", "васю": "vasya", "вась": "vasya",
+  "василий": "vasya", "карпюк": "vasya",
+
+  "толя": "tolya", "толе": "tolya", "толю": "tolya", "толик": "tolya",
+  "толика": "tolya", "ларин": "tolya", "владелец": "tolya",
+
+  "уля": "ulya", "уле": "ulya", "улю": "ulya",
+  "кайфуля": "ulya", "кайфуле": "ulya", "рилсуля": "ulya",
+
+  "таня": "tanya", "тане": "tanya", "таню": "tanya", "танюха": "tanya",
+
+  "дина": "dina", "дине": "dina", "дину": "dina", "динка": "dina",
+
+  "алия": "aliya", "алие": "aliya", "алию": "aliya", "aliya": "aliya",
+
+  "катя": "katrin", "кате": "katrin", "катю": "katrin",
+  "катрин": "katrin", "katrin": "katrin", "тигрица": "katrin",
+
+  "айсель": "ajsel", "айселе": "ajsel", "айсу": "ajsel",
+
+  "лера": "lera", "лере": "lera", "леру": "lera", "лерка": "lera",
+
+  "демьян": "demyan", "демьяну": "demyan", "демьяна": "demyan", "дам": "demyan",
+
+  "дима": "dima", "диме": "dima", "диму": "dima", "dmitry": "dima",
+
+  "джин": "jin", "джину": "jin", "джина": "jin",
+
+  "кравченко": "kravchenko", "алексей_кравченко": "kravchenko",
+  "админ": "kravchenko",
+
+  "вадим": "vadim", "вадиму": "vadim", "вадима": "vadim", "вадь": "vadim",
+  "скоробогатько": "vadim", "москаль": "vadim",
+
+  "аннушка": "annushka", "аннушке": "annushka", "аннушку": "annushka",
+  "анна": "annushka", "ане": "annushka", "анну": "annushka", "anna": "annushka",
+
+  "мама_аннушки": "mama_annushka", "маме_аннушки": "mama_annushka", "мама": "mama_annushka",
+
+  "никита": "nikita", "никите": "nikita", "никиту": "nikita",
+  "ник": "nikita", "никитка": "nikita", "попрыгунчик": "nikita",
+
+  "слава": "slava", "славе": "slava", "славу": "slava",
+  "славик": "slava", "сварщик": "slava", "svarkabilly": "slava",
+
+  "бот": "bot", "боту": "bot", "бота": "bot", "робот": "bot",
+  "uvazhenie_ochki_bot": "bot",
+
+  "алюминий": "obj:Алюминий", "алюминию": "obj:Алюминий", "алюминия": "obj:Алюминий",
+  "аллюминий": "obj:Алюминий", "аллюминию": "obj:Алюминий", "аллюминия": "obj:Алюминий",
+  "сталь": "obj:Сталь", "стали": "obj:Сталь",
+  "каши": "obj:Каши", "каше": "obj:Каши", "каша": "obj:Каши", "кашу": "obj:Каши",
+  "пластик": "obj:Пластик (PLA)", "пластику": "obj:Пластик (PLA)", "пла": "obj:Пластик (PLA)", "pla": "obj:Пластик (PLA)",
+  "блок_питания": "obj:Блок питания", "блок-питания": "obj:Блок питания", "бп": "obj:Блок питания", "питание": "obj:Блок питания",
+  "паяльник": "obj:Паяльник", "паяльнику": "obj:Паяльник", "паяльника": "obj:Паяльник",
+  "pa_cf": "obj:PA CF", "pacf": "obj:PA CF", "кaрбон": "obj:PA CF",
+  "ньютоны": "obj:Ньютоны", "ньютонам": "obj:Ньютоны", "ньютон": "obj:Ньютоны",
+  "подшипник": "obj:Верхний подшипник", "подшипнику": "obj:Верхний подшипник",
+  "членопаук": "obj:Членопаук", "членопауку": "obj:Членопаук"
+}

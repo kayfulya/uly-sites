@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <!-- Тёплый «кожный» фон -->
+  <rect width="200" height="250" fill="#f0d9bf"/>
+  <!-- Лёгкая текстура — тёплые пятна -->
+  <ellipse cx="60" cy="80" rx="80" ry="40" fill="#eccaa4" opacity="0.5"/>
+  <ellipse cx="160" cy="200" rx="70" ry="50" fill="#e8c39a" opacity="0.5"/>
+
+  <!-- Тату-надпись -->
+  <g transform="translate(100 130) rotate(-6)">
+    <text x="0" y="0" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-weight="500" font-size="30" fill="#1c1c1c" letter-spacing="-0.5">Люблю</text>
+    <text x="0" y="34" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-weight="600" font-size="34" fill="#1c1c1c" letter-spacing="-0.5">Улю</text>
+    <!-- Маленькое сердечко -->
+    <path d="M 50 22 Q 53 17 58 19 Q 63 17 66 22 Q 66 28 58 36 Q 50 28 50 22 Z" fill="#b8431f"/>
+  </g>
+</svg>

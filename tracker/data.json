@@ -1,0 +1,1107 @@
+{
+  "habits": [
+    {
+      "id": "meditation",
+      "emoji": "🧘",
+      "name": "Медитация (каждый день)",
+      "group": "morning",
+      "points": 30,
+      "weeklyGoal": 7,
+      "days": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        0
+      ]
+    },
+    {
+      "id": "zaryadka",
+      "emoji": "💪",
+      "name": "Зарядка 10 мин (3/нед)",
+      "group": "body",
+      "points": 30,
+      "weeklyGoal": 3
+    },
+    {
+      "id": "walk",
+      "emoji": "🚶",
+      "name": "Прогулка (3/нед мин.)",
+      "group": "body",
+      "points": 20,
+      "weeklyGoal": 3
+    },
+    {
+      "id": "bath",
+      "emoji": "🛁",
+      "name": "Ванна (4/нед)",
+      "group": "evening",
+      "points": 10,
+      "weeklyGoal": 4
+    },
+    {
+      "id": "reading",
+      "emoji": "📖",
+      "name": "Чтение 15 мин",
+      "group": "evening",
+      "points": 15
+    },
+    {
+      "id": "client_reel",
+      "emoji": "🎬",
+      "name": "Ролик клиентке (ПН-ЧТ, 4/нед)",
+      "group": "work",
+      "points": 40,
+      "weeklyGoal": 4,
+      "days": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "own_reel",
+      "emoji": "🎥",
+      "name": "Свой ролик (ПН/СР/ПТ, 3/нед)",
+      "group": "work",
+      "points": 50,
+      "weeklyGoal": 3,
+      "days": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "id": "vibe",
+      "emoji": "💻",
+      "name": "Вайбкодинг сам",
+      "group": "learn",
+      "points": 30
+    },
+    {
+      "id": "homework",
+      "emoji": "🎓",
+      "name": "Учёба + ДЗ (СР 16-19)",
+      "group": "learn",
+      "points": 30,
+      "weeklyGoal": 1,
+      "days": [
+        3
+      ]
+    },
+    {
+      "id": "lyosha",
+      "emoji": "💑",
+      "name": "Время с Лёшей",
+      "group": "love",
+      "points": 25
+    }
+  ],
+  "counters": [
+    {
+      "id": "cigarettes",
+      "emoji": "🚬",
+      "name": "Сигареты",
+      "target": "не больше 2/нед",
+      "invert": true,
+      "pointsPer": -50,
+      "weeklyLimit": 2
+    },
+    {
+      "id": "teeth",
+      "emoji": "🦷",
+      "name": "Зубы почистила",
+      "target": "2 раза/день",
+      "goal": 2,
+      "pointsPer": 12
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "text": "Вишлист на ДР — допилить kayfulya.github.io/birthday",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "birthday",
+      "done": true,
+      "completedDate": "2026-05-17"
+    },
+    {
+      "id": "t2",
+      "text": "Найти темные очки (в вишлист)",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "birthday",
+      "done": true,
+      "completedDate": "2026-05-25"
+    },
+    {
+      "id": "t1d",
+      "text": "Разослать вишлист гостям (не WhatsApp)",
+      "priority": "high",
+      "deadline": "2026-05-24",
+      "project": "birthday",
+      "done": true,
+      "completedDate": "2026-05-18"
+    },
+    {
+      "id": "t3",
+      "text": "Купить билеты в Грузию",
+      "priority": "urgent",
+      "deadline": "2026-05-18",
+      "project": "trip",
+      "done": true,
+      "completedDate": "2026-05-21"
+    },
+    {
+      "id": "t4",
+      "text": "Разобраться с подпиской Claude — какой тариф",
+      "priority": "urgent",
+      "deadline": "2026-05-18",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-18"
+    },
+    {
+      "id": "t5",
+      "text": "Спросить Лёшу про даты отпуска",
+      "priority": "urgent",
+      "deadline": "2026-05-18",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-18"
+    },
+    {
+      "id": "t7",
+      "text": "Постирать",
+      "priority": "urgent",
+      "deadline": "2026-05-18",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-18"
+    },
+    {
+      "id": "t8",
+      "text": "Сдать вещь на ВБ/Озон",
+      "priority": "high",
+      "deadline": "2026-05-20",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-21"
+    },
+    {
+      "id": "t9",
+      "text": "🦷 Зубной — ВТ 26 мая",
+      "priority": "urgent",
+      "deadline": "2026-05-26",
+      "project": "health",
+      "done": true,
+      "completedDate": "2026-05-19"
+    },
+    {
+      "id": "t10",
+      "text": "Выбрать дни реабилитации (отложено — нет времени)",
+      "priority": "low",
+      "deadline": null,
+      "project": "health",
+      "done": true,
+      "completedDate": "2026-06-06"
+    },
+    {
+      "id": "t11",
+      "text": "Найти удобную обувь — себе",
+      "priority": "high",
+      "deadline": "2026-06-10",
+      "project": "style",
+      "done": true,
+      "completedDate": "2026-06-07"
+    },
+    {
+      "id": "t12",
+      "text": "Найти удобную обувь — Лёше",
+      "priority": "high",
+      "deadline": "2026-06-10",
+      "project": "style",
+      "done": true,
+      "completedDate": "2026-05-25"
+    },
+    {
+      "id": "t13",
+      "text": "Расписать пайплайн с монтажёркой (4 ролика/нед)",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-25"
+    },
+    {
+      "id": "t14",
+      "text": "Вывести пятна с платья",
+      "priority": "urgent",
+      "deadline": "2026-06-13",
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t15",
+      "text": "Ботокс в лоб — записаться",
+      "priority": "medium",
+      "deadline": "2026-06-10",
+      "project": "style",
+      "done": true,
+      "completedDate": "2026-06-06"
+    },
+    {
+      "id": "t16",
+      "text": "Ортопед",
+      "priority": "medium",
+      "deadline": "2026-06-10",
+      "project": "health",
+      "done": true,
+      "completedDate": "2026-06-07"
+    },
+    {
+      "id": "t17",
+      "text": "Прививка от клещей",
+      "priority": "medium",
+      "deadline": null,
+      "project": "health",
+      "done": false
+    },
+    {
+      "id": "t18",
+      "text": "Решить где жить после 31 мая",
+      "priority": "medium",
+      "deadline": "2026-05-28",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-19"
+    },
+    {
+      "id": "t19",
+      "text": "🧵 Зашить вещи",
+      "priority": "medium",
+      "deadline": "2026-06-26",
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t20",
+      "text": "Портфолио-сайт допилить",
+      "priority": "low",
+      "deadline": null,
+      "project": "portfolio",
+      "done": false
+    },
+    {
+      "id": "t21",
+      "text": "Стиль-приложение (отдых-формат)",
+      "priority": "low",
+      "deadline": null,
+      "project": "style",
+      "done": true,
+      "completedDate": "2026-05-19"
+    },
+    {
+      "id": "t40",
+      "text": "💰 Проверить свои налоги — оплатить за апрель",
+      "priority": "urgent",
+      "deadline": "2026-05-18",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-18"
+    },
+    {
+      "id": "t41",
+      "text": "✍️ Сценарии для Ольги",
+      "priority": "urgent",
+      "deadline": "2026-05-18",
+      "project": "olga",
+      "done": true,
+      "completedDate": "2026-05-18"
+    },
+    {
+      "id": "t42",
+      "text": "☎️ Написать Наталье-гольфистке",
+      "priority": "urgent",
+      "deadline": "2026-05-18",
+      "project": "natalya",
+      "done": true,
+      "completedDate": "2026-05-18"
+    },
+    {
+      "id": "t45",
+      "text": "⚖️ Идеи для Адвоката (новый клиент) — подготовить",
+      "priority": "urgent",
+      "deadline": "2026-05-19",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-20"
+    },
+    {
+      "id": "t50",
+      "text": "🎬 Смонтировать 2 ролика клиенткам",
+      "priority": "urgent",
+      "deadline": "2026-05-20",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-21"
+    },
+    {
+      "id": "t51",
+      "text": "🖼️ Сделать обложки к этим 2 роликам",
+      "priority": "urgent",
+      "deadline": "2026-05-20",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-21"
+    },
+    {
+      "id": "t52",
+      "text": "📨 Отправить 2 ролика клиенткам на согласование",
+      "priority": "urgent",
+      "deadline": "2026-05-20",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-21"
+    },
+    {
+      "id": "t53",
+      "text": "📤 Выложить 3 ролика (свой + клиенток)",
+      "priority": "urgent",
+      "deadline": "2026-05-20",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-21"
+    },
+    {
+      "id": "t54",
+      "text": "📨 Отправить 1 ролик другой клиентке",
+      "priority": "urgent",
+      "deadline": "2026-05-20",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-21"
+    },
+    {
+      "id": "t55",
+      "text": "👨‍💻 Отправить Васе ссылку на трекер — посмотреть код",
+      "priority": "high",
+      "deadline": "2026-05-21",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-25"
+    },
+    {
+      "id": "t56",
+      "text": "💻 Купить подставку под ноутбук",
+      "priority": "medium",
+      "deadline": "2026-05-27",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-06-06"
+    },
+    {
+      "id": "t57",
+      "text": "👗 Купить зелёный костюмчик",
+      "priority": "high",
+      "deadline": "2026-06-18",
+      "project": "style",
+      "done": false
+    },
+    {
+      "id": "t59",
+      "text": "🎁 Купить подарок Айсель",
+      "priority": "high",
+      "deadline": "2026-05-27",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-21"
+    },
+    {
+      "id": "t60",
+      "text": "🎬 Правило: каждый ролик монтировать отдельно (не пачкой) перед выкладкой",
+      "priority": "high",
+      "deadline": null,
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-21"
+    },
+    {
+      "id": "t61",
+      "text": "💳 Оплатить подписку Google",
+      "priority": "medium",
+      "deadline": null,
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t62",
+      "text": "🐙 Залить трекер на GitHub (публичный репо)",
+      "priority": "medium",
+      "deadline": null,
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t63",
+      "text": "🎢 Сходить в Мазапарк по скидке на ДР",
+      "priority": "medium",
+      "deadline": null,
+      "project": "birthday",
+      "done": false
+    },
+    {
+      "id": "t64",
+      "text": "🎟️ Поискать развлечения со скидками в ДР",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "birthday",
+      "done": true,
+      "completedDate": "2026-05-22"
+    },
+    {
+      "id": "t65",
+      "text": "🏆 Обновить очки уважения в реестре",
+      "priority": "medium",
+      "deadline": "2026-05-28",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-06-06"
+    },
+    {
+      "id": "t66",
+      "text": "⚖️ Созвон Адвокат+Данис — 29 мая в 14:30 (после команды Reels-клуба)",
+      "priority": "urgent",
+      "deadline": "2026-05-29",
+      "project": "danil",
+      "done": true,
+      "completedDate": "2026-06-06"
+    },
+    {
+      "id": "t67",
+      "text": "📋 Подготовиться к созвону Адвокат+Данис (вопросы, кейсы)",
+      "priority": "urgent",
+      "deadline": "2026-05-28",
+      "project": "danil",
+      "done": true,
+      "completedDate": "2026-06-06"
+    },
+    {
+      "id": "t68",
+      "text": "📱 Установить трекер на iPhone (Add to Home Screen)",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-25"
+    },
+    {
+      "id": "t69",
+      "text": "❓ Уточнить: что/когда учёба с Максом — вписать в расписание",
+      "priority": "high",
+      "deadline": "2026-05-25",
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-05-22"
+    },
+    {
+      "id": "t70",
+      "text": "📤 Выложить свой ролик",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "club",
+      "done": true,
+      "completedDate": "2026-05-22"
+    },
+    {
+      "id": "t71",
+      "text": "💡 Написать идеи для Натальи (гольф)",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "natalya",
+      "done": true,
+      "completedDate": "2026-05-22"
+    },
+    {
+      "id": "t72",
+      "text": "🎬 Отправить максимум своих роликов на монтаж",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "club",
+      "done": true,
+      "completedDate": "2026-05-22"
+    },
+    {
+      "id": "t74",
+      "text": "👟 Заказать кроссовки",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "style",
+      "done": true,
+      "completedDate": "2026-05-25"
+    },
+    {
+      "id": "t75",
+      "text": "🎙️ Сделать расшифровку всего накопленного аудио",
+      "priority": "high",
+      "deadline": null,
+      "project": "club",
+      "done": false
+    },
+    {
+      "id": "t76",
+      "text": "📚 Разобрать урок Миланы",
+      "priority": "high",
+      "deadline": null,
+      "project": "club",
+      "done": true,
+      "completedDate": "2026-05-24"
+    },
+    {
+      "id": "t77",
+      "text": "🧠 Разобрать свою экспертность",
+      "priority": "high",
+      "deadline": null,
+      "project": "club",
+      "done": true,
+      "completedDate": "2026-05-24"
+    },
+    {
+      "id": "t78",
+      "text": "🎯 Сделать себе стратегию аккаунта",
+      "priority": "high",
+      "deadline": null,
+      "project": "club",
+      "done": false
+    },
+    {
+      "id": "t79",
+      "text": "🎬 Разложить стратегию на примере моих Reels и референсов",
+      "priority": "high",
+      "deadline": null,
+      "project": "club",
+      "done": false
+    },
+    {
+      "id": "t80",
+      "text": "🔥 Баню натопить",
+      "priority": "medium",
+      "deadline": null,
+      "project": "general",
+      "done": true,
+      "completedDate": "2026-06-06"
+    },
+    {
+      "id": "t81",
+      "text": "🎧 Поднять аудиокнижный сервер (AudioBookshelf) для офлайн на телефоне",
+      "priority": "high",
+      "deadline": null,
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t58",
+      "text": "📊 Настроить аналитику по поиску Reels (декомпозировать)",
+      "priority": "medium",
+      "deadline": null,
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t43",
+      "text": "☎️ Спросить Алену материалы для «Я лид заботы»",
+      "priority": "urgent",
+      "deadline": "2026-05-19",
+      "project": "trip",
+      "done": true,
+      "completedDate": "2026-05-19"
+    },
+    {
+      "id": "t44",
+      "text": "📚 Подготовиться к роли «Я лид заботы» в Грузии",
+      "priority": "high",
+      "deadline": "2026-06-12",
+      "project": "trip",
+      "done": true,
+      "completedDate": "2026-06-06"
+    },
+    {
+      "id": "t30",
+      "text": "🧳 Документы — паспорт, страховка",
+      "priority": "medium",
+      "deadline": "2026-06-13",
+      "project": "trip",
+      "done": true,
+      "completedDate": "2026-06-07"
+    },
+    {
+      "id": "t31",
+      "text": "🧳 Деньги — карты для Грузии + наличные",
+      "priority": "medium",
+      "deadline": "2026-06-12",
+      "project": "trip",
+      "done": true,
+      "completedDate": "2026-06-07"
+    },
+    {
+      "id": "t32",
+      "text": "🧳 Аптечка",
+      "priority": "medium",
+      "deadline": "2026-06-13",
+      "project": "trip",
+      "done": true,
+      "completedDate": "2026-06-07"
+    },
+    {
+      "id": "t33",
+      "text": "🧳 Собрать чемодан + аптечка",
+      "priority": "high",
+      "deadline": "2026-06-13",
+      "project": "trip",
+      "done": false
+    },
+    {
+      "id": "t34",
+      "text": "🧳 Техника + переходники",
+      "priority": "medium",
+      "deadline": "2026-06-13",
+      "project": "trip",
+      "done": true,
+      "completedDate": "2026-05-20"
+    },
+    {
+      "id": "t35",
+      "text": "🎬 Контент-заготовки на 2 недели вперёд",
+      "priority": "urgent",
+      "deadline": "2026-06-12",
+      "project": "trip",
+      "done": false
+    },
+    {
+      "id": "t36",
+      "text": "📅 Раскладка публикаций на время Грузии",
+      "priority": "medium",
+      "deadline": null,
+      "project": "trip",
+      "done": false
+    },
+    {
+      "id": "t37",
+      "text": "☎️ Договориться с монтажёркой про работу из Грузии",
+      "priority": "urgent",
+      "deadline": "2026-06-08",
+      "project": "trip",
+      "done": false
+    },
+    {
+      "id": "t38",
+      "text": "🏨 Подтвердить жильё",
+      "priority": "medium",
+      "deadline": "2026-06-10",
+      "project": "trip",
+      "done": true,
+      "completedDate": "2026-05-20"
+    },
+    {
+      "id": "t6",
+      "text": "Узнать сколько продалось VIP-тарифа",
+      "priority": "urgent",
+      "deadline": "2026-05-18",
+      "project": "club",
+      "done": true,
+      "completedDate": "2026-05-19"
+    },
+    {
+      "id": "t73",
+      "text": "❓ Спросить про VIP-тариф",
+      "priority": "urgent",
+      "deadline": "2026-05-22",
+      "project": "club",
+      "done": true,
+      "completedDate": "2026-05-22"
+    },
+    {
+      "id": "t100",
+      "text": "✍️ Сценарии по налогам",
+      "priority": "urgent",
+      "deadline": "2026-06-08",
+      "project": "olga",
+      "done": false
+    },
+    {
+      "id": "t101",
+      "text": "⚖️ Данил: выбрать темы/кейсы для сценариев",
+      "priority": "high",
+      "deadline": "2026-06-08",
+      "project": "danil",
+      "done": false
+    },
+    {
+      "id": "t102",
+      "text": "🎥 Свой рилс — сценарий",
+      "priority": "high",
+      "deadline": "2026-06-08",
+      "project": "club",
+      "done": false
+    },
+    {
+      "id": "t103",
+      "text": "🦷 Зуб",
+      "priority": "high",
+      "deadline": "2026-06-08",
+      "project": "health",
+      "done": false
+    },
+    {
+      "id": "t104",
+      "text": "📢 Написать в Reels-клуб про Грузию",
+      "priority": "high",
+      "deadline": "2026-06-09",
+      "project": "club",
+      "done": false
+    },
+    {
+      "id": "t105",
+      "text": "🏌️ Сценарии для Натальи (гольф)",
+      "priority": "urgent",
+      "deadline": "2026-06-10",
+      "project": "natalya",
+      "done": false
+    },
+    {
+      "id": "t106",
+      "text": "🎥 Свой рилс — смонтировать",
+      "priority": "high",
+      "deadline": "2026-06-10",
+      "project": "club",
+      "done": false
+    },
+    {
+      "id": "t107",
+      "text": "🎤 Подготовка к эфиру по нейросетям",
+      "priority": "urgent",
+      "deadline": "2026-06-11",
+      "project": "club",
+      "done": false
+    },
+    {
+      "id": "t108",
+      "text": "📨 Отправить Наталье готовый ролик (до 18:00)",
+      "priority": "urgent",
+      "deadline": "2026-06-11",
+      "project": "natalya",
+      "done": false
+    },
+    {
+      "id": "t109",
+      "text": "📞 Пнуть монтажёрку",
+      "priority": "medium",
+      "deadline": "2026-06-11",
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t110",
+      "text": "🎥 Свой рилс — выложить",
+      "priority": "urgent",
+      "deadline": "2026-06-12",
+      "project": "club",
+      "done": false
+    },
+    {
+      "id": "t111",
+      "text": "💰 Попросить денег",
+      "priority": "high",
+      "deadline": "2026-06-12",
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t112",
+      "text": "👗 ВБ — уточнить когда платье",
+      "priority": "medium",
+      "deadline": "2026-06-13",
+      "project": "style",
+      "done": false
+    },
+    {
+      "id": "t113",
+      "text": "🧳 Купить чемодан",
+      "priority": "high",
+      "deadline": "2026-06-13",
+      "project": "trip",
+      "done": false
+    },
+    {
+      "id": "t114",
+      "text": "🪴 Пересадить цветы",
+      "priority": "medium",
+      "deadline": "2026-06-13",
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t115",
+      "text": "📄 КП для нутрициолога + ещё кому-то",
+      "priority": "medium",
+      "deadline": null,
+      "project": "general",
+      "done": false
+    },
+    {
+      "id": "t116",
+      "text": "🎬 Смонтировать видео из путешествия",
+      "priority": "medium",
+      "deadline": null,
+      "project": "club",
+      "done": false
+    },
+    {
+      "id": "t117",
+      "text": "📅 Разобраться с отпуском на всех проектах",
+      "priority": "high",
+      "deadline": null,
+      "project": "general",
+      "done": false
+    }
+  ],
+  "events": [
+    {
+      "id": "birthday",
+      "title": "🎂 Мой день рождения",
+      "start": "2026-05-27",
+      "end": "2026-05-27",
+      "color": "magenta"
+    },
+    {
+      "id": "course",
+      "title": "🎓 VIP-курс (через день, 4 нед)",
+      "start": "2026-05-19",
+      "end": "2026-06-12",
+      "color": "lime"
+    },
+    {
+      "id": "rehab",
+      "title": "🏥 Реабилитация (2/нед)",
+      "start": "2026-05-27",
+      "end": "2026-08-31",
+      "color": "cyan"
+    },
+    {
+      "id": "georgia",
+      "title": "🇬🇪 Грузия",
+      "start": "2026-06-14",
+      "end": "2026-06-25",
+      "color": "cyan"
+    },
+    {
+      "id": "festival",
+      "title": "🔥 Огонёк",
+      "start": "2026-08-03",
+      "end": "2026-08-11",
+      "color": "orange"
+    },
+    {
+      "id": "lesha-vac-aug",
+      "title": "🌴 Отпуск Лёши",
+      "start": "2026-08-22",
+      "end": "2026-08-30",
+      "color": "lime"
+    },
+    {
+      "id": "lesha-vac-nov",
+      "title": "🌴 Отпуск Лёши",
+      "start": "2026-11-04",
+      "end": "2026-11-08",
+      "color": "lime"
+    }
+  ],
+  "routine": [
+    {
+      "day": "ВТ",
+      "when": "12:00",
+      "what": "Созвон с Ольгой (налоги)"
+    },
+    {
+      "day": "СР",
+      "when": "16:00→",
+      "what": "Учёба + ДЗ (до 19:00)"
+    },
+    {
+      "day": "СР",
+      "when": "20:00→",
+      "what": "Моторы — собираем робота-паука с Лёшей"
+    },
+    {
+      "day": "ЧТ",
+      "when": "12:10",
+      "what": "Психотерапевт (раз в 2 нед: 28 мая, 11 июня)"
+    },
+    {
+      "day": "ПТ",
+      "when": "13:00",
+      "what": "🎬 Команда Reels-клуба (каждую неделю)"
+    },
+    {
+      "day": "ВС",
+      "when": "15:00→",
+      "what": "Вайбкодинг с группой"
+    },
+    {
+      "day": "каждый",
+      "when": "13:00",
+      "what": "Старт рабочего дня после медитации"
+    },
+    {
+      "day": "2/нед",
+      "when": "+30 мин",
+      "what": "Реабилитация (с 27 мая)"
+    },
+    {
+      "day": "2/нед",
+      "when": "~14дн",
+      "what": "Книга — закончить раз в 2 недели"
+    },
+    {
+      "day": "регул.",
+      "when": "вместе",
+      "what": "Терапия с Лёшей"
+    },
+    {
+      "day": "1×мес",
+      "when": "до 25",
+      "what": "💰 Свои налоги — проверить и оплатить"
+    }
+  ],
+  "log": {
+    "2026-05-22": {
+      "lyosha": true,
+      "zaryadka": true,
+      "main_1200_📦 Сдать ВБ/Озон (за": true,
+      "own_reel": true,
+      "main_1900_🎁 Допилить вишлист ": true,
+      "main_1000_🕶 Поиск тёмных очко": true,
+      "meditation": true,
+      "vibe": true,
+      "client_reel": true,
+      "reading": true,
+      "main_1300_🎬 КОМАНДА Reels-клу": true,
+      "main_1130_📦 Сдать ВБ/Озон (за": true,
+      "teeth": 1
+    },
+    "2026-05-25": {
+      "cigarettes": 1,
+      "course_lab": true,
+      "main_1900_🎓 КУРС VIP — день 3": true,
+      "course_questions": true,
+      "meditation": true,
+      "bath": true,
+      "vibe": true,
+      "course_contest": true,
+      "teeth": 1
+    },
+    "2026-05-24": {
+      "cigarettes": 0,
+      "lyosha": true,
+      "zaryadka": true,
+      "main_1500_🖥 ВАЙБКОДИНГ (до 22": true,
+      "meditation": true,
+      "vibe": true,
+      "client_reel": false,
+      "reading": false,
+      "teeth": 3,
+      "walk": true
+    },
+    "2026-05-21": {
+      "main_1900_🎓 КУРС VIP — день 2": true,
+      "cigarettes": 1,
+      "lyosha": true,
+      "course_lab": true,
+      "course_questions": true,
+      "own_reel": true,
+      "meditation": true,
+      "bath": true,
+      "vibe": true,
+      "client_reel": true,
+      "reading": true,
+      "course_contest": true,
+      "teeth": 2
+    },
+    "2026-05-17": {
+      "cigarettes": 0,
+      "client_reel": true,
+      "meditation": true,
+      "water_cups": 0,
+      "reading": true,
+      "teeth": 2,
+      "homework": false
+    },
+    "2026-05-18": {
+      "cigarettes": 2,
+      "water": false,
+      "client_reel": true,
+      "bath": true,
+      "meditation": true,
+      "reading": true,
+      "teeth": 1,
+      "walk": true
+    },
+    "2026-05-23": {
+      "lyosha": true,
+      "zaryadka": true,
+      "bath": false,
+      "reading": true,
+      "walk": true
+    },
+    "2026-05-16": {
+      "vibe": true
+    },
+    "2026-05-19": {
+      "cigarettes": 1,
+      "course_lab": true,
+      "course_questions": true,
+      "main_1900_🎓 КУРС VIP — день 1": true,
+      "main_1200_☎️ ОЛЬГА — налоги": true,
+      "client_reel": true,
+      "course_contest": true,
+      "teeth": 2,
+      "homework": false
+    },
+    "2026-05-20": {
+      "cigarettes": 1,
+      "meditation": false
+    },
+    "2026-06-06": {
+      "cigarettes": 2,
+      "lyosha": true,
+      "client_reel": true,
+      "vibe": true,
+      "meditation": true,
+      "bath": true,
+      "homework": true
+    },
+    "2026-05-11": {
+      "meditation": false
+    }
+  },
+  "nextId": 118,
+  "notes": [
+    {
+      "ts": "2026-06-06T22:45:38",
+      "date": "2026-06-06",
+      "text": "Заметка от бота (голосовуха)",
+      "source": "voice"
+    },
+    {
+      "ts": "2026-06-06T22:45:29",
+      "date": "2026-06-06",
+      "text": "Тестовая заметка — это работает!",
+      "source": "manual"
+    }
+  ]
+}

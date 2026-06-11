@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Трекер Ули — макет GTD v2</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    background: #f6f4ed; color: #1c1c1c;
+    min-height: 100vh; padding: 10px;
+    font-size: 13px; line-height: 1.4;
+  }
+  .page { max-width: 1300px; margin: 0 auto; }
+
+  /* ═══ HEADER ═══ */
+  .header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px; margin-bottom: 8px;
+    background: #fff; border: 1px solid #e7e5dd; border-radius: 14px;
+  }
+  .header .logo { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; }
+  .header .logo .dot { width: 10px; height: 10px; background: #16a34a; border-radius: 50%; }
+  .header .header-right { display: flex; gap: 10px; align-items: center; font-size: 11px; color: #6b7280; }
+  .header .badge { background: #fef2f2; color: #dc2626; font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px; border: 1px solid #fecaca; }
+  .header .review-btn { background: #16a34a; color: #fff; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; }
+  .header .review-btn.weekly { background: #c026d3; }
+
+  /* ═══ SCORE STRIP (верхний блок с баллами) ═══ */
+  .score-strip {
+    display: flex; gap: 10px; margin-bottom: 8px;
+    align-items: stretch;
+  }
+  .score-card {
+    background: #fff; border: 1px solid #e7e5dd; border-radius: 14px;
+    padding: 14px 18px; display: flex; flex-direction: column;
+    justify-content: center; min-width: 120px;
+  }
+  .score-card.main {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfccb 100%);
+    border-color: #bbf7d0; flex: 1.3;
+    display: flex; flex-direction: row; align-items: center; gap: 16px;
+  }
+  .score-card.main.neg {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-color: #fecaca;
+  }
+  .score-card .big-num { font-size: 38px; font-weight: 800; line-height: 1; }
+  .score-card.main .big-num { color: #16a34a; }
+  .score-card.main.neg .big-num { color: #dc2626; }
+  .score-card .big-label {
+    font-size: 10px; color: #6b7280; text-transform: uppercase;
+    letter-spacing: 1px; margin-top: 2px;
+  }
+  .score-card .donut-wrap {
+    width: 100px; height: 100px; position: relative; flex-shrink: 0;
+  }
+  .score-card .donut-wrap .center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .score-card .donut-wrap .center .pct { font-size: 26px; font-weight: 700; color: #16a34a; }
+  .score-card .donut-wrap .center .lbl { font-size: 9px; color: #6b7280; text-transform: uppercase; }
+
+  .score-card .stat-row { display: flex; gap: 18px; }
+  .score-card .stat-mini { text-align: center; }
+  .score-card .stat-mini .v { font-size: 22px; font-weight: 700; }
+  .score-card .stat-mini .v.green { color: #16a34a; }
+  .score-card .stat-mini .v.red { color: #dc2626; }
+  .score-card .stat-mini .v.blue { color: #0891b2; }
+  .score-card .stat-mini .l { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ═══ TABS ═══ */
+  .tabs {
+    display: flex; gap: 3px;
+    background: #fff; border: 1px solid #e7e5dd; border-radius: 14px;
+    padding: 4px; overflow-x: auto; margin-bottom: 8px;
+  }
+  .tab {
+    padding: 8px 14px; border-radius: 10px; cursor: pointer;
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+    color: #6b7280; transition: all 0.15s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .tab:hover { background: #faf8f3; }
+  .tab.on { background: #16a34a; color: #fff; }
+  .tab .count { background: rgba(0,0,0,0.12); padding: 1px 6px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+  .tab.on .count { background: rgba(255,255,255,0.25); }
+
+  /* ═══ CONTENT ═══ */
+  .content {
+    background: #fff; border: 1px solid #e7e5dd; border-radius: 16px;
+    padding: 18px; min-height: 360px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03); margin-bottom: 8px;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .sec-head h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; }
+  .btn {
+    padding: 7px 14px; border-radius: 8px; font-size: 11px; font-weight: 700;
+    border: 1px solid #d4d4d0; background: #faf8f3; cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .btn.primary { background: #16a34a; color: #fff; border-color: #16a34a; }
+
+  /* ═══ BOTTOM PANELS ═══
+     На ВСЕХ вкладках снизу видны: расписание дня + график тренда + сетка привычек
+  ═══ */
+  .sticky-bottom {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 8px;
+  }
+  @media (max-width: 1000px) { .sticky-bottom { grid-template-columns: 1fr; } }
+
+  /* Расписание дня */
+  .schedule-card {
+    background: #fffdf7; border: 1px solid #e7e5dd; border-radius: 14px;
+    padding: 14px;
+  }
+  .schedule-card h3 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    color: #6b7280; margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .schedule-card .s-block {
+    display: flex; gap: 8px; padding: 5px 0;
+    font-size: 12px; line-height: 1.35;
+  }
+  .schedule-card .s-block .time {
+    color: #6b7280; min-width: 38px; font-variant-numeric: tabular-nums; font-size: 10px; padding-top: 1px;
+  }
+  .schedule-card .s-block .what { flex: 1; }
+  .schedule-card .s-block.urgent .what { color: #dc2626; font-weight: 600; }
+  .schedule-card .s-block.routine .what { color: #16a34a; font-weight: 600; }
+  .schedule-card .s-block.work .what { color: #0891b2; }
+  .schedule-card .s-block.love .what { color: #e11d48; font-weight: 600; }
+  .schedule-card .s-block.meal .what { color: #ea580c; }
+  .schedule-card .s-block.done { opacity: 0.45; }
+  .schedule-card .s-block.done .what { text-decoration: line-through; }
+
+  /* Сетка привычек + график */
+  .habits-chart-card {
+    background: #fff; border: 1px solid #e7e5dd; border-radius: 14px;
+    padding: 14px;
+  }
+  .habits-chart-card h3 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    color: #6b7280; margin-bottom: 10px;
+  }
+
+  /* Сетка привычек (компактная) */
+  .mini-week {
+    display: grid;
+    grid-template-columns: 1fr repeat(7, 26px) 48px;
+    gap: 3px; font-size: 10px; align-items: center;
+    margin-bottom: 14px;
+  }
+  .mini-week .hd { color: #6b7280; text-align: center; font-size: 9px; }
+  .mini-week .hd.today { color: #16a34a; font-weight: 800; }
+  .mini-week .row-name { font-size: 11px; padding: 4px 0; display: flex; align-items: center; gap: 5px; }
+  .mini-week .cell {
+    height: 24px; border-radius: 4px; background: #faf8f3;
+    border: 1px solid #ececea; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mini-week .cell.on { background: #84cc16; border-color: #84cc16; }
+  .mini-week .cell.on::after { content: "✓"; color: #fff; font-weight: 900; font-size: 10px; }
+  .mini-week .cell.today-col {
+    background: #fff; border: 2px solid #16a34a;
+    box-shadow: 0 2px 4px rgba(22,163,74,0.15);
+  }
+  .mini-week .cell.today-col.on { background: #16a34a; }
+  .mini-week .pct-cell { text-align: center; font-weight: 700; font-size: 10px; color: #6b7280; }
+
+  /* График тренда (14 дней) */
+  .chart-box { height: 130px; position: relative; margin-top: 8px; }
+  .chart-box canvas { width: 100% !important; height: 100% !important; }
+  .chart-legend { display: flex; gap: 12px; font-size: 10px; color: #6b7280; margin-top: 6px; }
+
+  /* ═══ INBOX ═══ */
+  .inbox-toolbar {
+    background: #fefce8; border: 1px solid #fde68a; border-radius: 10px;
+    padding: 9px 14px; margin-bottom: 12px; font-size: 11px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .item-list { display: flex; flex-direction: column; gap: 3px; }
+  .item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 8px;
+    border: 1px solid transparent; cursor: pointer;
+    background: #faf8f3; transition: all 0.12s; font-size: 12px;
+  }
+  .item:hover { border-color: #d4d4d0; background: #fff; }
+  .item .tag {
+    font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 600;
+  }
+  .tag.urgent { background: #fef2f2; color: #dc2626; }
+  .tag.cal { background: #ecfdf5; color: #065f46; }
+  .tag.project { background: #fefce8; color: #92400e; }
+  .tag.deleg { background: #ede9fe; color: #7c3aed; }
+  .tag.someday { background: #f1f5f9; color: #475569; }
+  .tag.info { background: #e0f2fe; color: #075985; }
+  .add-row {
+    display: flex; gap: 6px; margin-top: 10px; padding-top: 10px;
+    border-top: 1px dashed #e5e5e0;
+  }
+  .add-row input {
+    flex: 1; background: #faf8f3; border: 1px solid #e5e5e0; color: #1c1c1c;
+    padding: 7px 10px; border-radius: 8px; font-size: 11px; font-family: inherit;
+  }
+  .add-row button {
+    background: #16a34a; border: none; color: #fff;
+    padding: 7px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 11px;
+  }
+
+  /* ═══ TODAY ═══ */
+  .today-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .today-block {
+    background: #faf8f3; border-radius: 12px; padding: 12px 14px;
+    border-left: 3px solid #16a34a;
+  }
+  .today-block.burning { border-color: #dc2626; background: #fef2f2; }
+  .today-block h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: #6b7280; margin-bottom: 8px; }
+  .today-block .tt {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 0; font-size: 12px; cursor: pointer;
+  }
+  .today-block .tt .check {
+    width: 16px; height: 16px; border: 2px solid #d4d4d0; border-radius: 4px;
+  }
+  .tt.done .what { text-decoration: line-through; color: #9ca3af; }
+  .tt.done .check { background: #16a34a; border-color: #16a34a; }
+
+  /* ═══ PROJECTS ═══ */
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+  .proj-card {
+    background: #faf8f3; border: 1px solid #ececea; border-radius: 12px;
+    padding: 14px; cursor: pointer;
+  }
+  .proj-card .title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .proj-card .outcome { font-size: 10px; color: #6b7280; margin-bottom: 8px; font-style: italic; }
+  .proj-bar { height: 5px; background: #e5e5e0; border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+  .proj-bar .fill { height: 100%; background: #16a34a; border-radius: 3px; }
+  .proj-card .meta { font-size: 9px; color: #9ca3af; display: flex; justify-content: space-between; }
+  .proj-card .next-step {
+    margin-top: 8px; padding: 6px 10px; background: #ecfdf5; border-radius: 6px;
+    font-size: 10px; border: 1px solid #bbf7d0;
+  }
+
+  /* ═══ CALENDAR ═══ */
+  .cal-list { display: flex; flex-direction: column; gap: 5px; }
+  .cal-item {
+    display: flex; gap: 10px; align-items: center;
+    padding: 8px 12px; background: #faf8f3; border-radius: 8px;
+    border-left: 3px solid #16a34a; font-size: 12px;
+  }
+  .cal-item .day { font-weight: 700; min-width: 60px; }
+
+  /* ═══ DELEGATED ═══ */
+  .deleg-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .deleg-table th {
+    text-align: left; padding: 8px 10px; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 1px; color: #6b7280;
+    border-bottom: 2px solid #ececea;
+  }
+  .deleg-table td { padding: 8px 10px; border-bottom: 1px solid #ececea; }
+  .status {
+    padding: 2px 7px; border-radius: 999px; font-size: 9px; font-weight: 700;
+  }
+  .status.waiting { background: #fefce8; color: #92400e; }
+  .status.doing { background: #e0f2fe; color: #075985; }
+  .status.done { background: #ecfdf5; color: #065f46; }
+
+  /* ═══ SOMEDAY ═══ */
+  .someday-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+  .someday-card {
+    background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 10px;
+    padding: 10px 12px; font-size: 12px; display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ═══ DIALOG ═══ */
+  .dialog-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.25);
+    z-index: 100; display: flex; align-items: center; justify-content: center;
+  }
+  .dialog {
+    background: #fff; border-radius: 16px; padding: 22px;
+    max-width: 460px; width: 90%; box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  }
+  .dialog h3 { font-size: 15px; margin-bottom: 4px; }
+  .dialog .subtitle { color: #6b7280; font-size: 11px; margin-bottom: 14px; }
+  .dialog .q {
+    padding: 8px 12px; border-radius: 8px; background: #faf8f3;
+    margin-bottom: 6px; font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .dialog .q .num {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #16a34a; color: #fff; font-size: 10px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .dialog .answers { display: flex; gap: 6px; margin-bottom: 12px; padding-left: 28px; flex-wrap: wrap; }
+  .dialog .ans {
+    padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600;
+    border: 1px solid #d4d4d0; cursor: pointer; background: #fff;
+  }
+  .dialog .ans.sel { background: #16a34a; color: #fff; border-color: #16a34a; }
+  .dialog .result {
+    padding: 12px; border-radius: 8px; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px; margin-top: 8px;
+  }
+  .dialog .steps-input {
+    width: 100%; padding: 8px; border: 1px solid #d4d4d0; border-radius: 6px;
+    font-size: 11px; font-family: inherit; margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══════════ HEADER ═══════════ -->
+  <div class="header">
+    <div class="logo"><div class="dot"></div>Трекер Ули</div>
+    <div class="header-right">
+      <span>8 июня, понедельник</span>
+      <span class="badge">3 горят</span>
+      <button class="btn" style="font-size:10px;">🔄 Ревизия дня</button>
+      <button class="btn" style="font-size:10px;border-color:#c026d3;color:#c026d3;">📋 Ревизия недели</button>
+    </div>
+  </div>
+
+  <!-- ═══════════ SCORE STRIP ═══════════ -->
+  <div class="score-strip">
+    <div class="score-card main">
+      <div class="donut-wrap">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e5e0" stroke-width="10"/>
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#16a34a" stroke-width="10"
+            stroke-dasharray="125.6 251.2" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+        </svg>
+        <div class="center"><div class="pct">20%</div><div class="lbl">привычек</div></div>
+      </div>
+      <div>
+        <div class="big-num">+117</div>
+        <div class="big-label">очков сегодня</div>
+        <div style="margin-top:6px;font-size:11px;color:#6b7280;">серия: 4 дня в плюсе 🔥</div>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="stat-row">
+        <div class="stat-mini"><div class="v green">2/10</div><div class="l">привычек</div></div>
+        <div class="stat-mini"><div class="v red">3</div><div class="l">горят</div></div>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="stat-row">
+        <div class="stat-mini"><div class="v blue">14</div><div class="l">до Грузии</div></div>
+        <div class="stat-mini"><div class="v green">+585</div><div class="l">за неделю</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TABS ═══════════ -->
+  <div class="tabs">
+    <div class="tab on" onclick="switchTab('inbox')">📥 Входящие <span class="count">11</span></div>
+    <div class="tab" onclick="switchTab('today')">📅 Сегодня <span class="count">5</span></div>
+    <div class="tab" onclick="switchTab('projects')">📂 Проекты <span class="count">4</span></div>
+    <div class="tab" onclick="switchTab('calendar')">📆 Календарь</div>
+    <div class="tab" onclick="switchTab('delegated')">🤝 Делегировано <span class="count">2</span></div>
+    <div class="tab" onclick="switchTab('someday')">📦 Как-нибудь <span class="count">6</span></div>
+    <div class="tab" onclick="switchTab('reference')">🗄 Хранилище</div>
+    <div class="tab" onclick="switchTab('habits')">🧘 Привычки</div>
+  </div>
+
+  <!-- ═══════════════ TAB: ВХОДЯЩИЕ ═══════════════ -->
+  <div class="content tab-content active" id="tab-inbox">
+    <div class="sec-head">
+      <h2>📥 Входящие</h2>
+      <div class="actions" style="display:flex;gap:6px;">
+        <button class="btn primary">⚡ Разобрать всё</button>
+        <button class="btn">+ Добавить</button>
+      </div>
+    </div>
+    <div class="inbox-toolbar">
+      <span>🧠 <b>11 пунктов</b> ждут сортировки. Кликни — проведём по 6 вопросам GTD.</span>
+      <span style="color:#6b7280;">сброс: сегодня, 14:42</span>
+    </div>
+    <div class="item-list">
+      <div class="item" onclick="showDialog('📱 Выложить Кассинку')"><span style="font-size:16px;">📱</span><span class="text">Выложить Кассинку</span><span class="tag urgent">горит</span></div>
+      <div class="item" onclick="showDialog('✍️ Сценарий для Ольги по вчерашнему созвону')"><span style="font-size:16px;">✍️</span><span class="text">Сценарий для Ольги по вчерашнему созвону</span><span class="tag urgent">горит</span></div>
+      <div class="item" onclick="showDialog('📊 Презентация для нутрициолога')"><span style="font-size:16px;">📊</span><span class="text">Презентация для нутрициолога</span><span class="tag urgent">горит</span></div>
+      <div class="item" onclick="showDialog('🦷 Разобраться с зубным')"><span style="font-size:16px;">🦷</span><span class="text">Разобраться с зубным — записаться</span><span class="tag cal">в календарь</span></div>
+      <div class="item" onclick="showDialog('⚖️ Сценарий для адвоката Данила')"><span style="font-size:16px;">⚖️</span><span class="text">Сценарий для адвоката Данила</span><span class="tag project">проект</span></div>
+      <div class="item" onclick="showDialog('🎬 Ролик с Лёшей «я его бизнес-тренер»')"><span style="font-size:16px;">🎬</span><span class="text">Записать ролик с Лёшей «я его бизнес-тренер»</span><span class="tag project">проект</span></div>
+      <div class="item" onclick="showDialog('☎️ Созвон с Натальей-гольфисткой')"><span style="font-size:16px;">☎️</span><span class="text">Договориться о созвоне с Натальей-гольфисткой</span><span class="tag deleg">делегировать</span></div>
+      <div class="item" onclick="showDialog('❤️ Ролик «как сильно люблю Лёшу»')"><span style="font-size:16px;">❤️</span><span class="text">Записать ролик «как сильно люблю Лёшу»</span><span class="tag someday">как-нибудь</span></div>
+      <div class="item" onclick="showDialog('👔 Сценарий про стилиста')"><span style="font-size:16px;">👔</span><span class="text">Сценарий про стилиста — как круто оформила</span><span class="tag project">проект</span></div>
+      <div class="item" onclick="showDialog('🎬 Смонтировать ролик (не срочно)')"><span style="font-size:16px;">🎬</span><span class="text">Смонтировать ролик (не срочно)</span><span class="tag someday">как-нибудь</span></div>
+      <div class="item"><span style="font-size:16px;">💡</span><span class="text">Идея: сделать серию рилс «как я работаю с Клодом»</span><span class="tag info">в хранилище</span></div>
+    </div>
+    <div class="add-row">
+      <input placeholder="Любая мысль, идея, задача — просто выгрузи сюда…">
+      <button>+</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TAB: СЕГОДНЯ ═══════════════ -->
+  <div class="content tab-content" id="tab-today">
+    <div class="sec-head">
+      <h2>📅 Сегодня · понедельник, 8 июня</h2>
+      <span style="font-size:12px;color:#16a34a;font-weight:600;">🟣 Созвон с Ольгой + десятка + моторы</span>
+    </div>
+    <div class="today-grid">
+      <div class="today-block burning">
+        <h4>🔥 Горящие задачи (дедлайн сегодня / просрочено)</h4>
+        <div class="tt"><span class="what">📱 Выложить Кассинку</span><span class="tag urgent">сегодня</span><div class="check"></div></div>
+        <div class="tt"><span class="what">✍️ Сценарий для Ольги по вчерашнему созвону</span><span class="tag urgent">сегодня</span><div class="check"></div></div>
+        <div class="tt"><span class="what">📊 Презентация для нутрициолога</span><span class="tag" style="background:#fefce8;color:#92400e;font-size:9px;padding:2px 6px;border-radius:4px;">завтра</span><div class="check"></div></div>
+      </div>
+      <div class="today-block" style="border-color:#0891b2;">
+        <h4>📋 Первые шаги проектов (двигает вперёд)</h4>
+        <div class="tt"><span class="what">⚖️ Адвокат: выбрать 3 темы для сценариев</span><span style="font-size:9px;color:#92400e;">1-й шаг</span><div class="check"></div></div>
+        <div class="tt"><span class="what">👔 Стилист: найти скриншоты переписки</span><span style="font-size:9px;color:#92400e;">1-й шаг</span><div class="check"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TAB: ПРОЕКТЫ ═══════════════ -->
+  <div class="content tab-content" id="tab-projects">
+    <div class="sec-head"><h2>📂 Проекты</h2><button class="btn primary">+ Новый проект</button></div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="title">⚖️ Сценарий для адвоката Данила</div>
+        <div class="outcome">🎯 Результат: сценарий отправлен, Данил доволен</div>
+        <div class="proj-bar"><div class="fill" style="width:20%"></div></div>
+        <div class="meta"><span>1/5 шагов</span><span>дедлайн 12 июня</span></div>
+        <div class="next-step">👉 <b>Первый шаг:</b> выбрать 3 темы (30 мин)</div>
+      </div>
+      <div class="proj-card">
+        <div class="title">🎬 Ролик с Лёшей «бизнес-тренер»</div>
+        <div class="outcome">🎯 Результат: ролик опубликован</div>
+        <div class="proj-bar"><div class="fill" style="width:0%"></div></div>
+        <div class="meta"><span>0/5 шагов</span><span>без дедлайна</span></div>
+        <div class="next-step">👉 <b>Первый шаг:</b> написать сценарий (45 мин)</div>
+      </div>
+      <div class="proj-card">
+        <div class="title">👔 Сценарий про стилиста</div>
+        <div class="outcome">🎯 Результат: сценарий готов, стилист утвердил</div>
+        <div class="proj-bar"><div class="fill" style="width:0%"></div></div>
+        <div class="meta"><span>0/4 шагов</span><span>без дедлайна</span></div>
+        <div class="next-step">👉 <b>Первый шаг:</b> найти скриншоты переписки</div>
+      </div>
+      <div class="proj-card" style="opacity:0.7;">
+        <div class="title">🧳 Грузия — сборы</div>
+        <div class="outcome">🎯 Результат: всё собрано, чемодан у двери</div>
+        <div class="proj-bar"><div class="fill" style="width:65%"></div></div>
+        <div class="meta"><span>6/9 шагов</span><span>дедлайн 13 июня</span></div>
+        <div class="next-step">👉 <b>След. шаг:</b> документы — паспорт, страховка</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TAB: КАЛЕНДАРЬ ═══════════════ -->
+  <div class="content tab-content" id="tab-calendar">
+    <div class="sec-head"><h2>📆 Календарь</h2><span style="font-size:11px;color:#6b7280;">задачи с датой и временем + регулярка</span></div>
+    <div class="cal-list">
+      <div class="cal-item"><span class="day">ПН 8-го</span><span>13:00 ☎️ Созвон с Ольгой</span></div>
+      <div class="cal-item"><span class="day">ПН 8-го</span><span>16:00 🎬 Сбор десятки</span></div>
+      <div class="cal-item"><span class="day">ПН 8-го</span><span>20:00 🤖 Моторы с Лёшей</span></div>
+      <div class="cal-item" style="border-color:#ea580c;"><span class="day" style="color:#ea580c;">ВТ 9-го</span><span>🦷 Зубной — записаться</span></div>
+      <div class="cal-item"><span class="day">ВТ 9-го</span><span>12:00 ☎️ Созвон с Ольгой</span></div>
+      <div class="cal-item" style="border-color:#c026d3;"><span class="day" style="color:#c026d3;">ЧТ 11-го</span><span>12:10 🧠 Психотерапевт</span></div>
+      <div class="cal-item" style="border-color:#dc2626;"><span class="day" style="color:#dc2626;">ПТ 12-го</span><span>⚖️ Дедлайн: сценарий для Данила</span></div>
+      <div class="cal-item" style="border-color:#dc2626;"><span class="day" style="color:#dc2626;">СБ 14-го</span><span>✈️ ГРУЗИЯ — вылет</span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TAB: ДЕЛЕГИРОВАНО ═══════════════ -->
+  <div class="content tab-content" id="tab-delegated">
+    <div class="sec-head"><h2>🤝 Делегировано</h2><button class="btn">+ Поручение</button></div>
+    <table class="deleg-table">
+      <thead><tr><th>Что</th><th>Кому</th><th>До</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>🎬 Смонтировать 2 ролика клиенткам</td><td>Монтажёрка</td><td>10 июня</td><td><span class="status waiting">ждёт</span></td></tr>
+        <tr><td>📨 Спросить Алену про материалы</td><td>Алена</td><td>9 июня</td><td><span class="status waiting">ждёт</span></td></tr>
+        <tr><td>👨‍💻 Отправить Васе трекер</td><td>Вася</td><td>—</td><td><span class="status doing">в работе</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════ TAB: КАК-НИБУДЬ ═══════════════ -->
+  <div class="content tab-content" id="tab-someday">
+    <div class="sec-head"><h2>📦 Как-нибудь</h2><span style="font-size:11px;color:#6b7280;">не на этой неделе — вернёмся при ревизии</span></div>
+    <div class="someday-grid">
+      <div class="someday-card"><span style="font-size:18px;">🎬</span><span>Смонтировать ролик (не срочно)</span><span style="margin-left:auto;font-size:10px;color:#16a34a;font-weight:700;">→ в актив</span></div>
+      <div class="someday-card"><span style="font-size:18px;">❤️</span><span>Ролик «как люблю Лёшу»</span><span style="margin-left:auto;font-size:10px;color:#16a34a;font-weight:700;">→ в актив</span></div>
+      <div class="someday-card"><span style="font-size:18px;">👗</span><span>Купить зелёный костюмчик</span><span style="margin-left:auto;font-size:10px;color:#16a34a;font-weight:700;">→ в актив</span></div>
+      <div class="someday-card"><span style="font-size:18px;">💻</span><span>Стиль-приложение (отдых)</span><span style="margin-left:auto;font-size:10px;color:#16a34a;font-weight:700;">→ в актив</span></div>
+      <div class="someday-card"><span style="font-size:18px;">📊</span><span>Настроить аналитику Reels</span><span style="margin-left:auto;font-size:10px;color:#16a34a;font-weight:700;">→ в актив</span></div>
+      <div class="someday-card"><span style="font-size:18px;">🎧</span><span>Поднять аудиокнижный сервер</span><span style="margin-left:auto;font-size:10px;color:#16a34a;font-weight:700;">→ в актив</span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TAB: ХРАНИЛИЩЕ ═══════════════ -->
+  <div class="content tab-content" id="tab-reference">
+    <div class="sec-head"><h2>🗄 Хранилище</h2><span style="font-size:11px;color:#6b7280;">информация без действия — конспекты, доступы, идеи</span></div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div class="item"><span style="font-size:16px;">💡</span><span class="text">Идея: серия рилс «как я работаю с Клодом»</span><span style="font-size:9px;color:#9ca3af;">сегодня</span></div>
+      <div class="item"><span style="font-size:16px;">🔗</span><span class="text">Доступы от сайта на Тильде</span><span style="font-size:9px;color:#9ca3af;">22 мая</span></div>
+      <div class="item"><span style="font-size:16px;">📹</span><span class="text">Видео: разбор GTD Дэвида Аллена</span><span style="font-size:9px;color:#9ca3af;">сегодня</span></div>
+      <div class="item"><span style="font-size:16px;">🎙️</span><span class="text">Расшифровка: эфир про планирование</span><span style="font-size:9px;color:#9ca3af;">8 июня</span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TAB: ПРИВЫЧКИ ═══════════════ -->
+  <div class="content tab-content" id="tab-habits">
+    <div class="sec-head"><h2>🧘 Привычки & Счётчики</h2><span style="font-size:11px;color:#6b7280;">база — на ней держится всё остальное</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div>
+        <h4 style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Сегодня</h4>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="padding:7px 10px;background:#f0fdf4;border-radius:6px;display:flex;gap:8px;align-items:center;font-size:12px;"><span>🧘</span><span style="flex:1;">Медитация</span><span style="font-weight:700;color:#16a34a;">✓</span></div>
+          <div style="padding:7px 10px;background:#faf8f3;border-radius:6px;display:flex;gap:8px;align-items:center;font-size:12px;"><span>💪</span><span style="flex:1;">Зарядка</span><span style="color:#9ca3af;">—</span></div>
+          <div style="padding:7px 10px;background:#faf8f3;border-radius:6px;display:flex;gap:8px;align-items:center;font-size:12px;"><span>🚶</span><span style="flex:1;">Прогулка</span><span style="color:#9ca3af;">—</span></div>
+          <div style="padding:7px 10px;background:#faf8f3;border-radius:6px;display:flex;gap:8px;align-items:center;font-size:12px;"><span>🎬</span><span style="flex:1;">Ролик клиентке</span><span style="color:#9ca3af;">—</span></div>
+          <div style="padding:7px 10px;background:#faf8f3;border-radius:6px;display:flex;gap:8px;align-items:center;font-size:12px;"><span>🎥</span><span style="flex:1;">Свой ролик</span><span style="color:#9ca3af;">—</span></div>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Счётчики</h4>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="padding:7px 10px;background:#faf8f3;border-radius:6px;display:flex;gap:8px;align-items:center;font-size:12px;"><span>🚬</span><span style="flex:1;">Сигареты</span><span style="font-weight:700;color:#16a34a;">0</span><span style="font-size:9px;color:#9ca3af;">лимит 2/нед</span></div>
+          <div style="padding:7px 10px;background:#faf8f3;border-radius:6px;display:flex;gap:8px;align-items:center;font-size:12px;"><span>🦷</span><span style="flex:1;">Зубы</span><span style="font-weight:700;color:#ea580c;">0</span><span style="font-size:9px;color:#9ca3af;">цель 2/день</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ BOTTOM PANELS — ВСЕГДА ВИДНЫ ═══════════ -->
+  <div class="sticky-bottom">
+    <!-- РАСПИСАНИЕ ДНЯ -->
+    <div class="schedule-card">
+      <h3>🕐 Сегодня · ПН 8 июня <span style="font-size:10px;color:#16a34a;">🟣 Созвон с Ольгой + десятка + моторы</span></h3>
+      <div class="s-block done"><span class="time">09:00</span><span class="what">Подъём</span></div>
+      <div class="s-block done"><span class="time">09:15</span><span class="what">🧘 Медитация</span></div>
+      <div class="s-block"><span class="time">10:00</span><span class="what">🚶 Прогулка</span></div>
+      <div class="s-block urgent"><span class="time">11:00</span><span class="what">✍️ Сценарий для Ольги</span></div>
+      <div class="s-block routine"><span class="time">13:00</span><span class="what">☎️ СОЗВОН с Ольгой (налоги)</span></div>
+      <div class="s-block work"><span class="time">14:30</span><span class="what">📱 Выложить Кассинку</span></div>
+      <div class="s-block routine"><span class="time">16:00</span><span class="what">🎬 СБОР ДЕСЯТКИ</span></div>
+      <div class="s-block urgent"><span class="time">17:00</span><span class="what">☎️ Написать Наталье-гольфистке</span></div>
+      <div class="s-block routine"><span class="time">20:00</span><span class="what">🤖 МОТОРЫ с Лёшей</span></div>
+      <div class="s-block meal"><span class="time">22:00</span><span class="what">Ужин</span></div>
+    </div>
+
+    <!-- ГРАФИК + СЕТКА ПРИВЫЧЕК -->
+    <div class="habits-chart-card">
+      <h3>📊 Привычки: сегодня + 6 дней · <span style="color:#16a34a;font-weight:700;">тренд 14 дней</span></h3>
+
+      <!-- Мини-сетка привычек -->
+      <div class="mini-week">
+        <div class="hd"></div>
+        <div class="hd">Вт</div><div class="hd">Ср</div><div class="hd">Чт</div><div class="hd">Пт</div><div class="hd">Сб</div><div class="hd">Вс</div>
+        <div class="hd today">ПН</div><div class="hd">% нед</div>
+
+        <div class="row-name">🧘 Медитация</div>
+        <div class="cell on"></div><div class="cell on"></div><div class="cell on"></div><div class="cell on"></div><div class="cell on"></div><div class="cell on"></div><div class="cell today-col on"></div><div class="pct-cell" style="color:#16a34a;">100%</div>
+
+        <div class="row-name">💪 Зарядка</div>
+        <div class="cell"></div><div class="cell on"></div><div class="cell"></div><div class="cell on"></div><div class="cell"></div><div class="cell on"></div><div class="cell today-col"></div><div class="pct-cell" style="color:#92400e;">57%</div>
+
+        <div class="row-name">🚶 Прогулка</div>
+        <div class="cell on"></div><div class="cell"></div><div class="cell on"></div><div class="cell"></div><div class="cell"></div><div class="cell on"></div><div class="cell today-col"></div><div class="pct-cell">43%</div>
+
+        <div class="row-name">🎬 Ролик клиентке</div>
+        <div class="cell on"></div><div class="cell on"></div><div class="cell on"></div><div class="cell on"></div><div class="cell"></div><div class="cell"></div><div class="cell today-col"></div><div class="pct-cell">57%</div>
+
+        <div class="row-name">🎥 Свой ролик</div>
+        <div class="cell"></div><div class="cell on"></div><div class="cell"></div><div class="cell on"></div><div class="cell"></div><div class="cell"></div><div class="cell today-col"></div><div class="pct-cell" style="color:#9ca3af;">29%</div>
+      </div>
+
+      <!-- График тренда (mock canvas) -->
+      <div class="chart-box" style="background:#faf8f3;border-radius:10px;border:1px solid #ececea;display:flex;align-items:center;justify-content:center;position:relative;">
+        <!-- имитация столбиков графика -->
+        <div style="display:flex;align-items:flex-end;gap:6px;height:100px;padding:0 10px;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:45px;background:#84cc16;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">26.05</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:55px;background:#84cc16;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">27.05</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:30px;background:#eab308;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">28.05</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:70px;background:#16a34a;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">29.05</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:35px;background:#eab308;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">30.05</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:80px;background:#16a34a;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">31.05</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:50px;background:#84cc16;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">01.06</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:60px;background:#84cc16;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">02.06</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:40px;background:#84cc16;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">03.06</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:90px;background:#16a34a;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">04.06</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:25px;background:#eab308;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">05.06</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:65px;background:#84cc16;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">06.06</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:22px;height:55px;background:#84cc16;border-radius:3px 3px 0 0;"></div><span style="font-size:8px;color:#9ca3af;">07.06</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:26px;height:50px;background:#16a34a;border-radius:3px 3px 0 0;border:2px solid #065f46;"></div><span style="font-size:8px;color:#16a34a;font-weight:700;">сегодня</span></div>
+        </div>
+      </div>
+      <div class="chart-legend">
+        <span>█ +200</span><span style="color:#84cc16;">█ +100</span><span style="color:#eab308;">█ +1</span><span style="color:#ececea;">█ 0</span>
+        <span style="margin-left:auto;color:#16a34a;font-weight:700;">неделя: +585</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ ДИАЛОГ СОРТИРОВКИ ═══════════════ -->
+<div class="dialog-overlay" id="sort-dialog" style="display:none;">
+  <div class="dialog">
+    <h3>📥 Разбор задачи</h3>
+    <div class="subtitle" id="dialog-task-name">—</div>
+
+    <div class="q"><span class="num">1</span> Нужно с этим что-то делать?</div>
+    <div class="answers">
+      <div class="ans sel" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">✅ Да, нужно</div>
+      <div class="ans" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">📄 Нет → в Хранилище</div>
+    </div>
+
+    <div class="q"><span class="num">2</span> Это на этой неделе?</div>
+    <div class="answers">
+      <div class="ans sel" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">✅ Да</div>
+      <div class="ans" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">📦 Нет → в Как-нибудь</div>
+    </div>
+
+    <div class="q"><span class="num">3</span> Я делаю или делегирую?</div>
+    <div class="answers">
+      <div class="ans sel" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">👤 Только я</div>
+      <div class="ans" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">🤝 Делегировать</div>
+    </div>
+
+    <div class="q"><span class="num">4</span> В один шаг?</div>
+    <div class="answers">
+      <div class="ans" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">✅ Да, одно действие</div>
+      <div class="ans sel" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">📂 Нет → ПРОЕКТ</div>
+    </div>
+
+    <div class="q"><span class="num">5</span> Определи конечный результат и шаги:</div>
+    <div style="padding-left:28px;margin-bottom:10px;">
+      <input class="steps-input" placeholder="🎯 Конечный результат: например «Ролик опубликован»">
+      <textarea class="steps-input" placeholder="Шаги (по одному на строку):&#10;1. Выбрать темы&#10;2. Написать сценарий&#10;3. Снять&#10;..." style="height:70px;resize:vertical;"></textarea>
+    </div>
+
+    <div class="q"><span class="num">6</span> Есть дата и время?</div>
+    <div class="answers">
+      <div class="ans" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">📆 Да → в Календарь</div>
+      <div class="ans sel" onclick="this.parentElement.querySelectorAll('.ans').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">📅 Нет → в Сегодня</div>
+    </div>
+
+    <div class="result" style="background:#ecfdf5;border:1px solid #bbf7d0;color:#065f46;">
+      <span style="font-size:18px;">📂</span>
+      <span><b>→ ПРОЕКТ</b>: первый шаг отправлен в «Сегодня»</span>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;">
+      <button class="btn" onclick="document.getElementById('sort-dialog').style.display='none'">Отмена</button>
+      <button class="btn primary" onclick="document.getElementById('sort-dialog').style.display='none'">✓ Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  const tabEl = document.querySelector(`.tab[onclick*="${name}"]`);
+  if (tabEl) tabEl.classList.add('on');
+  const contentEl = document.getElementById('tab-' + name);
+  if (contentEl) contentEl.classList.add('active');
+}
+function showDialog(taskName) {
+  document.getElementById('dialog-task-name').textContent = '«' + taskName + '»';
+  document.getElementById('sort-dialog').style.display = 'flex';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>для Лёши</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Caveat:wght@400..700&family=Manrope:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- бумажная текстура и шум -->
+  <div class="paper-noise" aria-hidden="true"></div>
+
+  <!-- washi-tape сверху -->
+  <div class="washi washi--left" aria-hidden="true"></div>
+  <div class="washi washi--right" aria-hidden="true"></div>
+
+  <!-- разбросанные сердечки на фоне -->
+  <div class="floating-hearts" aria-hidden="true">
+    <span style="--x:8vw;  --y:18vh; --d:0s;   --r:-12deg">♥</span>
+    <span style="--x:84vw; --y:24vh; --d:1.2s; --r:18deg">♥</span>
+    <span style="--x:14vw; --y:72vh; --d:2.4s; --r:6deg">♥</span>
+    <span style="--x:88vw; --y:78vh; --d:.6s;  --r:-22deg">♥</span>
+    <span style="--x:48vw; --y:8vh;  --d:1.8s; --r:0deg">♥</span>
+  </div>
+
+  <!-- штамп SWAK -->
+  <div class="stamp" aria-hidden="true">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <defs>
+        <path id="circle" d="M 60,60 m -42,0 a 42,42 0 1,1 84,0 a 42,42 0 1,1 -84,0"/>
+      </defs>
+      <circle cx="60" cy="60" r="54" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 4"/>
+      <circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" stroke-width="1"/>
+      <text font-family="Fraunces, serif" font-size="11" font-weight="700" letter-spacing="2" fill="currentColor">
+        <textPath href="#circle" startOffset="0">SEALED · WITH · A · KISS · SEALED · WITH · A · KISS · </textPath>
+      </text>
+      <text x="60" y="68" text-anchor="middle" font-family="Caveat, cursive" font-size="34" fill="currentColor">XOXO</text>
+    </svg>
+  </div>
+
+  <!-- ===== СЦЕНА 1: пойдёшь? ===== -->
+  <section class="scene scene--date" data-scene="date">
+    <div class="polaroid polaroid--tilt-left">
+      <div class="polaroid__photo">
+        <img class="squirrel__emoji" src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f43f/512.gif" alt="белка" draggable="false">
+      </div>
+      <div class="polaroid__caption">мой бельчонок · 2026</div>
+      <div class="speech" data-speech>привет</div>
+    </div>
+
+    <div class="title-block">
+      <p class="kicker">записка №1</p>
+      <h1 class="title">
+        <span class="title__row title__row--script">Лёша Узумаки</span>
+        <span class="title__row title__row--display">Коровин,</span>
+        <span class="title__row title__row--script">пойдёшь со мной</span>
+        <span class="title__row title__row--display title__row--accent">на свидание?</span>
+      </h1>
+      <p class="subtitle">только честно <span class="eyes">👀</span></p>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn--yes" data-action="yes-date">
+        <span class="btn__label">да 💖</span>
+        <span class="btn__shadow"></span>
+      </button>
+      <button class="btn btn--no btn--runaway" data-runaway="no-date">нет</button>
+    </div>
+  </section>
+
+  <!-- ===== СЦЕНА 2: заплатишь? ===== -->
+  <section class="scene scene--pay" data-scene="pay" hidden>
+    <div class="polaroid polaroid--tilt-right">
+      <div class="polaroid__photo">
+        <img class="squirrel__emoji" src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f43f/512.gif" alt="белка" draggable="false">
+      </div>
+      <div class="polaroid__caption">а теперь серьёзный вопрос</div>
+      <div class="speech" data-speech>урааа</div>
+    </div>
+
+    <div class="title-block">
+      <p class="kicker">записка №2</p>
+      <h1 class="title">
+        <span class="title__row title__row--script">Алексей</span>
+        <span class="title__row title__row--display">Андреевич,</span>
+        <span class="title__row title__row--script">а заплатишь?</span>
+      </h1>
+      <p class="subtitle">подумай хорошо <span class="eyes">💸</span></p>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn--yes" data-action="yes-pay">
+        <span class="btn__label">да, плачу 💳</span>
+        <span class="btn__shadow"></span>
+      </button>
+      <button class="btn btn--no btn--runaway" data-runaway="no-pay">нет, ты платишь</button>
+    </div>
+  </section>
+
+  <!-- ===== ФИНАЛ ===== -->
+  <section class="scene scene--final" data-scene="final" hidden>
+    <div class="polaroid polaroid--final">
+      <div class="polaroid__photo polaroid__photo--big">
+        <img class="squirrel__emoji" src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f43f/512.gif" alt="белка" draggable="false">
+      </div>
+      <div class="polaroid__caption">мы · навсегда</div>
+    </div>
+
+    <div class="title-block title-block--final">
+      <p class="kicker">резолюция</p>
+      <h1 class="title">
+        <span class="title__row title__row--display title__row--xl">Договорились</span>
+        <span class="title__row title__row--accent-heart">♥</span>
+      </h1>
+      <p class="final-letter">
+        как нам с тобой<br>
+        вдвоём хорошо,<br>
+        как мы влюбилися<br>
+        и были счастливые
+      </p>
+      <p class="meta">отказ не принят · попыток засчитано: <span data-attempts>0</span></p>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

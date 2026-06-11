@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Реестр Очков Уважения · Свидетели Паука</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Spectral:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0a1a12;
+    --bg-2: #143728;
+    --paper: #ede4cf;
+    --paper-dark: #c8bb98;
+    --ink: #2a1f10;
+    --gold: #c9a961;
+    --gold-bright: #e8c987;
+    --emerald: #1e7a5a;
+    --emerald-2: #2ca77c;
+    --blood: #9a3a3a;
+    --shadow: 0 30px 80px -30px rgba(0,0,0,.65);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--paper); font-family: 'Spectral', Georgia, serif; }
+  body {
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(30,122,90,.18), transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(201,169,97,.10), transparent 50%),
+      linear-gradient(180deg, #060f0a 0%, #0a1a12 30%, #0a1a12 70%, #050b07 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .web-bg { position: fixed; inset: 0; pointer-events: none; opacity: .08; z-index: 0; }
+
+  /* sacred ornament divider */
+  .ornament {
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+    margin: 0 auto; width: min(560px, 80%);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px;
+    letter-spacing: 5px; text-transform: uppercase; opacity: .8;
+  }
+  .ornament::before, .ornament::after {
+    content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .ornament svg { width: 16px; height: 16px; opacity: .8; }
+
+  /* HERO */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 80px 24px 60px;
+    text-align: center;
+  }
+  .crest { width: 150px; height: 150px; margin-bottom: 30px; filter: drop-shadow(0 0 30px rgba(201,169,97,.25)); }
+  .crest * { stroke: var(--gold); }
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 6px; text-transform: uppercase; font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 600;
+    font-size: clamp(44px, 8vw, 96px); line-height: 1; margin: 0;
+    color: var(--paper); letter-spacing: -1px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-bright); }
+  .hero-sub {
+    margin-top: 22px; font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(18px, 2.4vw, 26px); color: var(--paper-dark); max-width: 720px;
+    line-height: 1.45;
+  }
+  .hero-creed {
+    margin-top: 36px;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 16px; letter-spacing: 4px; color: var(--gold);
+    text-transform: uppercase;
+  }
+  .hero-creed b { font-weight: 600; color: var(--gold-bright); font-style: normal; }
+  .hero-period {
+    margin-top: 30px; padding: 12px 32px;
+    border: 1px solid var(--gold); color: var(--gold);
+    font-family: 'Cormorant Garamond', serif; letter-spacing: 7px; text-transform: uppercase;
+    font-size: 13px;
+  }
+  .hero-after { margin-top: 50px; }
+
+  /* CONTAINER */
+  .container { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  /* DECREE */
+  .decree {
+    margin: 80px auto;
+    padding: 36px 40px 32px;
+    background: linear-gradient(180deg, rgba(201,169,97,.07), rgba(201,169,97,.02));
+    border: 1px solid rgba(201,169,97,.4);
+    border-radius: 4px;
+    max-width: 880px; position: relative;
+  }
+  .decree::before, .decree::after {
+    content: ''; position: absolute; width: 16px; height: 16px;
+    border: 1px solid var(--gold);
+  }
+  .decree::before { top: -8px; left: -8px; border-right: none; border-bottom: none; }
+  .decree::after { bottom: -8px; right: -8px; border-left: none; border-top: none; }
+  .decree-h {
+    font-family: 'Cormorant Garamond', serif; font-weight: 600;
+    color: var(--gold-bright); letter-spacing: 4px; text-transform: uppercase;
+    font-size: 13px; margin-bottom: 14px; text-align: center;
+  }
+  .decree-title {
+    font-family: 'Cormorant Garamond', serif; font-weight: 600; font-style: italic;
+    font-size: 32px; text-align: center; color: var(--paper); margin: 0 0 18px;
+  }
+  .decree-body {
+    font-family: 'Cormorant Garamond', serif; font-size: 21px; line-height: 1.55;
+    color: var(--paper); font-style: italic; text-align: center;
+  }
+  .decree-body b { font-style: normal; color: var(--gold-bright); font-weight: 600; }
+  .decree-sign {
+    margin-top: 22px; text-align: center;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 14px; color: var(--gold); letter-spacing: 4px; text-transform: uppercase;
+  }
+
+  /* SECTION */
+  .section { padding: 70px 0; position: relative; }
+  .section-eyebrow {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold);
+    letter-spacing: 5px; text-transform: uppercase; font-size: 12px; margin-bottom: 10px;
+    text-align: center;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif; font-weight: 600;
+    font-size: clamp(34px, 5vw, 58px); line-height: 1; margin: 0 0 16px;
+    text-align: center; color: var(--paper); letter-spacing: -.5px;
+  }
+  .section-title em { font-style: italic; color: var(--gold-bright); }
+  .section-desc {
+    text-align: center; max-width: 640px; margin: 0 auto 50px;
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 19px;
+    color: var(--paper-dark); line-height: 1.5;
+  }
+
+  /* PODIUM */
+  .podium { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 22px; align-items: end; max-width: 980px; margin: 0 auto; }
+  .podium-card {
+    background: var(--paper); color: var(--ink); border-radius: 6px;
+    padding: 28px 22px 26px; text-align: center;
+    box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .podium-card::before {
+    content: ''; position: absolute; inset: 8px;
+    border: 1px solid rgba(42,31,16,.18); pointer-events: none; border-radius: 3px;
+  }
+  .podium-card.first { transform: translateY(-30px); padding: 38px 22px 32px; background: linear-gradient(180deg, #f4ebd2, #ede4cf); }
+  .podium-card.first::after {
+    content: ''; position: absolute; inset: -1px; border: 2px solid var(--gold);
+    border-radius: 6px; pointer-events: none; opacity: .8;
+  }
+  .podium-rank {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold); font-style: italic; font-size: 13px; letter-spacing: 5px; text-transform: uppercase;
+  }
+  .podium-emoji { font-size: 46px; margin: 10px 0 6px; }
+  .podium-card.first .podium-emoji { font-size: 60px; }
+  .podium-name { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 28px; margin: 0; color: var(--ink); }
+  .podium-card.first .podium-name { font-size: 36px; }
+  .podium-alias { font-family: 'Cormorant Garamond', serif; font-style: italic; color: #6b5c3e; font-size: 16px; margin: 2px 0 6px; }
+  .podium-role { font-family: 'Spectral', serif; font-size: 13px; color: #6b5c3e; margin: 0 0 16px; line-height: 1.35; }
+  .podium-score {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 38px;
+    color: var(--ink); letter-spacing: -.5px;
+  }
+  .podium-card.first .podium-score { font-size: 50px; color: #6a4f10; }
+  .podium-score-label {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px;
+    color: #6b5c3e; letter-spacing: 1px;
+    margin-top: -4px;
+  }
+  .podium-medal { position: absolute; top: 14px; right: 18px; font-size: 22px; opacity: .8; }
+  @media (max-width: 760px) {
+    .podium { grid-template-columns: 1fr; gap: 14px; }
+    .podium-card.first { transform: none; order: -1; }
+  }
+
+  /* REGISTRY */
+  .registry {
+    background: linear-gradient(180deg, rgba(201,169,97,.05), transparent);
+    border: 1px solid rgba(201,169,97,.25);
+    border-radius: 4px;
+    padding: 8px 0;
+    max-width: 980px; margin: 0 auto;
+  }
+  .registry-row {
+    display: grid; grid-template-columns: 60px 1fr 150px 110px;
+    gap: 16px; align-items: center;
+    padding: 20px 32px;
+    border-bottom: 1px solid rgba(201,169,97,.13);
+    transition: background .2s;
+  }
+  .registry-row:last-child { border-bottom: none; }
+  .registry-row:hover { background: rgba(201,169,97,.05); }
+  .reg-rank {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 24px; color: var(--gold); font-weight: 500;
+  }
+  .reg-name { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .reg-name-main {
+    font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 23px; color: var(--paper);
+  }
+  .reg-name-alias {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--gold);
+  }
+  .reg-name-role {
+    font-family: 'Spectral', serif; font-size: 13px; color: var(--paper-dark); opacity: .8;
+    width: 100%; margin-top: 2px;
+  }
+  .reg-score {
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 23px; text-align: right;
+    color: var(--paper); letter-spacing: -.3px;
+  }
+  .reg-score.neg { color: var(--blood); }
+  .reg-share {
+    font-family: 'Inter', sans-serif; font-weight: 400; font-size: 13px; color: var(--gold);
+    text-align: right;
+  }
+  .reg-bar {
+    grid-column: 2 / -1;
+    height: 4px; background: rgba(201,169,97,.13); border-radius: 2px; overflow: hidden;
+    margin-top: 4px; position: relative;
+  }
+  .reg-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--emerald) 0%, var(--gold) 70%, var(--gold-bright) 100%);
+    border-radius: 2px;
+    transition: width 1.2s cubic-bezier(.2,.6,.2,1);
+  }
+  .reg-bar-fill.neg { background: var(--blood); }
+  @media (max-width: 720px) {
+    .registry-row { grid-template-columns: 40px 1fr auto; gap: 10px; padding: 14px 16px; }
+    .reg-share { display: none; }
+    .reg-name-main { font-size: 18px; }
+    .reg-score { font-size: 19px; }
+    .reg-bar { grid-column: 1 / -1; margin-top: 8px; }
+  }
+
+  /* CHART */
+  .chart-wrap {
+    background: rgba(10, 26, 18, .55);
+    border: 1px solid rgba(201,169,97,.25);
+    border-radius: 4px; padding: 26px; max-width: 1080px; margin: 0 auto;
+    backdrop-filter: blur(4px);
+  }
+  .chart-wrap canvas { width: 100% !important; }
+  @media (max-width: 760px) { .chart-wrap { padding: 14px; } }
+
+  /* TIMELINE */
+  .timeline { max-width: 880px; margin: 0 auto; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 96px; top: 0; bottom: 0; width: 1px;
+    background: linear-gradient(180deg, transparent, var(--gold) 8%, var(--gold) 92%, transparent);
+    opacity: .35;
+  }
+  .timeline-item {
+    display: grid; grid-template-columns: 96px 30px 1fr; gap: 16px;
+    padding: 14px 0; align-items: start;
+  }
+  .tl-date {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold);
+    font-size: 14px; line-height: 1.4; text-align: right; padding-top: 10px;
+  }
+  .tl-dot {
+    width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gold);
+    background: var(--bg); justify-self: center; margin-top: 10px;
+  }
+  .tl-content {
+    background: rgba(237,228,207,.04);
+    border: 1px solid rgba(201,169,97,.2);
+    padding: 16px 22px; border-radius: 3px;
+  }
+  .tl-amount {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 22px;
+    color: var(--gold-bright); display: inline-block; margin-right: 10px;
+    vertical-align: middle;
+  }
+  .tl-amount.neg { color: var(--blood); }
+  .tl-recipients { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 20px; color: var(--paper); }
+  .tl-reason {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: var(--paper-dark);
+    margin-top: 6px; line-height: 1.5;
+  }
+  .tl-meta {
+    font-family: 'Spectral', serif; font-size: 12px; color: var(--gold); opacity: .75;
+    margin-top: 8px; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .tl-cap {
+    display: inline-block; margin-left: 8px; padding: 2px 10px;
+    background: var(--blood); color: var(--paper); font-family: 'Inter'; font-size: 10px;
+    font-weight: 700; letter-spacing: 1px; border-radius: 2px; vertical-align: middle;
+  }
+  @media (max-width: 640px) {
+    .timeline::before { left: 64px; }
+    .timeline-item { grid-template-columns: 64px 24px 1fr; }
+  }
+
+  /* OBJECTS */
+  .objects { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; max-width: 980px; margin: 0 auto; }
+  .obj-card {
+    background: rgba(237,228,207,.06);
+    border: 1px dashed rgba(201,169,97,.45);
+    padding: 28px 26px; border-radius: 4px;
+  }
+  .obj-icon { font-size: 38px; margin-bottom: 10px; }
+  .obj-name { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 28px; color: var(--gold-bright); margin: 0 0 4px; }
+  .obj-balance { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 18px; color: var(--paper); margin-bottom: 16px; }
+  .obj-events { list-style: none; padding: 0; margin: 0; }
+  .obj-events li {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px;
+    color: var(--paper-dark); padding: 8px 0; border-top: 1px solid rgba(201,169,97,.12);
+    line-height: 1.5;
+  }
+  .obj-events li b { font-style: normal; color: var(--gold); font-family: 'Inter'; font-weight: 600; font-size: 13px; margin-right: 8px; }
+
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 100px 24px 70px;
+    font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--paper-dark);
+  }
+  footer .epigraph {
+    max-width: 600px; margin: 0 auto 36px;
+    font-size: 24px; line-height: 1.5; color: var(--gold-bright);
+  }
+  footer .creed {
+    font-size: 16px; color: var(--gold); letter-spacing: 5px; text-transform: uppercase;
+    line-height: 2.4;
+  }
+  footer .creed b { color: var(--gold-bright); font-style: normal; font-weight: 600; }
+  footer .sign {
+    margin-top: 30px;
+    font-size: 13px; color: var(--paper-dark); letter-spacing: 3px; text-transform: uppercase; opacity: .7;
+  }
+
+  /* reveal animation */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .9s, transform .9s; }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<svg class="web-bg" preserveAspectRatio="none" viewBox="0 0 1200 800">
+  <g fill="none" stroke="#c9a961" stroke-width="0.5">
+    <path d="M600,0 L600,800 M0,400 L1200,400 M200,100 L1000,700 M1000,100 L200,700"/>
+    <ellipse cx="600" cy="400" rx="150" ry="100"/>
+    <ellipse cx="600" cy="400" rx="280" ry="180"/>
+    <ellipse cx="600" cy="400" rx="420" ry="270"/>
+  </g>
+</svg>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="crest" viewBox="0 0 100 100" fill="none" stroke-width="1.5">
+    <line x1="50" y1="10" x2="50" y2="90"/>
+    <line x1="10" y1="50" x2="90" y2="50"/>
+    <line x1="20" y1="20" x2="80" y2="80"/>
+    <line x1="80" y1="20" x2="20" y2="80"/>
+    <circle cx="50" cy="50" r="15"/>
+    <circle cx="50" cy="50" r="28"/>
+    <circle cx="50" cy="50" r="40"/>
+    <circle cx="50" cy="50" r="5" fill="#c9a961"/>
+    <circle cx="50" cy="46" r="3" fill="#c9a961"/>
+    <path d="M45,50 Q35,42 32,32 M55,50 Q65,42 68,32 M44,52 Q33,52 28,50 M56,52 Q67,52 72,50 M45,54 Q35,58 30,66 M55,54 Q65,58 70,66 M48,55 Q44,70 42,78 M52,55 Q56,70 58,78" stroke-width="1"/>
+  </svg>
+
+  <div class="hero-eyebrow">⟡ Свод Совета ⟡</div>
+  <h1>Реестр<br><em>Очков Уважения</em></h1>
+  <div class="hero-sub">
+    Священный учёт почестей, дарованных членам Совета Свидетелей Паука,
+    и взысканий за неуважение, нерадение и пропуск сборки моторов.
+  </div>
+  <div class="hero-creed">
+    <b>Слава Пауку.</b> &nbsp;·&nbsp; <b>Слава Совету.</b> &nbsp;·&nbsp; <b>Слава Очкам.</b>
+  </div>
+  <div class="hero-period" id="hero-period">Март — Май 2026</div>
+  <div class="hero-after">
+    <div class="ornament">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#c9a961"/></svg>
+      Аминь, Свидетели
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#c9a961"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- DECREE -->
+<div class="decree reveal">
+  <div class="decree-h">⚖ Указ I · О потолке эмиссии</div>
+  <h3 class="decree-title">Об ограничении почитания</h3>
+  <div class="decree-body">
+    Согласно Уставу Совета, единократное начисление не может превышать <b>10 000 очков уважения</b>.
+    Попытки эмитировать миллиарды и триллионы записаны в скрижалях, но округлены до законного потолка.
+    <em>Стабильность валюты — основание уважения. Стабильность уважения — основание Совета.</em>
+  </div>
+  <div class="decree-sign">⟡ Утверждено Советом · Слава Пауку ⟡</div>
+</div>
+
+<!-- PODIUM -->
+<section class="section">
+  <div class="section-eyebrow">⟡ Лики Первейших ⟡</div>
+  <h2 class="section-title">Особо <em>почитаемые</em></h2>
+  <p class="section-desc">Три носителя наибольшего числа очков — по сумме всех начислений и взысканий перед лицом Паука.</p>
+  <div class="container">
+    <div class="podium" id="podium"></div>
+  </div>
+</section>
+
+<!-- FULL REGISTRY -->
+<section class="section">
+  <div class="section-eyebrow">⟡ Свиток Имён ⟡</div>
+  <h2 class="section-title">Полный <em>реестр</em></h2>
+  <p class="section-desc">Все члены Совета в порядке убывания почитания. Доля — отношение к совокупной эмиссии.</p>
+  <div class="container">
+    <div class="registry" id="registry"></div>
+  </div>
+</section>
+
+<!-- CHART -->
+<section class="section">
+  <div class="section-eyebrow">⟡ Шкала Восхождения ⟡</div>
+  <h2 class="section-title">Гонка <em>к Пауку</em></h2>
+  <p class="section-desc">Сводный рейтинг почитания. Длина полосы — мера уважения, дарованного Свидетелю.</p>
+  <div class="container">
+    <div class="chart-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section">
+  <div class="section-eyebrow">⟡ Скрижали ⟡</div>
+  <h2 class="section-title">Книга <em>деяний</em></h2>
+  <p class="section-desc">Каждое начисление и взыскание — с причиной, автором и местом объявления. Засвидетельствовано.</p>
+  <div class="container">
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- OBJECTS -->
+<section class="section">
+  <div class="section-eyebrow">⟡ Особый раздел ⟡</div>
+  <h2 class="section-title">О <em>материи и пище</em></h2>
+  <p class="section-desc">Сущности неодушевлённые, удостоенные внимания Совета: материалы и блюда.</p>
+  <div class="container">
+    <div class="objects" id="objects"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="ornament" style="margin-bottom:36px;">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#c9a961"/></svg>
+    Конец Реестра
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#c9a961"/></svg>
+  </div>
+  <div class="epigraph">«А какова ожидаемая эмиссия очков уважения?<br>Для понимания ожидаемой инфляции.»<br>— Василий Карпюк, Паучий отчим</div>
+  <div class="creed">
+    <b>Слава Пауку</b><br>
+    <b>Слава Совету</b><br>
+    <b>Слава Очкам Уважения</b><br>
+    Аминь
+  </div>
+  <div class="sign">🕷 Засвидетельствовано Кайфулей · Совет Свидетелей Паука 🕷</div>
+</footer>
+
+<script>
+  // Cache-buster: подгружаем data.js с timestamp, чтобы браузер не показывал старое
+  var s = document.createElement('script');
+  s.src = 'data.js?v=' + Date.now();
+  s.onload = init;
+  document.head.appendChild(s);
+function init() {
+  const D = window.PAUK_DATA;
+  const memberById = Object.fromEntries(D.members.map(m => [m.id, m]));
+
+  const balance = {};
+  D.members.forEach(m => balance[m.id] = 0);
+  D.transactions.forEach(t => {
+    t.to.forEach(id => { balance[id] = (balance[id] || 0) + t.amount; });
+  });
+
+  const ranked = D.members
+    .map(m => ({...m, score: balance[m.id] || 0}))
+    .sort((a,b) => b.score - a.score);
+
+  const total = ranked.reduce((s,m) => s + Math.max(0, m.score), 0);
+  const fmt = n => n.toLocaleString('ru-RU').replace(/,/g, ' ');
+
+  // PODIUM
+  const podiumEl = document.getElementById('podium');
+  const order = [1, 0, 2];
+  const roman = ['I', 'II', 'III'];
+  const medal = ['🥇', '🥈', '🥉'];
+  order.forEach((origIdx) => {
+    const m = ranked[origIdx];
+    if (!m) return;
+    const isFirst = origIdx === 0;
+    const card = document.createElement('div');
+    card.className = 'podium-card' + (isFirst ? ' first' : '');
+    card.innerHTML = `
+      <div class="podium-medal">${medal[origIdx]}</div>
+      <div class="podium-rank">место ${roman[origIdx]}</div>
+      <div class="podium-emoji">${m.emoji}</div>
+      <h3 class="podium-name">${m.name}</h3>
+      ${m.alias ? `<div class="podium-alias">«${m.alias}»</div>` : ''}
+      <div class="podium-role">${m.role}</div>
+      <div class="podium-score">${fmt(m.score)}</div>
+      <div class="podium-score-label">очков уважения</div>
+    `;
+    podiumEl.appendChild(card);
+  });
+
+  // REGISTRY
+  const regEl = document.getElementById('registry');
+  const topScore = Math.max(1, ranked[0].score);
+  ranked.forEach((m, i) => {
+    const share = total > 0 && m.score > 0 ? (m.score / total * 100).toFixed(1) + '%' : '—';
+    const barPct = m.score > 0 ? Math.max(2, (m.score / topScore) * 100) : 0;
+    const isNeg = m.score < 0;
+    const row = document.createElement('div');
+    row.className = 'registry-row reveal';
+    row.innerHTML = `
+      <div class="reg-rank">№ ${i+1}</div>
+      <div class="reg-name">
+        <span class="reg-name-main">${m.emoji} ${m.name}</span>
+        ${m.alias ? `<span class="reg-name-alias">«${m.alias}»</span>` : ''}
+        <span class="reg-name-role">${m.role}</span>
+      </div>
+      <div class="reg-score ${isNeg ? 'neg' : ''}">${m.score >= 0 ? '+' : ''}${fmt(m.score)}</div>
+      <div class="reg-share">${share}</div>
+      <div class="reg-bar"><div class="reg-bar-fill ${isNeg ? 'neg' : ''}" style="width: 0%" data-target="${isNeg ? 6 : barPct}"></div></div>
+    `;
+    regEl.appendChild(row);
+  });
+  // Анимация заполнения баров при появлении в видимости
+  setTimeout(() => {
+    document.querySelectorAll('.reg-bar-fill').forEach(el => {
+      el.style.width = el.dataset.target + '%';
+    });
+  }, 200);
+
+  // CHART — горизонтальная гонка
+  const isMobile = window.matchMedia('(max-width: 760px)').matches;
+  const palette = ['#c9a961','#2ca77c','#e8c987','#1e7a5a','#d6724a','#9a8edb','#ec97ad','#7ec99f','#f0b27a','#a5d6e6','#e6a5d6','#d6a5a5','#c9c0a5','#a5c9a5'];
+
+  // Растяжимая высота канваса: 38px на каждого Свидетеля
+  const chartCanvas = document.getElementById('chart');
+  chartCanvas.style.height = (ranked.length * (isMobile ? 44 : 38) + 40) + 'px';
+
+  new Chart(chartCanvas, {
+    type: 'bar',
+    data: {
+      labels: ranked.map(m => `${m.emoji} ${m.name}`),
+      datasets: [{
+        label: 'Очки уважения',
+        data: ranked.map(m => m.score),
+        backgroundColor: ranked.map((m, i) => m.score < 0 ? '#9a3a3a' : palette[i % palette.length]),
+        borderColor: ranked.map((m, i) => m.score < 0 ? '#9a3a3a' : palette[i % palette.length]),
+        borderWidth: 0,
+        borderRadius: 3,
+        barPercentage: 0.78
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 1400, easing: 'easeOutCubic' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0a1a12', borderColor: '#c9a961', borderWidth: 1,
+          titleColor: '#c9a961', bodyColor: '#ede4cf', padding: 12,
+          titleFont: { family: 'Cormorant Garamond', size: 16, weight: 'bold' },
+          bodyFont: { family: 'Inter', size: 13 },
+          callbacks: {
+            label: ctx => `${fmt(ctx.parsed.x)} очков уважения`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(201,169,97,.10)' },
+          ticks: { color: '#ede4cf', font: { family: 'Inter', size: isMobile ? 12 : 11 }, callback: v => fmt(v) }
+        },
+        y: {
+          grid: { display: false },
+          ticks: {
+            color: '#ede4cf',
+            font: { family: 'Cormorant Garamond', size: isMobile ? 15 : 14, weight: '500' },
+            padding: 6
+          }
+        }
+      }
+    }
+  });
+
+  // TIMELINE
+  const tlEl = document.getElementById('timeline');
+  const txSorted = [...D.transactions].sort((a,b) => b.date.localeCompare(a.date));
+  const monthsFull = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  txSorted.forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'timeline-item reveal';
+    const [, m, dd] = t.date.split('-');
+    const dateNice = `${parseInt(dd)} ${monthsFull[parseInt(m)-1]}`;
+    const recipients = t.to.map(id => {
+      const r = memberById[id];
+      return r ? `${r.emoji} ${r.name}` : id;
+    }).join(', ');
+    const author = memberById[t.by]?.name || t.by;
+    const sign = t.amount >= 0 ? '+' : '';
+    const capBadge = t.capped ? `<span class="tl-cap">CAP ${fmt(t.amount_raw)}</span>` : '';
+    item.innerHTML = `
+      <div class="tl-date">${dateNice}<br><span style="opacity:.6">2026</span></div>
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div>
+          <span class="tl-amount ${t.amount < 0 ? 'neg' : ''}">${sign}${fmt(t.amount)} очков</span>${capBadge}
+          <span class="tl-recipients">→ ${recipients}</span>
+        </div>
+        <div class="tl-reason">«${t.reason}»</div>
+        <div class="tl-meta">— ${author} · ${t.chat}</div>
+      </div>
+    `;
+    tlEl.appendChild(item);
+  });
+
+  // OBJECTS
+  const objEl = document.getElementById('objects');
+  D.objects.forEach(o => {
+    const card = document.createElement('div');
+    card.className = 'obj-card reveal';
+    card.innerHTML = `
+      <div class="obj-icon">${o.icon}</div>
+      <h3 class="obj-name">${o.name}</h3>
+      <div class="obj-balance">Баланс: ${fmt(o.balance)} очков</div>
+      <ul class="obj-events">
+        ${o.events.map(e => `<li><b>${e.amount === null ? '∅' : (e.amount >= 0 ? '+' : '') + fmt(e.amount)}</b>${e.reason}</li>`).join('')}
+      </ul>
+    `;
+    objEl.appendChild(card);
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  document.getElementById('hero-period').textContent = D.meta.period;
+}
+</script>
+</body>
+</html>

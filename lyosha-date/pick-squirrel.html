@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Выбор белки</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, "Segoe UI", sans-serif;
+      background: radial-gradient(ellipse at top, #ffe9f0, #ffd1de 70%, #ffbed0);
+      min-height: 100vh;
+      padding: 40px 20px 80px;
+      color: #3a1f2b;
+    }
+    h1 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    .lead {
+      text-align: center;
+      font-size: 18px;
+      opacity: .7;
+      margin-bottom: 40px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 24px 18px 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(255, 91, 138, .12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(255, 91, 138, .25);
+    }
+    .num {
+      position: absolute;
+      background: #ff5b8a;
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      margin-top: -36px;
+      margin-left: -160px;
+      box-shadow: 0 4px 12px rgba(255, 91, 138, .4);
+    }
+    .preview {
+      width: 160px;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff5f8;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .preview img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .preview .apple-emoji {
+      font-size: 110px;
+      font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+      line-height: 1;
+    }
+    .name {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .desc {
+      font-size: 13px;
+      opacity: .6;
+      min-height: 36px;
+    }
+    .pick-btn {
+      background: #ff5b8a;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .pick-btn:hover {
+      background: #e0356b;
+    }
+    .pick-btn--ghost {
+      background: white;
+      color: #ff5b8a;
+      border: 2px solid #ff5b8a;
+    }
+    .footer-note {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 16px;
+      opacity: .7;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🐿️ Выбери белку</h1>
+  <p class="lead">Скажи мне номер той, которая тебе нравится — я её вставлю</p>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="num">1</span>
+      <div class="preview"><span class="apple-emoji">🐿️</span></div>
+      <div class="name">Apple Emoji</div>
+      <div class="desc">Системная белка с iPhone, текущая в прототипе</div>
+    </div>
+
+    <div class="card">
+      <span class="num">2</span>
+      <div class="preview">
+        <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Chipmunk/3D/chipmunk_3d.png" alt="Fluent 3D">
+      </div>
+      <div class="name">Fluent 3D</div>
+      <div class="desc">Microsoft, объёмная, мультяшная, очень милая</div>
+    </div>
+
+    <div class="card">
+      <span class="num">3</span>
+      <div class="preview">
+        <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Chipmunk/Color/chipmunk_color.svg" alt="Fluent Color">
+      </div>
+      <div class="name">Fluent Color</div>
+      <div class="desc">Microsoft, плоская цветная версия той же</div>
+    </div>
+
+    <div class="card">
+      <span class="num">4</span>
+      <div class="preview">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f43f.svg" alt="Twemoji">
+      </div>
+      <div class="name">Twemoji</div>
+      <div class="desc">Twitter, стилизованная векторная</div>
+    </div>
+
+    <div class="card">
+      <span class="num">5</span>
+      <div class="preview">
+        <img src="https://openmoji.org/data/color/svg/1F43F.svg" alt="OpenMoji">
+      </div>
+      <div class="name">OpenMoji</div>
+      <div class="desc">Минималистичная, нарисованная от руки</div>
+    </div>
+
+    <div class="card">
+      <span class="num">6</span>
+      <div class="preview">
+        <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f43f/512.gif" alt="Noto animated">
+      </div>
+      <div class="name">Google Noto (анимация)</div>
+      <div class="desc">Гугловская, шевелит хвостом и моргает</div>
+    </div>
+
+    <div class="card">
+      <span class="num">7</span>
+      <div class="preview">
+        <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f43f/512.webp" alt="Noto static">
+      </div>
+      <div class="name">Google Noto (статика)</div>
+      <div class="desc">Та же, но без движения</div>
+    </div>
+
+    <div class="card">
+      <span class="num">8</span>
+      <div class="preview">
+        <iframe src="https://lottiefiles.com/free-animation/squirrel-Ao72ne5Brs/embed"
+                style="border:0;width:100%;height:100%;border-radius:18px"
+                title="Lottie squirrel cute"></iframe>
+      </div>
+      <div class="name">Lottie · милая</div>
+      <div class="desc">Анимированная векторная белка от Antoine Candy</div>
+      <a class="pick-btn pick-btn--ghost" href="https://lottiefiles.com/free-animation/squirrel-Ao72ne5Brs" target="_blank">смотреть полноразмерно ↗</a>
+    </div>
+
+    <div class="card">
+      <span class="num">9</span>
+      <div class="preview">
+        <iframe src="https://lottiefiles.com/free-animation/squirrel-running-5I2PWTMKAX/embed"
+                style="border:0;width:100%;height:100%;border-radius:18px"
+                title="Lottie squirrel running"></iframe>
+      </div>
+      <div class="name">Lottie · бегущая</div>
+      <div class="desc">Бежит с орехом, активная</div>
+      <a class="pick-btn pick-btn--ghost" href="https://lottiefiles.com/free-animation/squirrel-running-5I2PWTMKAX" target="_blank">смотреть полноразмерно ↗</a>
+    </div>
+
+    <div class="card">
+      <span class="num">10</span>
+      <div class="preview">
+        <iframe src="https://lottiefiles.com/free-animation/squirrel-sleeping-20708/embed"
+                style="border:0;width:100%;height:100%;border-radius:18px"
+                title="Lottie squirrel sleeping"></iframe>
+      </div>
+      <div class="name">Lottie · спящая</div>
+      <div class="desc">Сонная белочка с хвостом-одеялом</div>
+      <a class="pick-btn pick-btn--ghost" href="https://lottiefiles.com/20708-squirrel-sleeping" target="_blank">смотреть полноразмерно ↗</a>
+    </div>
+
+  </div>
+
+  <p class="footer-note">
+    Скажи: «беру 2» или «беру 6» — и я подставлю её на сайт.<br>
+    Если ни одна не цепляет — кинь мне свою картинку (PNG/JPG), вставлю её.
+  </p>
+
+</body>
+</html>

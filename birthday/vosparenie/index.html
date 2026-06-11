@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Воспарение — гритинг</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Unbounded:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf7f2;
+    --bg-card: #fffdfa;
+    --bg-warm: #f5efe4;
+    --wood: #784834;
+    --wood-light: #9a6a4a;
+    --canvas: #968763;
+    --ember: #b8452a;
+    --ember-dim: #8a3a1e;
+    --text: #3d3222;
+    --text-dim: #8a7e6e;
+    --text-bright: #1a1614;
+    --border: rgba(140,110,80,0.18);
+    --radius: 4px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 820px; margin: 0 auto; padding: 0 32px 100px; }
+
+  /* ── Hero ── */
+  .hero { text-align: center; padding: 72px 0 48px; }
+  .hero-mark { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 40px; }
+  .hero-mark .tag {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 400;
+    letter-spacing: 0.28em; text-transform: uppercase; color: var(--ember); opacity: 0.7;
+  }
+  .hero-mark .ember-line {
+    width: 28px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ember-dim), transparent);
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500;
+    font-size: 64px; line-height: 1.05; color: var(--text-bright); letter-spacing: 0.02em;
+    margin-bottom: 10px;
+  }
+  .hero h1 .red { color: var(--ember); font-style: italic; }
+  .hero .sub { font-size: 19px; font-style: italic; color: var(--text-dim); }
+  .hero .sub span { color: var(--ember); font-style: normal; }
+
+  /* ── Divider ── */
+  .divider { display: flex; align-items: center; gap: 0; margin: 0 auto 56px; max-width: 420px; }
+  .divider .l { flex:1; height:1px; background: linear-gradient(90deg, transparent, rgba(150,135,99,0.3), rgba(150,135,99,0.3)); }
+  .divider .r { flex:1; height:1px; background: linear-gradient(90deg, rgba(150,135,99,0.3), rgba(150,135,99,0.3), transparent); }
+  .divider .dot {
+    width: 32px; height: 32px; flex-shrink: 0; margin: 0 18px;
+    background: radial-gradient(circle, var(--ember-dim) 0%, #5a2210 55%, transparent 65%);
+    border-radius: 50%;
+  }
+
+  /* ── Section ── */
+  section {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 48px 44px; margin-bottom: 28px;
+    position: relative;
+  }
+  section::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(184,69,42,0.3), rgba(184,69,42,0.3), transparent);
+  }
+
+  .sec-label {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 400;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ember); opacity: 0.55; margin-bottom: 14px;
+  }
+
+  section h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500;
+    font-size: 32px; color: var(--text-bright); margin-bottom: 10px;
+    padding-bottom: 22px; border-bottom: 1px solid rgba(150,135,99,0.14);
+  }
+
+  section h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500;
+    font-size: 23px; color: var(--text-bright); margin: 36px 0 14px;
+  }
+  section h3:first-of-type { margin-top: 0; }
+  section p { margin-bottom: 12px; }
+  section p:last-child { margin-bottom: 0; }
+
+  /* ── Path flow ── */
+  .path-flow {
+    display: flex; align-items: flex-start; gap: 6px;
+    flex-wrap: wrap; justify-content: center; margin-top: 8px;
+  }
+  .path-step { text-align: center; flex: 0 0 auto; min-width: 96px; }
+  .path-step .icon {
+    width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+    background: var(--bg); border: 1px solid rgba(150,135,99,0.25);
+  }
+  .path-step:nth-child(1) .icon { border-color: rgba(184,69,42,0.45); background: #fef5f4; }
+  .path-step:nth-child(4) .icon { background: var(--ember-dim); border-color: var(--ember); color: #fff; }
+  .path-step:nth-child(6) .icon { border-color: rgba(184,138,120,0.5); background: #fdfaf7; }
+
+  .path-step .name {
+    font-family: 'Unbounded', sans-serif; font-weight: 400;
+    font-size: 11px; letter-spacing: 0.06em; color: var(--text-bright);
+    margin-bottom: 4px; text-transform: uppercase;
+  }
+  .path-step .desc { font-size: 13px; color: var(--text-dim); line-height: 1.4; font-style: italic; }
+  .path-arrow {
+    flex: 0 0 auto; display: flex; align-items: center; padding-top: 16px;
+    color: rgba(150,135,99,0.35); font-size: 15px;
+  }
+
+  /* ── Inventory ── */
+  .inv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 12px; }
+  @media(max-width:640px){ .inv-grid{grid-template-columns:1fr;} }
+  .inv-card {
+    background: var(--bg-warm); border-radius: var(--radius);
+    padding: 22px 24px; border: 1px solid rgba(150,135,99,0.12);
+  }
+  .inv-card h4 {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 400;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--wood-light);
+    margin-bottom: 12px;
+  }
+  .inv-card ul { margin: 0; padding-left: 18px; font-size: 16px; }
+  .inv-card li { margin-bottom: 4px; }
+  .inv-card li::marker { color: var(--wood); }
+
+  /* ── Corridor ── */
+  .corridor-concept {
+    background: var(--bg-warm); border-radius: var(--radius);
+    padding: 28px 32px; margin: 20px 0;
+    border: 1px solid rgba(150,135,99,0.15);
+  }
+  .corridor-concept h4 {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--canvas); margin-bottom: 16px;
+  }
+  .corridor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:640px){ .corridor-grid{grid-template-columns:1fr;} }
+  .corridor-item { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; }
+  .corridor-item .ci-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+    background: var(--bg-card); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; border: 1px solid rgba(150,135,99,0.15);
+  }
+  .corridor-item .ci-text strong { color: var(--text-bright); display: block; margin-bottom: 2px; font-size: 15px; }
+  .corridor-item .ci-text span { color: var(--text-dim); font-size: 13px; }
+
+  /* ── Script ── */
+  .script-step {
+    background: var(--bg-warm); border-left: 2px solid var(--ember-dim);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 24px 28px; margin-bottom: 20px;
+  }
+  .script-step .num {
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 400;
+    letter-spacing: 0.1em; color: var(--ember); margin-bottom: 4px;
+  }
+  .script-step .title { font-weight: 500; font-size: 21px; color: var(--text-bright); margin-bottom: 12px; }
+  .script-step .line {
+    background: var(--bg-card); border: 1px solid rgba(150,135,99,0.16);
+    border-radius: var(--radius); padding: 16px 20px; margin: 12px 0;
+    font-style: italic; color: var(--text-bright); font-size: 19px;
+  }
+  .script-step .dir {
+    font-size: 15px; color: var(--text-dim); font-style: italic; margin-top: 8px;
+  }
+
+  /* ── Rules ── */
+  .rules-list { list-style: none; padding: 0; margin: 12px 0; }
+  .rules-list li {
+    padding: 6px 0 6px 22px; position: relative; margin-bottom: 3px;
+  }
+  .rules-list li::before {
+    content: ''; position: absolute; left: 0; top: 14px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ember-dim); opacity: 0.55;
+  }
+
+  /* ── Pupils ── */
+  .pupils { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0; }
+  .pupil-badge {
+    display: flex; align-items: center; gap: 9px;
+    background: var(--bg-warm); padding: 8px 16px;
+    border-radius: 100px; font-size: 14px;
+    border: 1px solid rgba(150,135,99,0.16);
+  }
+  .pupil-badge .d { width:11px; height:11px; border-radius:50%; flex-shrink:0; }
+  .pupil-badge .d.w { background:#3d3222; width:15px; height:15px; }
+  .pupil-badge .d.n { background:#3d3222; width:5px; height:5px; }
+  .pupil-badge .d.r { background:#b8452a; }
+
+  /* ── Refusal ── */
+  .refusal {
+    background: rgba(184,69,42,0.04); border: 1px solid rgba(184,69,42,0.18);
+    border-radius: var(--radius); padding: 28px; margin: 18px 0;
+  }
+  .refusal h4 {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; letter-spacing: 0.1em;
+    color: var(--ember); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .refusal .line { font-size: 18px; font-style: italic; color: var(--text-bright); margin-bottom: 20px; }
+  .dosdonts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:640px){ .dosdonts{grid-template-columns:1fr;} }
+  .donts h5 { color: var(--ember); font-family:'Unbounded',sans-serif; font-size:10px; letter-spacing:0.08em; margin-bottom:8px; text-transform:uppercase; }
+  .dos h5 { color: #6a8a4a; font-family:'Unbounded',sans-serif; font-size:10px; letter-spacing:0.08em; margin-bottom:8px; text-transform:uppercase; }
+  .donts ul, .dos ul { font-size:14px; padding-left:18px; }
+  .donts li, .dos li { margin-bottom:4px; }
+
+  /* ── Checklist ── */
+  .checklist {
+    background: var(--bg-warm); border-radius: var(--radius);
+    padding: 26px 28px; margin: 16px 0; border: 1px solid rgba(150,135,99,0.12);
+  }
+  .checklist h4 {
+    font-family:'Unbounded',sans-serif; font-size:10px; letter-spacing:0.1em;
+    text-transform:uppercase; color: var(--wood-light); margin-bottom:14px;
+  }
+  .checklist ol { list-style:none; padding:0; counter-reset:s; }
+  .checklist ol li {
+    counter-increment:s; padding:6px 0 6px 30px; position:relative; margin-bottom:4px; font-size:16px;
+  }
+  .checklist ol li::before {
+    content:counter(s); position:absolute; left:0; top:6px;
+    width:20px; height:20px; background:var(--bg-card); border:1px solid rgba(150,135,99,0.22);
+    border-radius:50%; font-family:'Unbounded',sans-serif; font-size:10px;
+    display:flex; align-items:center; justify-content:center; color:var(--wood-light);
+  }
+
+  /* ── Accent ── */
+  .accent {
+    background: rgba(184,69,42,0.04); border:1px solid rgba(184,69,42,0.12);
+    border-radius:var(--radius); padding: 28px 32px; margin: 22px 0;
+  }
+  .accent h4 {
+    font-family:'Unbounded',sans-serif; font-size:10px; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--ember); margin-bottom:16px;
+  }
+  .accent .ai { padding:6px 0; font-size:16px; padding-left:18px; position:relative; }
+  .accent .ai::before {
+    content:''; position:absolute; left:0; top:14px; width:7px; height:1px; background:var(--ember-dim);
+  }
+
+  strong { color: var(--text-bright); }
+  ol, ul { padding-left: 24px; }
+  li { margin-bottom: 4px; }
+  li::marker { color: var(--wood); }
+
+  @media (max-width: 640px) {
+    .page { padding: 0 16px 48px; }
+    .hero { padding: 48px 0 32px; }
+    .hero h1 { font-size: 40px; }
+    section { padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <header class="hero">
+    <div class="hero-mark">
+      <div class="ember-line"></div>
+      <div class="tag">Burning Man · Грузия · Кэмп</div>
+      <div class="ember-line"></div>
+    </div>
+    <h1><span class="red">Воспарение</span></h1>
+    <p class="sub">Гритинг. Инструкция для <span>проводника</span> на входе.</p>
+  </header>
+
+  <div class="divider">
+    <div class="l"></div>
+    <div class="dot"></div>
+    <div class="r"></div>
+  </div>
+
+  <!-- ═══════════ 1. МИССИЯ ═══════════ -->
+  <section>
+    <div class="sec-label">Раздел 1</div>
+    <h2>Миссия кэмпа</h2>
+    <p>«Воспарение» — это путь очищения через пар.</p>
+    <p>Человек приходит с тем, что его тяготит: заботы, тревоги, усталость. Проходит путь — и выходит обновлённым, лёгким, невесомым. Это не просто баня. Это ритуал.</p>
+
+    <h3>Путь гостя</h3>
+    <div class="path-flow">
+      <div class="path-step"><div class="icon">🌀</div><div class="name">Гритинг</div><div class="desc">яркий, шумный</div></div>
+      <div class="path-arrow">→</div>
+      <div class="path-step"><div class="icon">🌾</div><div class="name">Тропинка</div><div class="desc">краски гаснут</div></div>
+      <div class="path-arrow">→</div>
+      <div class="path-step"><div class="icon">☁</div><div class="name">Лаунж</div><div class="desc">светлое, белое</div></div>
+      <div class="path-arrow">→</div>
+      <div class="path-step"><div class="icon">🚪</div><div class="name">Красная дверь</div><div class="desc">портал в парную</div></div>
+      <div class="path-arrow">→</div>
+      <div class="path-step"><div class="icon">🔥</div><div class="name">Баня</div><div class="desc">чистилище, пар</div></div>
+      <div class="path-arrow">→</div>
+      <div class="path-step"><div class="icon">✦</div><div class="name">Выход</div><div class="desc">обновлённый</div></div>
+    </div>
+
+    <p style="margin-top:28px; font-size:16px; color:var(--text-dim);">
+      <strong>Гритинг</strong> — первая точка. Самое яркое пятно на пути. Шум, цвет, движение. Сад соблазна. Здесь гость ещё полон тревог — и здесь же впервые с ними расстаётся.<br>
+      <strong>Тропинка</strong> — путь-подготовка: краски постепенно гаснут, шум остаётся позади.<br>
+      <strong>Лаунж</strong> — светлое, спокойное пространство в белых тонах. Место ожидания.<br>
+      <strong style="color:var(--ember);">Красная дверь</strong> — портал. За ней — чистилище.<br>
+      <strong>Баня</strong> — само воспарение. Пар, жар, мастер, ритуал очищения.
+    </p>
+  </section>
+
+  <!-- ═══════════ 2. ЗОНА ═══════════ -->
+  <section>
+    <div class="sec-label">Раздел 2</div>
+    <h2>Зона гриттинга</h2>
+
+    <h3>Как выглядит</h3>
+    <p>Яркое, шумное, кричащее пятно — контраст к спокойному лаунжу. Основной цвет — <strong style="color:var(--ember);">красный</strong>.</p>
+    <p>Арт-объекты (зона лида декора): стена с руками, глаза, щупальца — всё в красных тонах. Зона сортировки — чуть поодаль.</p>
+
+    <h3>Что на точке</h3>
+    <div class="inv-grid">
+      <div class="inv-card"><h4>На столе</h4><ul><li>Лист записи в баню + 2–3 ручки</li><li>Бумажки для записок + 2–3 ручки</li><li>Банка для записок</li><li>Ваза с сухоцветами</li><li>Зеркало</li><li>Лампа</li><li>Скатерть</li></ul></div>
+      <div class="inv-card"><h4>Рядом</h4><ul><li>Доска с правилами бани (иконки)</li><li>Правила на листе А3</li><li>Расписание активностей</li><li>Стикеры (раздавать гостям)</li><li>Бутылка с водой для гритера</li><li>Стул</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 3. РОЛЬ ═══════════ -->
+  <section>
+    <div class="sec-label">Раздел 3</div>
+    <h2>Роль гритера</h2>
+    <p>Гритер — лицо кэмпа. Первый человек на пути гостя. Главная задача — <strong>не</strong> формально записать в баню, а вовлечь в экспириенс, дать прочувствовать куда человек попал.</p>
+
+    <h3>Что делает гритер</h3>
+    <ol>
+      <li><strong>Первый шифт (открывающий день)</strong> — подготовить всё к шифту: достать инвентарь из типи, разложить.</li>
+      <li><strong>Последний шифт (закрывающий день)</strong> — убрать всё ценное обратно в типи.</li>
+      <li>Встречать гостей, рассказывать про наполнение и миссию кэмпа.</li>
+      <li>Проверить на адекватность.</li>
+      <li>Записать на парение.</li>
+      <li>Следить за порядком и красотой в зоне гриттинга.</li>
+    </ol>
+
+    <h3>Шифты</h3>
+    <ul>
+      <li><strong>1 человек на шифт</strong></li>
+      <li><strong>Шифт — 2 часа</strong></li>
+    </ul>
+  </section>
+
+  <!-- ═══════════ 4. КОРИДОР ═══════════ -->
+  <section>
+    <div class="sec-label">Раздел 4</div>
+    <h2>Что в коридоре</h2>
+    <p>Коридор — это переход между мирами. Шлюз между шумным гритингом и тихим лаунжем. Здесь гость буквально и символически оставляет мирское позади.</p>
+
+    <div class="corridor-concept">
+      <h4>Что в коридоре</h4>
+      <div class="corridor-grid">
+        <div class="corridor-item"><div class="ci-icon">💧</div><div class="ci-text"><strong>Чаша с водой</strong><span>Тихая вода. Смыв, начало очищения. Контраст с шумным гритингом.</span></div></div>
+        <div class="corridor-item"><div class="ci-icon">🌿</div><div class="ci-text"><strong>Пучки сушёных трав</strong><span>Полынь, лаванда, эвкалипт — подвешены вдоль прохода. Аромат-шлюз: вдохнул и ты уже в другом мире.</span></div></div>
+        <div class="corridor-item"><div class="ci-icon">🪞</div><div class="ci-text"><strong>Зеркало в полный рост</strong><span>Одно. Увидеть себя перед входом. Не для красоты — момент: «вот я сейчас — а выйду другим».</span></div></div>
+        <div class="corridor-item"><div class="ci-icon">🏕</div><div class="ci-text"><strong>Стены из холста / парусины</strong><span>Грубая ткань, честная, без украшательств. Походный храм, а не спа.</span></div></div>
+        <div class="corridor-item"><div class="ci-icon">🌅</div><div class="ci-text"><strong>Дневной свет</strong><span>Днём — солнце и небо. Вечером — мягкая подсветка вдоль дорожки (фонари, гирлянды).</span></div></div>
+        <div class="corridor-item"><div class="ci-icon">🚶</div><div class="ci-text"><strong>Проход по одному</strong><span>Только один человек в коридоре. Не больше минуты. Не толпимся.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 5. СКРИПТ ═══════════ -->
+  <section>
+    <div class="sec-label">Раздел 5</div>
+    <h2>Скрипт встречи гостя</h2>
+    <p style="color:var(--text-dim); margin-bottom:24px; font-size:16px;">Не заучивать наизусть. Понять логику и говорить своими словами.</p>
+
+    <div class="script-step"><div class="num">Шаг 1</div><div class="title">Приветствие</div><div class="line">Привет! Добро пожаловать в «Воспарение». Я твой проводник.</div><div class="dir">Дать почувствовать: человеку рады. Ты не администратор, ты — встречающий.</div></div>
+
+    <div class="script-step"><div class="num">Шаг 2</div><div class="title">Наполнение</div><div class="line">У нас здесь баня — можно попариться. Есть лаунж — можно просто побыть, там сейчас йога, чайные сборы, музыка, арт-терапия. Вот стикеры на память — бери.</div><div class="dir">Протягиваешь стикеры. Называешь то, что идёт в лаунже прямо сейчас — смотришь по расписанию на свой шифт.</div></div>
+
+    <div class="script-step"><div class="num">Шаг 3</div><div class="title">Миссия и сеттинг</div><div class="line">«Воспарение» — это путь очищения.<br><br>Ты приходишь сюда с тем, что тебя тяготит: заботы, тревоги, усталость. Проходишь через баню-чистилище — и выходишь обновлённым, лёгким.<br><br>Перед тем как войти — напиши на листочке то, от чего хочешь избавиться. Что оставить здесь. Это может быть слово, мысль, имя — что угодно.<br><br>Положи записку в банку. Все записки мы сожжём на финальном Burn — вместе с тем, что в них.</div><div class="dir">Показываешь на бумажки, на банку. Главный момент — здесь человек впервые соприкасается с концепцией.</div></div>
+
+    <div class="script-step"><div class="num">Шаг 4</div><div class="title">Проверка адекватности</div><p style="margin-bottom:10px; color:var(--text-dim);">Пока говоришь с гостем — параллельно сканируешь:</p><ul style="font-size:16px; margin-bottom:12px;"><li><strong>Речь</strong> — нормально разговаривает? Не слишком быстро/медленно?</li><li><strong>Движения</strong> — координированы? Не шатается?</li><li><strong>Поведение</strong> — нет ли излишней возбуждённости или заторможенности?</li><li><strong>Зрачки</strong> — расширены (стимуляторы, психоделики), сужены (опиаты), красные белки (марихуана)</li></ul></div>
+
+    <div class="script-step"><div class="num">Шаг 5</div><div class="title">Запись в баню</div><p style="font-size:16px; margin-bottom:10px;">Если гость хочет попариться:</p><div class="line">Давай посмотрим когда можно попариться.</div><p style="font-size:16px; margin:10px 0;"><strong>Есть места:</strong> «Отлично, в __:00 сессия. Записываю тебя. Подойди сюда за 15 минут до начала.»<br><br><strong>Мест нет:</strong> «На сегодня всё занято. Приходи завтра — запись открывается день в день. Но вот посмотри расписание — прямо сейчас у нас йога, а через час чайные сборы. Можешь пройти в лаунж.»</p><div class="dir">Предлагаешь альтернативу по расписанию. Ты не отказываешь — ты перенаправляешь в другую часть экспириенса.</div></div>
+
+    <div class="script-step"><div class="num">Шаг 6</div><div class="title">Правила бани</div><div class="line">Коротко о правилах. Основное нарисовано на доске, подробное — на листе А3:<br><br>— Только трезвым. Баня и вещества — опасная комбинация.<br>— Сними украшения, металл.<br>— Шапка обязательна. Можно взять у нас.<br>— Возьми полотенце и воду.<br>— Есть аллергии, проблемы с давлением, сердцем, недавние травмы?</div><div class="dir">Если что-то серьёзное — записываешь и передаёшь мастеру бани.</div></div>
+
+    <div class="script-step"><div class="num">Шаг 7</div><div class="title">Финал</div><div class="line">Всё, ты готов. Записку — в банку. Заходим в коридор по одному. Лёгкого пара!</div></div>
+
+    <div class="refusal"><h4>Если под веществами — отказ</h4><div class="line" style="margin-bottom:18px;">Слушай, баня — территория трезвости. Под веществами это опасно для здоровья. Я не могу тебя пропустить. Приходи позже — будем рады.</div><div class="dosdonts"><div class="donts"><h5>Не делай</h5><ul><li>Не читай нотации</li><li>Не вступай в спор</li><li>Не унижай</li></ul></div><div class="dos"><h5>Делай</h5><ul><li>Спокойный, ровный тон</li><li>Ссылайся на безопасность</li><li>Предлагай альтернативу</li></ul></div></div><p style="margin-top:14px; font-size:14px; color:var(--text-dim);">Гость настаивает или агрессивен — зови лида кэмпа. Не решай конфликт в одиночку.</p></div>
+  </section>
+
+  <!-- ═══════════ 6. ЗАПИСЬ ═══════════ -->
+  <section>
+    <div class="sec-label">Раздел 6</div>
+    <h2>Правила записи в баню</h2>
+    <ul class="rules-list">
+      <li><strong>Запись — только день в день.</strong> Нельзя занять место на завтра.</li>
+      <li><strong>Запись открывается с утра</strong>, когда гритер первого шифта готовит точку.</li>
+      <li><strong>Кэмпы могут записаться заранее</strong> — но с подтверждением в день бани. Без подтверждения место уходит в общую очередь.</li>
+      <li><strong>Если мест нет</strong> → приходить в другой день. Но не просто отказывать — предлагать лаунж.</li>
+      <li><strong>В коридор — за 15 минут</strong> до начала. Не раньше.</li>
+      <li><strong>В коридоре — только один человек.</strong> Максимум минута.</li>
+    </ul>
+    <h3>Расписание активностей</h3>
+    <p>Гритер должен знать <strong>расписание на свой шифт</strong>. Что прямо сейчас, что через час. Чтобы гостю не просто сказать «мест нет», а предложить конкретное: «А у нас через пять минут йога. Приходи на йогу.»</p>
+    <p style="font-size:16px; color:var(--text-dim); margin-top:6px;">Лаунж-активности: йога · чайные сборы · неоновый грим · браслеты · венки · массаж · арт-терапия · сказки · музыка · контактная импровизация · инь-йога · йога-нидра</p>
+    <h3>Лаунж</h3>
+    <p>Запись не нужна. Гость проходит мимо коридора направо. Гритер мониторит адекватность — неадекватов не пускаем и в лаунж тоже.</p>
+  </section>
+
+  <!-- ═══════════ 7. ШИФТЫ ═══════════ -->
+  <section>
+    <div class="sec-label">Раздел 7</div>
+    <h2>Подготовка и завершение шифта</h2>
+
+    <div class="checklist"><h4>Первый шифт (открывающий день) — подготовить</h4><ol><li>Достать из типи: лист записи, бумажки, ручки, банку, вазу, зеркало, лампу, скатерть</li><li>Разложить всё на столе</li><li>Поставить доску с правилами, лист А3 с правилами</li><li>Проверить что ручки пишут</li><li>Наполнить бутылку водой</li><li>Убедиться что зона чистая и красивая</li></ol></div>
+
+    <div class="checklist"><h4>Пересменка — передать следующему гритеру</h4><ol><li>Сколько мест на ближайшие сессии</li><li>Нестандартные ситуации: отказы, конфликты, странные гости</li><li>Всё ли на месте из инвентаря</li></ol></div>
+
+    <div class="checklist"><h4>Последний шифт (закрывающий день) — убрать</h4><ol><li>Собрать все ручки, бумагу, инвентарь</li><li><strong>Записки из банки НЕ трогать</strong> — хранятся до финального Burn</li><li>Убрать всё ценное в типи</li><li>Убедиться что зона чистая, ничего не забыто</li><li>Нестандартные ситуации — передать лиду кэмпа</li></ol></div>
+  </section>
+
+  <!-- ═══════════ 8. АКЦЕНТЫ ═══════════ -->
+  <section>
+    <div class="sec-label">Раздел 8</div>
+    <h2>Акценты</h2>
+    <div class="accent" style="margin:0;">
+      <div class="ai"><strong>Гритер — проводник, а не охранник.</strong> Тёплый, но с границами.</div>
+      <div class="ai"><strong>Главное — вовлечь в экспириенс, а не просто записать.</strong> Запись — результат. Процесс — погружение.</div>
+      <div class="ai"><strong>Миссия — не лекция.</strong> Две фразы, записочка, всё. Кому интересно — сам спросит.</div>
+      <div class="ai"><strong>Мест нет → предложи лаунж.</strong> «Прямо сейчас у нас йога, через час чайные сборы — иди, там здорово.»</div>
+      <div class="ai"><strong>Отказ — не конфликт.</strong> Спокойно, не извиняясь, не оправдываясь.</div>
+      <div class="ai"><strong>Не знаешь ответ — «я уточню».</strong> Не придумываешь.</div>
+      <div class="ai"><strong>Гритинг — лицо кэмпа.</strong> Если гость с порога чувствует магию — дальше всё работает само.</div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

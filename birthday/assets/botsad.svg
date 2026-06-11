@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <rect width="200" height="250" fill="#e0e8d4"/>
+  <!-- стеклянный купол оранжереи -->
+  <g stroke="#1c1c1c" stroke-width="2.5" stroke-linejoin="round">
+    <!-- основание -->
+    <rect x="20" y="170" width="160" height="44" fill="#cbc1ad"/>
+    <!-- стеклянные секции -->
+    <path d="M 20 170 L 50 110 L 80 140 L 100 80 L 120 140 L 150 110 L 180 170 Z" fill="#a4c8b1"/>
+    <!-- внутренние линии стекла -->
+    <line x1="50" y1="110" x2="50" y2="170" stroke-width="1.5"/>
+    <line x1="80" y1="140" x2="80" y2="170" stroke-width="1.5"/>
+    <line x1="100" y1="80" x2="100" y2="170" stroke-width="1.5"/>
+    <line x1="120" y1="140" x2="120" y2="170" stroke-width="1.5"/>
+    <line x1="150" y1="110" x2="150" y2="170" stroke-width="1.5"/>
+    <line x1="35" y1="140" x2="80" y2="140" stroke-width="1.5"/>
+    <line x1="120" y1="140" x2="165" y2="140" stroke-width="1.5"/>
+    <!-- флаг сверху -->
+    <line x1="100" y1="80" x2="100" y2="62"/>
+    <path d="M 100 62 L 116 66 L 100 72 Z" fill="#b8431f"/>
+  </g>
+
+  <!-- растения снаружи (силуэты) -->
+  <g fill="#5d6b5b" stroke="#1c1c1c" stroke-width="2" stroke-linejoin="round">
+    <path d="M 12 200 Q 6 180 14 168 Q 22 180 18 200 Z"/>
+    <path d="M 188 200 Q 182 178 192 166 Q 196 184 194 200 Z"/>
+  </g>
+
+  <!-- пальма внутри (просвечивает) -->
+  <g stroke="#1c1c1c" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M 100 168 L 100 130"/>
+    <path d="M 100 130 Q 80 122 72 132"/>
+    <path d="M 100 130 Q 120 122 128 132"/>
+    <path d="M 100 130 Q 88 116 90 108"/>
+    <path d="M 100 130 Q 112 116 110 108"/>
+  </g>
+
+  <!-- двери -->
+  <rect x="92" y="186" width="16" height="28" fill="#1c1c1c"/>
+
+  <text x="100" y="234" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="13" fill="#1c1c1c">ботанический сад</text>
+</svg>
