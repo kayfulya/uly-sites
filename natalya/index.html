@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Семейный турнир «Как в кино»</title>
+<style>
+  :root{
+    --paper:#f4f0e6;
+    --ink:#2a2a28;
+    --muted:#6f6a5e;
+    --ochre:#a8742a;
+    --ochre-soft:#c79a54;
+    --green:#3a5340;
+    --line:#ddd5c2;
+    --card:#faf7ef;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 28px}
+
+  /* HERO */
+  header.hero{
+    padding:90px 28px 70px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+  .kicker{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.32em;
+    font-size:12px;
+    color:var(--ochre);
+    margin-bottom:22px;
+  }
+  h1{
+    font-size:52px;
+    font-style:italic;
+    font-weight:normal;
+    line-height:1.1;
+    margin-bottom:20px;
+  }
+  h1 .plain{font-style:normal}
+  .lede{
+    font-size:20px;
+    color:var(--muted);
+    max-width:620px;
+    margin:0 auto;
+  }
+
+  section{padding:60px 0;border-bottom:1px solid var(--line)}
+  .sec-num{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    letter-spacing:.3em;
+    font-size:12px;
+    text-transform:uppercase;
+    color:var(--ochre);
+    margin-bottom:14px;
+  }
+  h2{
+    font-size:34px;
+    font-style:italic;
+    font-weight:normal;
+    margin-bottom:24px;
+    line-height:1.15;
+  }
+  h3{
+    font-size:22px;
+    font-weight:normal;
+    margin:26px 0 10px;
+  }
+  p{margin-bottom:16px;font-size:18px}
+  .big-idea{
+    font-size:24px;
+    font-style:italic;
+    color:var(--green);
+    border-left:3px solid var(--ochre-soft);
+    padding-left:22px;
+    margin:6px 0 4px;
+  }
+
+  /* Раунды */
+  .rounds{display:grid;gap:18px;margin-top:10px}
+  .round{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:26px 28px;
+    display:flex;
+    gap:22px;
+    align-items:flex-start;
+  }
+  .round .r-num{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:40px;
+    font-weight:700;
+    color:var(--ochre-soft);
+    line-height:1;
+    min-width:52px;
+  }
+  .round h3{margin:0 0 6px;font-size:22px}
+  .round .tag{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .round p{font-size:17px;margin:8px 0 0;color:#4a463d}
+
+  /* Карточки кино */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:24px 26px;
+    margin-top:18px;
+  }
+  .card .film{
+    font-style:italic;
+    font-size:20px;
+    color:var(--green);
+    margin-bottom:6px;
+  }
+  .card .q{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:16px;
+    color:var(--ochre);
+    font-weight:600;
+    margin:12px 0 6px;
+  }
+  .card .a{font-size:16px;color:#4a463d;margin:0}
+
+  /* Список фильмов */
+  ul.films{list-style:none;margin:10px 0 0}
+  ul.films li{
+    padding:12px 0;
+    border-bottom:1px dashed var(--line);
+    font-size:17px;
+  }
+  ul.films li:last-child{border-bottom:none}
+  ul.films .name{font-style:italic;color:var(--green)}
+  ul.films .type{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:var(--muted);
+    margin-left:8px;
+  }
+
+  /* Банк вопросов */
+  .qbank{margin-top:10px}
+  .qgroup{margin-bottom:24px}
+  .qgroup h4{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--ochre);
+    margin-bottom:10px;
+  }
+  .qgroup ul{list-style:none}
+  .qgroup li{
+    padding:7px 0 7px 22px;
+    position:relative;
+    font-size:17px;
+    color:#3f3b33;
+  }
+  .qgroup li::before{
+    content:'—';
+    position:absolute;
+    left:0;
+    color:var(--ochre-soft);
+  }
+
+  /* Таблица пар вопрос/ответ */
+  table.pairs{width:100%;border-collapse:collapse;margin-top:14px}
+  table.pairs td{padding:11px 14px;border-bottom:1px solid var(--line);font-size:16px;vertical-align:top}
+  table.pairs td.q{color:var(--muted);width:47%;border-right:1px solid var(--line)}
+  table.pairs td.a{color:var(--ink)}
+  .zone-tag{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--muted);margin:2px 0 4px;
+  }
+  .safety{
+    font-size:15px;color:var(--muted);font-style:italic;
+    border-left:3px solid var(--ochre-soft);padding-left:16px;margin-top:14px;
+  }
+
+  /* Механика 30 сек */
+  .mechanic{
+    background:var(--green);
+    color:#f4f0e6;
+    border-radius:8px;
+    padding:26px 28px;
+    margin-top:18px;
+    font-size:18px;
+  }
+  .mechanic strong{color:#f0d9a8}
+
+  /* Очки */
+  .score{display:grid;gap:12px;margin-top:8px}
+  .score .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+    font-size:17px;
+  }
+  .score .row .pts{color:var(--ochre);font-style:italic}
+
+  /* Прогрев */
+  .highlight-box{
+    border:1px solid var(--ochre-soft);
+    border-radius:8px;
+    padding:24px 26px;
+    background:#fbf3e2;
+    margin-top:8px;
+  }
+
+  /* Вопросы к обсуждению */
+  ol.discuss{margin:10px 0 0 20px}
+  ol.discuss li{font-size:17px;margin-bottom:10px;padding-left:6px}
+
+  footer{
+    text-align:center;
+    padding:50px 28px 70px;
+    color:var(--muted);
+    font-size:15px;
+    font-style:italic;
+  }
+
+  @media(max-width:640px){
+    h1{font-size:38px}
+    h2{font-size:27px}
+    .round{flex-direction:column;gap:8px}
+    .round .r-num{font-size:32px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker">Семейный турнир · Наталья Проскурова</div>
+  <h1><span class="plain">Как</span> в кино</h1>
+  <p class="lede">Гольф-турнир, который собирает семью на поле так же, как хорошее кино собирает её на диване.</p>
+</header>
+
+<div class="wrap">
+
+  <!-- ИДЕЯ -->
+  <section>
+    <div class="sec-num">Идея</div>
+    <h2>Связка, которая всё держит</h2>
+    <p>Возражение звучало так: «При чём тут фильмы и семейный турнир? Кино мы смотрим на диване всей семьёй». В этом и ответ.</p>
+    <p class="big-idea">Обычно семья собирается у экрана. В этот раз — выходит на поле. Ваш турнир — как фильм о гольфе, только главные герои в нём вы.</p>
+    <p>Гости не просто играют турнир — они на один день становятся героями кино о гольфе. На этот стержень вешается всё: прогрев в клубе, викторина, семейные игры, ролики.</p>
+  </section>
+
+  <!-- ТРИ РАУНДА -->
+  <section>
+    <div class="sec-num">Формат</div>
+    <h2>Весёлые старты в трёх раундах</h2>
+    <p>Турнир превращается из «поиграли в гольф» в шоу с эмоциями. Три раунда, один сквозной зачёт.</p>
+    <div class="rounds">
+      <div class="round">
+        <div class="r-num">1</div>
+        <div>
+          <div class="tag">Мастерство</div>
+          <h3>Гольф</h3>
+          <p>Сам турнир. Семья играет как команда. Очки за игру.</p>
+        </div>
+      </div>
+      <div class="round">
+        <div class="r-num">2</div>
+        <div>
+          <div class="tag">Насмотренность + этикет</div>
+          <h3>Киновикторина</h3>
+          <p>Кусок из фильма о гольфе → «какое правило этикета нарушено?» или «почему герой сделал именно так?». Семьи отвечают, совещаются, спорят.</p>
+        </div>
+      </div>
+      <div class="round">
+        <div class="r-num">3</div>
+        <div>
+          <div class="tag">Семейность</div>
+          <h3>Насколько вы знаете друг друга</h3>
+          <p>Двое пишут ответ на один вопрос за 30 секунд и показывают одновременно. Совпало — балл. Сердце «семейного» турнира и главный источник роликов.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ВИКТОРИНА -->
+  <section>
+    <div class="sec-num">Раунд 2 · Подробно</div>
+    <h2>Кино через этикет</h2>
+    <p>Этикет — коронная тема Натальи. Фильмы дают лёгкую обёртку на серьёзную тему: показываем сцену (10–20 сек) и спрашиваем, что с ней не так — или наоборот, почему всё так правильно.</p>
+
+    <h3>Пять фильмов о гольфе</h3>
+    <ul class="films">
+      <li><span class="name">Счастливчик Гилмор</span><span class="type">Комедия · 1996</span></li>
+      <li><span class="name">Гольф-клуб (Caddyshack)</span><span class="type">Комедия · 1980</span></li>
+      <li><span class="name">Тин Кап</span><span class="type">Ромком · 1996</span></li>
+      <li><span class="name">Легенда Багера Ванса</span><span class="type">Драма · 2000</span></li>
+      <li><span class="name">Величайшая игра</span><span class="type">Семейная драма · 2005</span></li>
+    </ul>
+
+    <div class="card">
+      <div class="film">Счастливчик Гилмор — что не так?</div>
+      <p class="a">Герой орёт на мяч, швыряет клюшку, лезет драться прямо на поле.</p>
+      <div class="q">Сколько правил этикета он нарушил за 20 секунд?</div>
+      <p class="a">Тишина · не швырять клюшки · спокойствие после плохого удара · уважение к партнёрам. Разбор: «Выигрывает не тот, кто меньше ошибается, а кто быстрее возвращается в спокойную игру».</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Легенда Багера Ванса — наоборот, образец</div>
+      <p class="a">Мяч героя случайно шевельнулся, когда он убирал листок. Никто не видел. Он сам объявляет себе штрафной удар — хотя это может стоить победы.</p>
+      <div class="q">Почему он наказал себя, если никто не заметил?</div>
+      <p class="a">Правило чести. «Правила делают игру честной, этикет делает её красивой».</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Счастливчик Гилмор — подготовка к удару</div>
+      <p class="a">Разбегается перед мячом с хоккейным замахом, орёт на мяч «иди домой!».</p>
+      <div class="q">Что не так с его подготовкой к удару?</div>
+      <p class="a">Тишина и концентрация. На поле перед ударом — покой, а не шоу.</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Счастливчик Гилмор — соперник Шутер Макгэвин</div>
+      <p class="a">Надменно подкалывает и унижает Гилмора вместо поддержки.</p>
+      <div class="q">Он хвалит соперника или добивает? А как надо?</div>
+      <p class="a">Похвала удара и уважение к партнёру. Хорошее слово — бесценно, подколы — нет.</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Счастливчик Гилмор — внешний вид</div>
+      <p class="a">Выходит на поле в хоккейной форме, а не по гольф-дресс-коду.</p>
+      <div class="q">Что не так с его видом на поле?</div>
+      <p class="a">Одежда: поло, брюки/шорты, гольф-ботинки. Джинсы и джерси — табу.</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Легенда Багера Ванса — момент перед ударом</div>
+      <p class="a">Все замирают, наступает полная тишина, герой уходит в концентрацию.</p>
+      <div class="q">Почему вокруг всё замерло?</div>
+      <p class="a">Тишина во время удара. И это же — то состояние потока, ради которого идут в гольф.</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Гольф-клуб (Caddyshack) — Родни на поле</div>
+      <p class="a">Громко болтает, включает музыку из багги, шумит, пока другой готовится бить.</p>
+      <div class="q">Что он нарушает, пока играет партнёр?</div>
+      <p class="a">Тишина и уважение. Не шепчись, не шурши, не мешай — просто наблюдай.</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Гольф-клуб (Caddyshack) — охота на суслика</div>
+      <p class="a">Поле перекапывают и взрывают в погоне за зверьком.</p>
+      <div class="q">Кто здесь напрочь забыл о заботе о поле?</div>
+      <p class="a">Дивоты, питчмарки, бункер — поле берегут, а не разносят.</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Тин Кап — финал у воды</div>
+      <p class="a">Герой упрямо бьёт через воду снова и снова, кладёт мяч за мячом в пруд, вместо безопасного пути — и теряет турнир.</p>
+      <div class="q">Почему он не сыграл безопасно? Глупость или принцип?</div>
+      <p class="a">Спор о духе игры: честность к себе против результата. Отличный повод для дискуссии семей.</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Величайшая игра — толпа у грина</div>
+      <p class="a">Зрители заходят прямо на поле, толпятся вплотную к игрокам.</p>
+      <div class="q">Что нарушают зрители?</div>
+      <p class="a">Дистанция и забота о поле. Близко не подходят — это и безопасность, и уважение.</p>
+    </div>
+
+    <div class="card">
+      <div class="film">Величайшая игра — снобизм клуба</div>
+      <p class="a">Парня из простой семьи не принимают всерьёз из-за происхождения.</p>
+      <div class="q">Что важнее на поле — статус или игра?</div>
+      <p class="a">Этикет уравнивает всех. На грине неважно, кто ты — важно, как себя ведёшь.</p>
+    </div>
+
+    <p style="margin-top:22px;color:var(--muted);font-size:16px">Точные куски сцен с таймкодами — следующий шаг: под 15 правил этикета Натальи подбираются моменты, монтажёр режет по факту, Наталья подтверждает.</p>
+  </section>
+
+  <!-- РАУНД 3 -->
+  <section>
+    <div class="sec-num">Раунд 3 · Подробно</div>
+    <h2>Насколько вы знаете друг друга</h2>
+
+    <div class="mechanic">
+      <strong>Механика.</strong> Задаётся вопрос. Двое из семьи (мама↔папа, ребёнок↔родитель) пишут ответ маркером на мини-доске за <strong>30 секунд</strong> и показывают одновременно. Совпало — <strong>балл</strong>. Разошлись — <strong>0</strong>. «Ребёнок угадывает папу» почти всегда даёт самый смешной и трогательный кадр.
+    </div>
+
+    <div class="qbank">
+      <div class="qgroup">
+        <h4>Про гольф — связка с турниром</h4>
+        <ul>
+          <li>Какая у него любимая клюшка?</li>
+          <li>Сколько мячей он теряет за раунд?</li>
+          <li>Любимое поле или страна, где играли?</li>
+          <li>Что больше всего бесит партнёра на поле?</li>
+          <li>Кто чаще психует после плохого удара?</li>
+        </ul>
+      </div>
+      <div class="qgroup">
+        <h4>Про кино — связка с викториной</h4>
+        <ul>
+          <li>Кто в вашей семье Счастливчик Гилмор, а кто — мудрый Багер Ванс?</li>
+          <li>Любимый фильм, который смотрите всей семьёй?</li>
+          <li>Если бы про вашу семью сняли кино — комедия или драма?</li>
+        </ul>
+      </div>
+      <div class="qgroup">
+        <h4>Про семью — эмоция</h4>
+        <ul>
+          <li>Любимая семейная традиция?</li>
+          <li>За что папа втянул всех в гольф?</li>
+          <li>Кто в семье главный по этикету?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЪЁМОЧНАЯ ЗОНА -->
+  <section>
+    <div class="sec-num">На поле</div>
+    <h2>Съёмочная зона</h2>
+    <p>Отдельная точка на поле, оформленная как киноплощадка: хлопушка, режиссёрское кресло, табличка «Дубль 1». Гость реально «снимается в кино». Отсюда монтируются три разных ролика.</p>
+    <p class="safety">Как снимать: ведущий задаёт вопрос за кадром, гость в ответе повторяет суть без вопроса («Мой ти маленький, деревянный…») — иначе в монтаже ответ повиснет.</p>
+
+    <h3>Формат А · Ответы без вопросов</h3>
+    <div class="zone-tag">Игра на недопонимании</div>
+    <p>Снимаем честное интервью про гольф, в монтаже вырезаем вопрос. Без контекста ответ звучит двусмысленно, а разгадка невинная: клюшка, лунка, мяч, ти.</p>
+    <table class="pairs">
+      <tr><td class="q">Какой длины твой ти-колышек?</td><td class="a">Маленький, деревянный, главное — правильно воткнуть</td></tr>
+      <tr><td class="q">Сколько тратишь на гольф в месяц?</td><td class="a">Жена не в курсе, и пусть так и останется</td></tr>
+      <tr><td class="q">Любимая клюшка?</td><td class="a">Драйвер — он самый большой и длинный, им бью дальше всего</td></tr>
+      <tr><td class="q">За сколько ударов закрываешь лунку?</td><td class="a">Если день хороший — с первого захожу</td></tr>
+      <tr><td class="q">Что делаешь, когда мяч в кустах?</td><td class="a">Лезу на коленях в кусты, пока свой не нащупаю</td></tr>
+      <tr><td class="q">Тяжело было начинать?</td><td class="a">Сначала вообще не получалось, теперь уже вхожу легко</td></tr>
+      <tr><td class="q">Что главное в хвате?</td><td class="a">Держать крепко, но нежно — иначе улетит не туда</td></tr>
+      <tr><td class="q">Сколько длится раунд?</td><td class="a">Часов пять, и всё стоя, к концу уже ног не чувствуешь</td></tr>
+      <tr><td class="q">Как выбираешь мяч?</td><td class="a">Беру который поменьше и потвёрже, такой лучше идёт</td></tr>
+      <tr><td class="q">Что делаешь перед ударом?</td><td class="a">Расставляю ноги пошире и наклоняюсь</td></tr>
+      <tr><td class="q">С кем чаще играешь?</td><td class="a">С мужиками, по пять часов, жена уже привыкла</td></tr>
+      <tr><td class="q">Что главное в замахе?</td><td class="a">Довести до конца, а то не будет удовольствия</td></tr>
+    </table>
+    <p class="safety">Турнир семейный, дети рядом. Держим уровень так, чтобы вслух звучал честный рассказ про гольф: дети слышат гольф, взрослые улыбаются намёку. Вся соль — в монтаже и паузе, не в грубых словах.</p>
+
+    <h3>Формат Б · Стыдные и смешные истории</h3>
+    <div class="zone-tag">Живые истории + мостик к этикету</div>
+    <div class="qbank" style="margin-top:6px">
+      <div class="qgroup">
+        <h4>Стыдное — про этикет</h4>
+        <ul>
+          <li>Самое стыдное нарушение этикета, что ты видел на поле?</li>
+          <li>А сам когда-нибудь позорился? Что было?</li>
+          <li>Кого хотелось убить прямо на грине?</li>
+          <li>Признавайся: швырял клюшку? Материл мяч?</li>
+        </ul>
+      </div>
+      <div class="qgroup">
+        <h4>Смешное — тёплая лента</h4>
+        <ul>
+          <li>Самый смешной случай на поле?</li>
+          <li>Что нелепое улетало вместо мяча?</li>
+          <li>Кто как падал или застревал в бункере?</li>
+          <li>Что животные вытворяли на поле? (утки, лисы, собаки крадут мячи)</li>
+          <li>Играли когда-нибудь под градом или в туман?</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Формат В · Устами ребёнка</h3>
+    <div class="zone-tag">Дети сдают родителей — самый тёплый формат</div>
+    <p>Ребёнок (или пара ребёнок + папа) отвечает про родителя. Ребёнок выдаёт правду, папа рядом делает лицо. В идеале папа слышит впервые прямо в кадре и не имеет права подсказывать.</p>
+    <div class="qbank">
+      <div class="qgroup">
+        <ul>
+          <li>Как часто папа пропадает на гольфе?</li>
+          <li>Что говорит мама, когда папа уезжает на гольф?</li>
+          <li>Папа больше любит тебя или гольф?</li>
+          <li>Сколько у папы клюшек?</li>
+          <li>Что папа кричит, когда не попадает? А какое слово?</li>
+          <li>Сколько денег папа тратит на гольф?</li>
+          <li>Папа чаще выигрывает или проигрывает?</li>
+          <li>Что папа делает лучше — играет в гольф или готовит завтрак?</li>
+          <li>Чем бы папа занимался по выходным, если бы не гольф?</li>
+          <li>Мама рада, что папа так любит гольф?</li>
+          <li>Получается у папы объяснять, или он злится?</li>
+          <li>Кто в семье играет хуже всех?</li>
+        </ul>
+      </div>
+    </div>
+    <p>С одной зоны — три ролика: «ответы без вопросов», «самое стыдное/смешное» и «дети про папу».</p>
+  </section>
+
+  <!-- КИНОАТМОСФЕРА -->
+  <section>
+    <div class="sec-num">Атмосфера</div>
+    <h2>Что превращает поле в кино</h2>
+    <p>Детали-«фенечки», которые делают из турнира съёмочную площадку — и дёшево, и сразу читается.</p>
+
+    <h3>Постеры на лунках</h3>
+    <p>Каждая лунка получает киноимя с табличкой-постером: №7 — «Аллея Багера Ванса», №12 — «Овраг Гилмора». Гости идут по полю как по фильму, а постеры — готовый фон для кадров.</p>
+
+    <h3>Ковровая дорожка и звезда славы</h3>
+    <p>Красная дорожка у входа или у съёмочной зоны, рядом — именная «звезда славы». Семьи выходят как на премьеру, фотографируются — это первые тёплые кадры дня ещё до старта.</p>
+
+    <h3>Трейлер турнира</h3>
+    <p>Финальный контент. Монтажёр клуба (тот, что делает нарезку для прогрева) собирает из отснятого не просто ролик, а <em>трейлер как у настоящего фильма</em> — с той же эстетикой, титрами, музыкой. Мощная точка, которую хочется репостить.</p>
+  </section>
+
+  <!-- ПРОГРЕВ -->
+  <section>
+    <div class="sec-num">За неделю до</div>
+    <h2>Прогрев в клубе</h2>
+    <div class="highlight-box">
+      <p style="margin:0">В клубе за неделю стоит телевизор с нарезкой сцен из фильмов и вопросом на экране: «Какое правило нарушено?». Внизу — «Разбор на семейном турнире 12 июля». Нарезка одновременно развлекает и работает приглашением.</p>
+    </div>
+  </section>
+
+  <!-- ОЧКИ -->
+  <section>
+    <div class="sec-num">Зачёт</div>
+    <h2>Как считаем и что в призе</h2>
+    <div class="score">
+      <div class="row"><span>Раунд 1 · Гольф</span><span class="pts">по результату игры</span></div>
+      <div class="row"><span>Раунд 2 · Викторина</span><span class="pts">балл за верный ответ</span></div>
+      <div class="row"><span>Раунд 3 · Знание друг друга</span><span class="pts">балл за совпадение</span></div>
+    </div>
+    <p style="margin-top:22px">Итог складываем → семья-победитель. А награждение превращаем в <em>кинопремию</em>: не один приз, а номинации — так шанс уйти с наградой есть у каждой семьи, и это отдельный контент с церемонии.</p>
+    <div class="qbank" style="margin-top:14px">
+      <div class="qgroup">
+        <h4>Номинации кинопремии</h4>
+        <ul>
+          <li><b>Лучшая драма</b> — самая упорная семья</li>
+          <li><b>Лучшая комедия</b> — самая весёлая</li>
+          <li><b>Лучший дуэт</b> — пара, что угадала друг друга лучше всех в Раунде 3</li>
+          <li><b>Знатоки этикета</b> — победители киновикторины</li>
+          <li><b>Приз зрительских симпатий</b> — голосованием клуба</li>
+          <li><b>Гран-при</b> — по сумме всех трёх раундов</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- КОНТЕНТ -->
+  <section>
+    <div class="sec-num">Ради чего всё</div>
+    <h2>Что остаётся после турнира</h2>
+    <p>Раунд 3 — готовый вирусный формат сам по себе. «Мама написала одно, папа — другое», смех, «да ты что!», объятия. Из одного турнира выходит:</p>
+    <ul class="films">
+      <li><span class="name">Угадай, что ответит твой ребёнок</span><span class="type">нарезка раунда 3</span></li>
+      <li><span class="name">Кино через этикет</span><span class="type">нарезка викторины</span></li>
+      <li><span class="name">Оскар семейного турнира</span><span class="type">финал-награждение</span></li>
+    </ul>
+    <p style="margin-top:18px">Гольф встаёт в один ряд с семейными играми — ровно то, что снимает возражение «при чём тут семья».</p>
+  </section>
+
+  <!-- ОБСУДИТЬ -->
+  <section style="border-bottom:none">
+    <div class="sec-num">На созвоне</div>
+    <h2>Что уточнить у Натальи</h2>
+    <ol class="discuss">
+      <li>Сколько семей ждём — от этого тайминг раундов.</li>
+      <li>Раунд 3 пишут на мини-досках маркером (эффектнее для камеры) или на бумаге?</li>
+      <li>Кто ведущий шоу — Наталья, муж или зовём кого-то?</li>
+      <li>Оставляем 5 фильмов или берём 3 самых кинематографичных?</li>
+      <li>Кто режет куски фильмов — я даю таймкоды, он монтирует?</li>
+    </ol>
+  </section>
+
+</div>
+
+<footer>
+  Черновик концепции · к созвону 6 июля · ещё не финал
+</footer>
+
+</body>
+</html>
