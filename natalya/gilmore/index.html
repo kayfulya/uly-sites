@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Рилс: сколько правил нарушил Гилмор?</title>
+<style>
+  :root{
+    --paper:#f4f0e6;
+    --ink:#2a2a28;
+    --muted:#6f6a5e;
+    --ochre:#a8742a;
+    --ochre-soft:#c79a54;
+    --green:#3a5340;
+    --line:#ddd5c2;
+    --card:#faf7ef;
+    --wrong:#b04a3a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 28px}
+
+  header.hero{
+    padding:90px 28px 70px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+  .kicker{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.32em;
+    font-size:12px;
+    color:var(--ochre);
+    margin-bottom:22px;
+  }
+  h1{
+    font-size:52px;
+    font-style:italic;
+    font-weight:normal;
+    line-height:1.1;
+    margin-bottom:20px;
+  }
+  h1 .plain{font-style:normal}
+  .lede{
+    font-size:20px;
+    color:var(--muted);
+    max-width:640px;
+    margin:0 auto;
+  }
+  .backlink{
+    display:inline-block;margin-top:26px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--ochre);text-decoration:none;
+    border-bottom:1px solid var(--ochre-soft);padding-bottom:2px;
+  }
+
+  section{padding:60px 0;border-bottom:1px solid var(--line)}
+  .sec-num{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    letter-spacing:.3em;
+    font-size:12px;
+    text-transform:uppercase;
+    color:var(--ochre);
+    margin-bottom:14px;
+  }
+  h2{
+    font-size:34px;
+    font-style:italic;
+    font-weight:normal;
+    margin-bottom:24px;
+    line-height:1.15;
+  }
+  h3{font-size:22px;font-weight:normal;margin:26px 0 10px}
+  p{margin-bottom:16px;font-size:18px}
+  .big-idea{
+    font-size:23px;
+    font-style:italic;
+    color:var(--green);
+    border-left:3px solid var(--ochre-soft);
+    padding-left:22px;
+    margin:6px 0 4px;
+  }
+
+  /* Схема формата */
+  .flow{display:grid;gap:12px;margin-top:12px}
+  .flow .step{
+    background:var(--card);border:1px solid var(--line);border-radius:8px;
+    padding:16px 20px;display:flex;gap:16px;align-items:flex-start;font-size:17px;
+  }
+  .flow .step b{color:var(--green)}
+  .flow .step .n{
+    font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;
+    color:var(--ochre-soft);font-size:22px;min-width:26px;line-height:1.3;
+  }
+
+  /* Крючки */
+  ol.hooks{list-style:none;counter-reset:h;margin-top:6px}
+  ol.hooks li{
+    counter-increment:h;
+    padding:13px 0 13px 44px;position:relative;
+    border-bottom:1px dashed var(--line);font-size:18px;
+  }
+  ol.hooks li:last-child{border-bottom:none}
+  ol.hooks li::before{
+    content:counter(h);position:absolute;left:0;top:12px;
+    font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;
+    font-size:15px;color:#fff;background:var(--ochre-soft);
+    width:26px;height:26px;border-radius:50%;text-align:center;line-height:26px;
+  }
+  ol.hooks li.pick{background:#fbf3e2;border-radius:8px;padding-right:14px}
+  .pick-tag{
+    font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);margin-left:8px;
+  }
+
+  /* Карточка вопроса */
+  .qcard{
+    background:var(--card);border:1px solid var(--line);border-radius:8px;
+    padding:26px 28px;margin-top:22px;
+  }
+  .qcard.rec{border-color:var(--ochre-soft);box-shadow:0 0 0 3px #fbf3e2}
+  .qcard .film{font-style:italic;font-size:21px;color:var(--green);margin-bottom:4px}
+  .qcard .scene{font-size:16px;color:var(--muted);margin-bottom:16px}
+  .embed{
+    position:relative;padding-bottom:56.25%;height:0;overflow:hidden;
+    border-radius:6px;margin-bottom:8px;background:#000;
+  }
+  .embed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+  .clip-links{font-size:14px;color:var(--muted);margin-bottom:16px}
+  .clip-links a{color:var(--ochre)}
+  .qcard .q{
+    font-family:'Helvetica Neue',Arial,sans-serif;font-size:17px;
+    color:var(--ochre);font-weight:600;margin:6px 0 12px;
+  }
+  ul.opts{list-style:none;margin:0 0 14px}
+  ul.opts li{
+    padding:10px 14px;border:1px solid var(--line);border-radius:6px;
+    margin-bottom:8px;font-size:16px;background:#fff;
+  }
+  ul.opts li.ok{border-color:var(--green);background:#eef3ee;color:var(--green);font-weight:600}
+  ul.opts li.ok::after{content:' ✓';color:var(--green)}
+  .razbor{
+    font-size:16px;color:#4a463d;border-left:3px solid var(--ochre-soft);
+    padding-left:16px;margin-top:8px;
+  }
+
+  .note{font-size:15px;color:var(--muted);font-style:italic;margin-top:10px}
+
+  /* Финал */
+  .final-box{
+    background:var(--green);color:#f4f0e6;border-radius:8px;
+    padding:28px 30px;margin-top:18px;font-size:18px;
+  }
+  .final-box strong{color:#f0d9a8}
+  .final-box a{color:#f0d9a8}
+
+  /* Запасные */
+  ul.spare{list-style:none;margin-top:10px}
+  ul.spare li{
+    padding:12px 0;border-bottom:1px dashed var(--line);font-size:16px;color:#3f3b33;
+  }
+  ul.spare li:last-child{border-bottom:none}
+  ul.spare .name{font-style:italic;color:var(--green)}
+  ul.spare a{color:var(--ochre)}
+
+  footer{
+    text-align:center;padding:50px 28px 70px;
+    color:var(--muted);font-size:15px;font-style:italic;
+  }
+
+  @media(max-width:640px){
+    h1{font-size:38px}
+    h2{font-size:27px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker">Рилс · этикет через кино · Наталья Проскурова</div>
+  <h1><span class="plain">Сколько правил</span> нарушил Гилмор?</h1>
+  <p class="lede">Викторина по этикету в формате «Кто хочет стать миллионером»: показываем сцену из фильма — зритель угадывает, что не так, и играет вместе с нами.</p>
+  <a class="backlink" href="../">← к концепции турнира</a>
+</header>
+
+<div class="wrap">
+
+  <!-- ФОРМАТ -->
+  <section>
+    <div class="sec-num">Формат</div>
+    <h2>Как устроен рилс</h2>
+    <p class="big-idea">Этикет знают все, кто играет. А фильм — наглядная картинка. Показываем реальную сцену и спрашиваем зрителя: что здесь не так?</p>
+    <div class="flow">
+      <div class="step"><div class="n">1</div><div><b>Крючок.</b> Вызов зрителю — «проверим, за сколько тебя выгонят с поля».</div></div>
+      <div class="step"><div class="n">2</div><div><b>Сцена из фильма.</b> Фрагмент 10–20 сек. На экране — что происходит.</div></div>
+      <div class="step"><div class="n">3</div><div><b>Вопрос + 4 варианта.</b> Играет музыка с отсчётом, неправильные варианты гаснут.</div></div>
+      <div class="step"><div class="n">4</div><div><b>Па-бам — верный ответ.</b> Короткий разбор: почему именно так по этикету.</div></div>
+      <div class="step"><div class="n">5</div><div><b>Финал с подвохом.</b> На последнем мы сами уверенно советуем неправильное — и попадаем впросак. Зритель ошибается вместе с нами и запоминает.</div></div>
+    </div>
+  </section>
+
+  <!-- КРЮЧКИ -->
+  <section>
+    <div class="sec-num">Первая секунда</div>
+    <h2>Крючок — 10 вариантов</h2>
+    <p>Выбираем один. Первый — рекомендованный: коротко, с юмором, сразу вызов.</p>
+    <ol class="hooks">
+      <li class="pick">Проверим, за сколько минут тебя выгонят с гольф-поля.<span class="pick-tag">рекомендую</span></li>
+      <li>Тест: захотят ли с тобой вообще сыграть второй раз?</li>
+      <li>Ты можешь идеально бить — и всё равно быть человеком, с которым никто не хочет на поле.</li>
+      <li>Сейчас проверим, насколько с тобой невыносимо играть в гольф.</li>
+      <li>Три ситуации на поле. Угадаешь правильно — с тобой сядут ещё раз. Нет — прощай.</li>
+      <li>Гольф — единственный спорт, где выгоняют не за плохую игру, а за поведение.</li>
+      <li>Думаешь, ты вежливый? На гольф-поле это проверяется за три вопроса.</li>
+      <li>Экзамен на этикет. Спойлер: большинство проваливает первый же вопрос.</li>
+      <li>Три ситуации, три варианта. Один неверный ответ — и ты тот самый партнёр, которого все избегают.</li>
+      <li>Как понять, что с человеком не стоит играть в гольф? Сейчас проверим — не про тебя ли это.</li>
+    </ol>
+  </section>
+
+  <!-- ВОПРОСЫ -->
+  <section>
+    <div class="sec-num">Три вопроса · сцены из фильма</div>
+    <h2>«Счастливчик Гилмор»</h2>
+    <p>Каждый вопрос — реальный фрагмент фильма. Ролики ниже встроены: момент с первого кадра.</p>
+
+    <!-- Вопрос 1 -->
+    <div class="qcard rec">
+      <div class="film">Вопрос 1 — орёт на мяч</div>
+      <div class="scene">Промазал на грине → орёт на мяч → замахивается клюшкой, лезет драться.</div>
+      <div class="embed"><iframe src="https://www.youtube.com/embed/WdcvqdFk4nU" title="Happy Gilmore — Are You Too Good For Your Home" allowfullscreen></iframe></div>
+      <div class="clip-links">запасной кадр — драка на поле: <a href="https://www.youtube.com/watch?v=6CajdyoaSM0" target="_blank">youtube.com/watch?v=6CajdyoaSM0</a></div>
+      <div class="q">Сколько правил этикета он нарушил за 20 секунд?</div>
+      <ul class="opts">
+        <li>2</li>
+        <li>3</li>
+        <li class="ok">4</li>
+        <li>5</li>
+      </ul>
+      <p class="razbor">Тишина на поле · не швырять клюшку · спокойствие после плохого удара · уважение к партнёрам. «Выигрывает не тот, кто меньше ошибается, а кто быстрее возвращается в спокойную игру».</p>
+    </div>
+
+    <!-- Вопрос 2 -->
+    <div class="qcard rec">
+      <div class="film">Вопрос 2 — подготовка к удару</div>
+      <div class="scene">Разбегается перед мячом с хоккейным замахом, орёт на мяч «иди домой!».</div>
+      <div class="embed"><iframe src="https://www.youtube.com/embed/J50YIeCz9tM" title="Happy Gilmore — Shows Off His Drive" allowfullscreen></iframe></div>
+      <div class="q">Что не так с его подготовкой к удару?</div>
+      <ul class="opts">
+        <li>Слишком слабо бьёт</li>
+        <li class="ok">Перед ударом нужны тишина и покой, а не шоу</li>
+        <li>Стоит не с той стороны от мяча</li>
+        <li>Всё правильно</li>
+      </ul>
+      <p class="razbor">На поле перед ударом — покой и концентрация. Разбег, крик, хоккейный замах — это шоу, которое сбивает и тебя, и партнёров.</p>
+    </div>
+
+    <!-- Вопрос 3 -->
+    <div class="qcard rec">
+      <div class="film">Вопрос 3 — соперник Шутер Макгэвин</div>
+      <div class="scene">Соперник надменно подкалывает и унижает Гилмора вместо поддержки.</div>
+      <div class="embed"><iframe src="https://www.youtube.com/embed/EI75CO6FPuI" title="Happy Gilmore — Shooter face-off" allowfullscreen></iframe></div>
+      <div class="clip-links">короткий вариант: <a href="https://www.youtube.com/watch?v=55FCQjdYrhI" target="_blank">youtube.com/watch?v=55FCQjdYrhI</a></div>
+      <div class="q">Он поддерживает соперника или добивает?</div>
+      <ul class="opts">
+        <li>Поддерживает</li>
+        <li class="ok">Добивает — а надо похвалить удар и уважать партнёра</li>
+        <li>Молчит</li>
+        <li>Даёт полезный совет</li>
+      </ul>
+      <p class="razbor">Хорошее слово после удара — бесценно, подколы — нет. Уважение к сопернику важнее очков.</p>
+    </div>
+  </section>
+
+  <!-- ФИНАЛ -->
+  <section>
+    <div class="sec-num">Как закончить</div>
+    <h2>Финал — «а вот как надо»</h2>
+    <p>После трёх нарушений Гилмора — контраст-эталон, чтобы ролик не остался только про «как нельзя».</p>
+    <div class="final-box">
+      <strong>«Легенда Багера Ванса».</strong> Мяч героя случайно шевельнулся, когда он убирал листок. Никто не видел. Он сам объявляет себе штрафной удар — хотя это может стоить победы.<br><br>
+      <strong>Вопрос:</strong> почему он наказал себя, если никто не заметил?<br>
+      <strong>Разбор:</strong> правило чести. «Правила делают игру честной, этикет делает её красивой».<br><br>
+      Сцена: <a href="https://getyarn.io/yarn-clip/a04b03d3-18a5-4b8f-b5b5-bb56eaf50fed" target="_blank">«The ball moved — No»</a> · реальный эпизод Бобби Джонса: <a href="https://www.youtube.com/watch?v=aQ5Gr2joVe8" target="_blank">youtube</a>
+    </div>
+    <p class="note">Или альтернативный финал с юмором (из созвона): на последнем вопросе мы сами уверенно советуем партнёру неправильное — он психует и уходит. Зритель ошибается вместе с нами и лучше запоминает.</p>
+  </section>
+
+  <!-- ЗАПАСНЫЕ -->
+  <section>
+    <div class="sec-num">Запас</div>
+    <h2>Если нужна замена или продолжение</h2>
+    <ul class="spare">
+      <li><span class="name">Счастливчик Гилмор — хоккейная форма на поле.</span> Вопрос про дресс-код (поло, брюки, гольф-ботинки). <b>Клипа именно на этот кадр не нашлось</b> — нужно уточнить у Натальи, какой момент она имела в виду.</li>
+      <li><span class="name">Гольф-клуб (Caddyshack) — Родни шумит.</span> «Что он нарушает, пока играет партнёр?» → тишину. Нарезка реплик: <a href="https://www.youtube.com/watch?v=UGkyFs_SkIk" target="_blank">youtube</a></li>
+      <li><span class="name">Тин Кап — бьёт через воду снова и снова.</span> «Почему не сыграл безопасно?» → азарт против холодной головы.</li>
+      <li><span class="name">Величайшая игра — толпа на поле.</span> «Что нарушают зрители?» → дистанция и безопасность.</li>
+    </ul>
+    <p class="note">Эти фильмы, кроме Гилмора, «глубокие» — их могли не смотреть. Для этого рилса держим упор на Гилморе как узнаваемой комедии.</p>
+  </section>
+
+</div>
+
+<footer>
+  Черновик рилса · выбираем крючок и подтверждаем 3 сцены · ещё не финал
+</footer>
+
+</body>
+</html>
