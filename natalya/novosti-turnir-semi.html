@@ -117,6 +117,20 @@
     letter-spacing:.1em;text-transform:uppercase;padding:2px 9px;border-radius:20px;
     margin-left:8px;vertical-align:middle}
 
+  /* ТВ-фишки */
+  .tvgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .tv{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+  .tv .n{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ochre);font-weight:700;margin-bottom:7px}
+  .tv p{font-size:15.5px;margin:0}
+  .tv p b{color:var(--green)}
+  /* Нижняя треть (пример плашки) */
+  .lower{background:linear-gradient(90deg,var(--breaking),#7a1a26);color:#fff;border-radius:4px;
+    padding:9px 15px;margin:8px 8px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;display:inline-block}
+  .lower b{display:block;font-size:15px;letter-spacing:.04em}
+  .lower span{font-size:12px;opacity:.85}
+  @media(max-width:640px){.tvgrid{grid-template-columns:1fr}}
+
   /* Рубрики */
   .rubrics{display:grid;gap:16px;margin-top:8px}
   .rubric{
@@ -174,6 +188,26 @@
     <b>Двигатель формата.</b> Серьёзный диктор + бытовуха = смех. Чем официальнее голос, титры и монтаж — тем смешнее. Голливудской обёртки в тексте нет: кино-декорации турнира (красная дорожка, хлопушка) просто попадают в кадр, а диктор обыгрывает их по-новостному. <b>Главные герои — семьи.</b> Камера ходит за ними весь день: приехали → перессорились на поле → помирились к вечеру.
   </div>
 
+  <!-- ТВ-оформление -->
+  <section>
+    <div class="sec-num">Телевидение · сквозные приёмы</div>
+    <h2>Что делает это настоящими новостями</h2>
+    <p class="stage">Эти фишки идут поверх всего ролика — они и создают эффект «включил телевизор». Берём сколько влезет по хронометражу; монтажёр вставляет по вкусу.</p>
+
+    <div class="tvgrid">
+      <div class="tv"><div class="n">📺 Логотип канала</div><p>В верхнем углу весь ролик — логотип нашего телеканала. Рабочее название <b>«ГОЛЬФ-24»</b> (можно заменить). Сразу читается пародия на новостной канал.</p></div>
+      <div class="tv"><div class="n">🔴 Часы прямого эфира</div><p>В углу — время и красная точка <b>LIVE · ПРЯМОЙ ЭФИР</b>. Как в настоящем выпуске.</p></div>
+      <div class="tv"><div class="n">📡 Прямое включение</div><p>Экран делится надвое: слева «студия», справа корреспондент на поле. «Мария, что там у вас?» — «Спасибо, студия. Обстановка накаляется».</p></div>
+      <div class="tv"><div class="n">🎞 Спортивный повтор</div><p>Неудачный удар — в замедлении и «ещё раз, с другого ракурса», со стрелочками-разбором. Как гол в футболе, только мяч в воде.</p></div>
+      <div class="tv"><div class="n">📊 Голосование зрителей</div><p>На экране опрос: «Найдут ли мяч?» → <b>ДА 12% · НЕТ 88%</b>. Проценты абсурдные.</p></div>
+      <div class="tv"><div class="n">📶 Помехи связи</div><p>На включении картинка зависает и рябит: «связь нестабильна». Классика прямых эфиров.</p></div>
+      <div class="tv"><div class="n">🎙 Два ведущих в студии</div><p>Пара ведущих за столом передают слово: «А теперь — к погоде». Мостики между рубриками.</p></div>
+      <div class="tv"><div class="n">⚡ Молния «СРОЧНО»</div><p>Проезжающая красная плашка посреди эфира: «СРОЧНО: подросток обыграл отца. Отец требует переигровки».</p></div>
+      <div class="tv"><div class="n">📻 Рекламная пауза</div><p>«Этот выпуск вам приносит… потерянный мяч в кустах у четвёртой лунки». Пародийная врезка на 3 секунды.</p></div>
+      <div class="tv"><div class="n">🏷 Нижняя треть</div><p>Подпись под каждым спикером — с абсурдной «должностью». Образцы — в блоке интервью ниже.</p></div>
+    </div>
+  </section>
+
   <!-- 1 -->
   <section>
     <div class="sec-num">Блок 01 · Срочный выпуск</div>
@@ -201,7 +235,7 @@
     </div>
 
     <div class="say korr">
-      <div class="who">Банк вопросов — задаём любому, снимаем реакцию второго <span class="kid">детям</span> = желательно спросить у подростка</div>
+      <div class="who">Банк вопросов — задаём любому, снимаем реакцию второго <span class="kid">детям</span> = если в семье есть дети, этот вопрос задаём им про родителей</div>
       <ul class="qlist">
         <li>Кто в вашей семье слабое звено?<span class="kid">детям</span><span class="react">отвечающий не колеблется — второй делает лицо</span></li>
         <li>Что он/она кричит, когда не попадает? И какое именно слово?<span class="kid">детям</span><span class="react">сдаёт партнёра с удовольствием, тот рядом</span></li>
@@ -223,6 +257,15 @@
         <li>Какой ваш лучший общий удар за всё время?<span class="react">оживляются, перебивают друг друга</span></li>
       </ul>
     </div>
+
+    <div class="say korr">
+      <div class="who">🏷 Нижняя треть — подпись под каждым спикером</div>
+      <div class="lower"><b>МУЖ</b><span>считает, что не виноват</span></div>
+      <div class="lower"><b>ЖЕНА</b><span>считает иначе</span></div>
+      <div class="lower"><b>ПОДРОСТОК</b><span>свидетель, готов всё рассказать</span></div>
+      <div class="lower"><b>ИГРОК</b><span>потерял 4 мяча за утро</span></div>
+      <div class="lower"><b>ЭКСПЕРТ</b><span>в гольфе не разбирается, но уверен</span></div>
+    </div>
   </section>
 
   <!-- 3 -->
@@ -239,6 +282,11 @@
     </div>
 
     <div class="chyron">МУЖ СНОВА ЧТО-ТО ОБЪЯСНЯЕТ. ЖЕНА ДЕРЖИТСЯ</div>
+
+    <div class="say korr" style="border-left-color:var(--breaking)">
+      <div class="who">🎞 Спортивный повтор</div>
+      <p style="font-size:17px;margin:0">Диктор: «Смотрим этот удар ещё раз. И ещё раз, в замедлении».<br>Мяч медленно улетает в воду. Стрелочки, обводки, разбор траектории — как гол в футболе. Лицо игрока крупно, в слоу-мо.</p>
+    </div>
   </section>
 
   <!-- 4 -->
