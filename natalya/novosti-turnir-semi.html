@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Срочно: семьи вышли на поле — новостной репортаж</title>
+<style>
+  :root{
+    --paper:#f4f0e6;
+    --ink:#2a2a28;
+    --muted:#6f6a5e;
+    --ochre:#a8742a;
+    --ochre-soft:#c79a54;
+    --green:#3a5340;
+    --line:#ddd5c2;
+    --card:#faf7ef;
+    --breaking:#9a2230;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:0 26px}
+
+  /* HERO */
+  header.hero{
+    padding:74px 26px 54px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+  .live{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    text-transform:uppercase;letter-spacing:.22em;font-size:12px;font-weight:700;
+    color:#fff;background:var(--breaking);padding:8px 16px;border-radius:3px;
+    margin-bottom:24px;
+  }
+  .live .dot{width:9px;height:9px;border-radius:50%;background:#fff;
+    animation:blink 1.1s infinite}
+  @keyframes blink{50%{opacity:.25}}
+  h1{
+    font-size:clamp(36px,6.5vw,58px);
+    font-style:italic;font-weight:normal;line-height:1.08;margin-bottom:20px;
+  }
+  .lede{font-size:20px;color:var(--muted);max-width:600px;margin:0 auto}
+  .meta-row{
+    margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  }
+  .meta-row span{border:1px solid var(--line);padding:7px 14px;border-radius:3px}
+  .meta-row b{color:var(--ochre);font-weight:700}
+
+  /* Бегущая строка */
+  .ticker{
+    background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap;
+    font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;letter-spacing:.04em;
+    padding:11px 0;
+  }
+  .ticker .track{display:inline-block;padding-left:100%;animation:scroll 22s linear infinite}
+  .ticker b{color:var(--ochre-soft)}
+  @keyframes scroll{to{transform:translateX(-100%)}}
+
+  /* Двигатель-заметка */
+  .engine{
+    background:var(--green);color:var(--paper);border-radius:8px;
+    padding:22px 26px;margin:34px 0 8px;font-size:16px;line-height:1.6;
+  }
+  .engine b{color:#f0d9a8}
+
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  .sec-num{
+    font-family:'Helvetica Neue',Arial,sans-serif;letter-spacing:.28em;font-size:12px;
+    text-transform:uppercase;color:var(--ochre);margin-bottom:10px;
+  }
+  h2{font-size:30px;font-style:italic;font-weight:normal;margin-bottom:8px;line-height:1.15}
+  .stage{color:var(--muted);font-size:16px;font-style:italic;margin-bottom:20px}
+
+  /* Реплики */
+  .say{
+    background:var(--card);border:1px solid var(--line);border-radius:8px;
+    padding:20px 24px;margin:14px 0;
+  }
+  .who{
+    font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ochre);font-weight:700;margin-bottom:8px;
+  }
+  .say p{font-size:18px;margin-bottom:8px}
+  .say p:last-child{margin-bottom:0}
+  .say.diktor{border-left:4px solid var(--green)}
+  .say.korr{border-left:4px solid var(--ochre-soft)}
+
+  /* Плашка-титр */
+  .chyron{
+    background:var(--breaking);color:#fff;border-radius:5px;padding:14px 20px;
+    margin:14px 0;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;
+    letter-spacing:.04em;font-size:16px;display:flex;align-items:center;gap:12px;
+  }
+  .chyron::before{content:'ТИТР';background:rgba(255,255,255,.2);font-size:10px;
+    letter-spacing:.18em;padding:4px 8px;border-radius:3px;flex:none}
+
+  /* Вопросы корреспондента */
+  .qlist{list-style:none;margin:6px 0 0}
+  .qlist li{
+    padding:11px 0 11px 26px;position:relative;font-size:18px;
+    border-bottom:1px dashed var(--line);
+  }
+  .qlist li:last-child{border-bottom:none}
+  .qlist li::before{content:'—';position:absolute;left:0;color:var(--ochre-soft)}
+  .qlist .react{display:block;font-size:15px;color:var(--muted);font-style:italic;margin-top:3px}
+
+  /* Рубрики */
+  .rubrics{display:grid;gap:16px;margin-top:8px}
+  .rubric{
+    background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px 24px;
+  }
+  .rubric .tag{
+    font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ochre);font-weight:700;margin-bottom:8px;
+  }
+  .rubric p{font-size:17px;margin:0}
+  .rubric .frame{color:var(--muted);font-style:italic;font-size:15px;margin-top:6px}
+
+  /* Финальный титр */
+  .final-card{
+    background:var(--ink);color:var(--paper);border-radius:8px;
+    padding:34px 30px;text-align:center;margin-top:8px;
+  }
+  .final-card .big{font-size:24px;font-style:italic;font-family:Georgia,serif;margin-bottom:10px}
+  .final-card .small{font-size:14px;color:#b8b2a2;font-style:italic}
+
+  .note{
+    font-size:15px;color:var(--muted);font-style:italic;
+    border-left:3px solid var(--ochre-soft);padding-left:16px;margin-top:18px;
+  }
+
+  footer{text-align:center;padding:44px 26px 66px;color:var(--muted);font-size:14px;font-style:italic}
+
+  @media(max-width:640px){
+    h1{font-size:32px}h2{font-size:25px}
+    .say p{font-size:17px}.qlist li{font-size:17px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="live"><span class="dot"></span>Срочно · прямой эфир</div>
+  <h1>Семьи вышли на поле</h1>
+  <p class="lede">Псевдоновостной репортаж с семейного турнира. Серьёзный диктор освещает обычный гольф как событие государственного масштаба.</p>
+  <div class="meta-row">
+    <span>Клиент: <b>Наталья</b></span>
+    <span>Турнир: <b>19 июля</b></span>
+    <span>Хронометраж: <b>2–4 мин</b></span>
+    <span>Формат: <b>репортаж</b></span>
+  </div>
+</header>
+
+<div class="ticker">
+  <div class="track">…участники намерены провести вместе весь день &nbsp;·&nbsp; без телефонов &nbsp;·&nbsp; разговаривая друг с другом &nbsp;·&nbsp; <b>потери мячей растут</b> &nbsp;·&nbsp; на поле замечена красная дорожка &nbsp;·&nbsp; супруг снова объясняет технику удара &nbsp;·&nbsp; <b>организаторы просят сохранять спокойствие</b> &nbsp;·&nbsp;</div>
+</div>
+
+<div class="wrap">
+
+  <div class="engine">
+    <b>Двигатель формата.</b> Серьёзный диктор + бытовуха = смех. Чем официальнее голос, титры и монтаж — тем смешнее. Голливудской обёртки в тексте нет: кино-декорации турнира (красная дорожка, хлопушка) просто попадают в кадр, а диктор обыгрывает их по-новостному. <b>Главные герои — семьи.</b> Камера ходит за ними весь день: приехали → перессорились на поле → помирились к вечеру.
+  </div>
+
+  <!-- 1 -->
+  <section>
+    <div class="sec-num">Блок 01 · Срочный выпуск</div>
+    <h2>Заставка новостей</h2>
+    <p class="stage">Тревожный джингл. Титр во весь экран. Кадры: рассвет, машины, семьи с детьми и сумками идут по красной дорожке, регистрация.</p>
+
+    <div class="chyron">СЕМЬИ ВЫШЛИ НА ПОЛЕ</div>
+
+    <div class="say diktor">
+      <div class="who">Диктор · серьёзно, как про катастрофу</div>
+      <p>Сегодня ранним утром на территории гольф-клуба зафиксировано массовое скопление семей.</p>
+      <p>Десятки человек — мужья, жёны, дети, тёщи — добровольно прибыли на поле.</p>
+      <p>На входе развёрнута красная ковровая дорожка. Цель мероприятия официально не разглашается.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="sec-num">Блок 02 · Корреспондент с места</div>
+    <h2>Прямое включение</h2>
+    <p class="stage">Корреспондент (без имени) с микрофоном, серьёзное лицо. Ответы — живые, не заученные.</p>
+
+    <div class="engine" style="margin-top:0">
+      <b>Как спрашивать.</b> Задаём вопрос одному про другого, а камеру держим на <b>втором</b> — вся соль в его реакции. Есть подросток — спрашиваем его про родителей (честнее и смешнее), реакцию родителей подснимаем. Детей нет — а таких семей большинство — спрашиваем одного из пары про партнёра. Вопросы ниже работают в обоих случаях; «он/она» подставляем по адресату.
+    </div>
+
+    <div class="say korr">
+      <div class="who">Банк вопросов — задаём любому, снимаем реакцию второго</div>
+      <ul class="qlist">
+        <li>Кто в вашей семье слабое звено?<span class="react">отвечающий не колеблется — второй делает лицо</span></li>
+        <li>Кто из вас двоих играет лучше?<span class="react">реакция проигравшего крупно</span></li>
+        <li>Кто первым начинает давать непрошеные советы?<span class="react">второй молча показывает пальцем на первого</span></li>
+        <li>Что он/она кричит, когда не попадает? И какое именно слово?<span class="react">сдаёт партнёра с удовольствием, тот рядом</span></li>
+        <li>Сколько денег уходит на гольф?<span class="react">партнёр резко перестаёт улыбаться</span></li>
+        <li>Что он/она любит больше — гольф или тебя?<span class="react">пауза, все ждут ответа</span></li>
+        <li>Чем бы он/она занимался по выходным, если бы не гольф?<span class="react">отвечающий задумывается всерьёз</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="sec-num">Блок 03 · Первый инцидент</div>
+    <h2>Обстановка накаляется</h2>
+    <p class="stage">Реальные кадры игры: мяч в кустах, семья ищет в траве, муж руками объясняет жене технику, жена закатывает глаза, ребёнок смеётся.</p>
+
+    <div class="say diktor">
+      <div class="who">Диктор</div>
+      <p>Уже на первых лунках поступили первые сообщения.</p>
+      <p>В одной из семей мяч ушёл в кусты. Ведутся поиски. Обстановка накаляется.</p>
+      <p>По неподтверждённым данным, супруг приступил к объяснению техники удара. Супруга объяснений не запрашивала.</p>
+    </div>
+
+    <div class="chyron">МУЖ СНОВА ЧТО-ТО ОБЪЯСНЯЕТ. ЖЕНА ДЕРЖИТСЯ</div>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <div class="sec-num">Блок 04 · Новостные рубрики</div>
+    <h2>Ситуация обостряется</h2>
+    <p class="stage">Каждая рубрика — своя заставка и свой угол. Ритм ускоряется. Фокус держим на семьях.</p>
+
+    <div class="rubrics">
+      <div class="rubric">
+        <div class="tag">🌤 Метеосводка</div>
+        <p>На четвёртой лунке — повышенная вероятность ветра. И семейных разногласий. В отношениях — переменная облачность, к обеду возможны прояснения.</p>
+        <p class="frame">заставка погоды, карта, указка</p>
+      </div>
+      <div class="rubric">
+        <div class="tag">💰 Финансовые новости</div>
+        <p>Число потерянных семьями мячей продолжает расти. Аналитики связывают это с попытками главы семьи срезать через воду.</p>
+        <p class="frame">заставка биржи, график ползёт вверх, семья считает мячи</p>
+      </div>
+      <div class="rubric">
+        <div class="tag">🚨 Криминальная хроника</div>
+        <p>Один из участников утверждает, что его мяч переместился самостоятельно. Члены семьи всё видели. Но молчат. Семейная солидарность.</p>
+        <p class="frame">тревожная заставка, мяч в подозрительном месте, виноватое лицо</p>
+      </div>
+      <div class="rubric">
+        <div class="tag">🎓 Эксперт в студии</div>
+        <p>«Чем дальше лунка, тем сложнее в неё попасть. Это подтверждают исследования». <span style="color:var(--muted);font-style:italic">Пауза. Кивает своим словам.</span></p>
+        <p class="frame">эксперт с серьёзным лицом — можно посадить в режиссёрское кресло съёмочной зоны</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="sec-num">Блок 05 · Финал</div>
+    <h2>Ситуация стабилизировалась</h2>
+    <p class="stage">Кадры вечера: закат, уставшие довольные семьи идут к клубному дому, кто-то обнимается, дети носятся, награждение.</p>
+
+    <div class="say diktor">
+      <div class="who">Диктор · тон смягчается, почти торжественно</div>
+      <p>К вечеру ситуация стабилизировалась.</p>
+      <p>Все семьи благополучно вернулись в клубный дом. Пострадавших нет. Есть уставшие и счастливые.</p>
+      <p>Несмотря на потерянные мячи, спорные удары и непрошеные советы — семьи справились.</p>
+      <p>И, по предварительным данным, согласились сделать это снова.</p>
+    </div>
+
+    <div class="final-card">
+      <div class="big">Семейный турнир. Пять часов вместе — и все выжили.</div>
+      <div class="small">при подготовке материала ни один брак не пострадал</div>
+    </div>
+
+    <div class="ticker" style="border-radius:5px;margin-top:14px;font-size:12px;padding:8px 0">
+      <div class="track">редакция не несёт ответственности за советы, данные супругом на четвёртой лунке &nbsp;·&nbsp; все совпадения с вашей семьёй не случайны &nbsp;·&nbsp; мячи в ходе съёмок так и не найдены &nbsp;·&nbsp; тёща от комментариев отказалась &nbsp;·&nbsp;</div>
+    </div>
+
+    <p class="note">Финал сейчас тёплый («все выжили»). Альтернатива — сухой официоз до конца, без смягчения. Скажешь, если хочешь так.</p>
+  </section>
+
+</div>
+
+<footer>
+  Новостной репортаж · семейный турнир Натальи Проскуровой · 19 июля<br>
+  Черновик сценария — правится по слову Ули.
+</footer>
+
+</body>
+</html>
